@@ -1,6 +1,10 @@
-from datasets.mnist import mnist_files
+from datasets.mnist import files
+from datasets.mnist.data import data_to_digits
+from datasets.mnist.data import data_to_array
 from datasets.mnist.digit import Digit
-if not mnist_files.have_files():
-    print("Missing MNIST dataset, fetching it")
-    mnist_files.download_files()
+
+# Automatically downloads files if not present
+if not files.have_files():
+    print("Missing MNIST dataset, downloading them")
+    files.download_files()
 

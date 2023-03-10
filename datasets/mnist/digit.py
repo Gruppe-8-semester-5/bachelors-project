@@ -5,32 +5,50 @@ import os.path
 
 class Digit:
     def __init__(self, raw):
+        raw_split = raw[0].split(",")
+        features_split = list(map(lambda x: int(x), raw_split[1:])) # Converts strings to int
+        label_split = raw_split[0]
+        self.label = label_split
         self.raw: str = raw[0]
-        raw_split = self.raw.split(",")
-        self.label = int(raw_split[0])
-        self.features = np.array(list(map(lambda x: int(x), raw_split[1:])))
+        self.features = np.array(list(features_split))
+
 
     def __str__(self) -> str:
-        return "label: " + str(self.label) + "\nfeatures: " + str(self.get_reshaped())
+        return f"label: {self.label}\nfeatures:{str(self.get_reshaped_features())}"
 
-    def get_reshaped(self):
+
+    def get_reshaped_features(self):
+        """Converts the feature vector to a 28x28 matrix"""
         size = self.features.shape[0]
         assert size == 28 * 28
-        return np.reshape(self.features, (28, 28))  # Image pictures are 28x28 pixels
+
+        # Image pictures are 28x28 pixels
+        return np.reshape(self.features, (28, 28))
+    
+    def get_features(self) -> np.ndarray:
+        return self.features
+    
+    def get_label(self) -> str:
+        return self.label
 
     def get_image(self) -> Image:
         """Creates an image of the digit"""
-        image_pixels_values = np.uint8(self.get_reshaped())
+        image_pixels_values = np.uint8(self.get_reshaped_features())
         return Image.fromarray(image_pixels_values)
 
+
     def save_image(self, file_name: str) -> Image:
-        """Saves an image to the .out/ directory, overwriting existing file. Only support png"""
-        assert not file_name.endswith(".jpeg")
-        assert not file_name.endswith(".jpg")
-        target_path = ".out/" + file_name
+        """ Saves an image to the .out/ directory, overwriting existing file.
+            Only support png"""
+        if file_name.startswith("/"):
+            file_name = file_name[1:]
+        target_path = f".out/{file_name}.png"
+
+        if not os.path.exists(".out/"):
+            os.mkdir(".out")
+
         if os.path.exists(target_path):
             # Overwrites existing files
             os.remove(target_path)
-        image_pixels_values = np.uint8(self.get_reshaped())
 
         self.get_image().save(target_path)
