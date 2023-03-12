@@ -35,6 +35,8 @@ def main():
     print(f"f({min_x}, {min_y}, {min_z}) = {f(np.array([min_x, min_y, min_z]))}")
     print(f"f'({min_x}, {min_y}, {min_z}) = {fdiff(np.array([min_x, min_y, min_z]))}")
 
+    
+
 
 if __name__ == "__main__":
     main()
