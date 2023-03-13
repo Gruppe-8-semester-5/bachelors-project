@@ -17,8 +17,21 @@ class GradientDescentResult:
 
     def number_of_points(self):
         return len(self.points)
+    
+    def get_points(self):
+        if self.number_of_points() == 0:
+            raise Exception("No points available")
+        return self.points
+    
+    def get_points_axis(self, axis: int):
+        points = self.get_points()
+        result = list()
+        for point in points:
+            result.append(point[axis])       
+        return result         
 
     def get_final_point(self) -> np.ndarray:
         if self.number_of_points == 0:
+            
             raise Exception("No points available")
         return self.points[self.number_of_points() - 1]
