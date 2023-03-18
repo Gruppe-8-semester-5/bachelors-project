@@ -4,12 +4,11 @@ import os.path
 
 
 class Digit:
-    def __init__(self, raw):
-        raw_split = raw[0].split(",")
-        features_split = list(map(lambda x: int(x), raw_split[1:])) # Converts strings to int
-        label_split = raw_split[0]
+    def __init__(self, dataset_row):
+        features_split = list(map(lambda x: int(x), dataset_row[1:])) # Converts strings to int
+        label_split = dataset_row[0]
         self.label = label_split
-        self.raw: str = raw[0]
+        self.raw: str = dataset_row[0]
         self.features = np.array(list(features_split))
 
 

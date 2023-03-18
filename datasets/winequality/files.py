@@ -18,13 +18,15 @@ def read_wine_data():
     with open(DOWNLOAD_DESTINATION + "./wine_quality.csv", 'r') as file:
         csvreader = csv.reader(file, delimiter=':')
         for row in csvreader:
-            result.append(row)
+            row_data = row[0].split(",")
+            result.append(row_data)
     return result[1:] # Skip the first, because its the header labels of a table
 
-def read_wine_headers():
+def read_wine_headers() -> list:
     result = []
     with open(DOWNLOAD_DESTINATION + "./wine_quality.csv", 'r') as file:
         csvreader = csv.reader(file, delimiter=':')
         for row in csvreader:
             result.append(row)
-    return result[0]
+            break # Read the first line, the break the loop
+    return str(result[0][0]).split(",")
