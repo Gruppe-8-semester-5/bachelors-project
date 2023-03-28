@@ -4,11 +4,10 @@ from algorithms.gradient_descent_result import GradientDescentResult
 
 def find_minima(w: np.ndarray, 
                 step_size: float, 
-                function: Callable[[np.ndarray], np.ndarray],
                 derivation: Callable[[np.ndarray], np.ndarray], 
                 epsilon: float = np.finfo(float).eps,
                 max_iter = 1000):
-    result = GradientDescentResult(function, derivation)
+    result = GradientDescentResult(derivation)
     gradient = derivation(w)
     iteration_count = 0
     while not is_zero(gradient, epsilon) and (max_iter > iteration_count or max_iter == 0):
@@ -17,6 +16,8 @@ def find_minima(w: np.ndarray,
         w = w - step
         iteration_count += 1
         gradient = derivation(w)
+        if iteration_count % 100 == 0:
+            print(f"Simple Gradient Descent iteration {iteration_count} @ {w} and gradient @ {gradient}")    
     return result
 
 

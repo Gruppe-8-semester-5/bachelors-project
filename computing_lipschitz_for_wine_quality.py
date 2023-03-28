@@ -1,6 +1,6 @@
 import numpy as np
 from datasets.winequality.files import read_wine_data
-from analysis.lipschitz import lipschitz_neg_log_likelihood
+from analysis.lipschitz import lipschitz_binary_neg_log_likelihood
 from datasets.winequality.wine import Wine
 
 # Construct np array of features
@@ -21,4 +21,4 @@ for features in feature_array:
 
 print("sum ||x_i||^2 = ", feature_norm_sum)
 
-print("Giving us L = ", lipschitz_neg_log_likelihood(feature_array))
+print("Giving us L = ", lipschitz_binary_neg_log_likelihood(feature_array))

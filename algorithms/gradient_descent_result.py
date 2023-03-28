@@ -6,9 +6,7 @@ import numpy as np
 class GradientDescentResult:
     """Utility class for gradient descent algorithms. Used for historic values to draw graphs"""
     def __init__(self, 
-                 function: Callable[[np.ndarray], np.ndarray], 
                  derivation: Callable[[np.ndarray], np.ndarray]) -> None:
-        self.f: Callable[[np.ndarray], np.ndarray] = function
         self.diff: Callable[[np.ndarray], np.ndarray] = derivation
         self.points: list[np.ndarray] = list()
     

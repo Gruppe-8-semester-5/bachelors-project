@@ -28,7 +28,6 @@ def main():
     descent_result: GradientDescentResult = simple_gradient_descent.find_minima(
         np.array([800,800]), 
         0.003, 
-        f, 
         fdiff, 
         max_iter=200000,
         epsilon=1.0e-2)
