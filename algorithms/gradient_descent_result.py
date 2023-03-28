@@ -29,7 +29,6 @@ class GradientDescentResult:
         return result         
 
     def get_final_point(self) -> np.ndarray:
-        if self.number_of_points == 0:
-            
+        if self.number_of_points() == 0:
             raise Exception("No points available")
         return self.points[self.number_of_points() - 1]

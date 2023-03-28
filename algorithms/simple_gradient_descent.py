@@ -10,6 +10,8 @@ def find_minima(w: np.ndarray,
     result = GradientDescentResult(derivation)
     gradient = derivation(w)
     iteration_count = 0
+
+    # Todo: Could add check to see if w or gradient changes. If not, just stop
     while not is_zero(gradient, epsilon) and (max_iter > iteration_count or max_iter == 0):
         result.add_point(w)
         step = step_size * gradient
