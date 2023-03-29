@@ -32,7 +32,7 @@ def main():
         max_iter=200000,
         epsilon=1.0e-2)
     
-    minima = descent_result.get_final_point()
+    minima = descent_result.get_final_gradient()
     min_x = minima[0]
     min_y = minima[1]
     no_of_iterations = descent_result.number_of_points()
