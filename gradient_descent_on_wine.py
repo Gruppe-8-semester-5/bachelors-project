@@ -5,8 +5,9 @@ from analysis.lipschitz import lipschitz_binary_neg_log_likelihood
 from datasets.winequality.wine import Wine
 from models.logistic_regression import predict
 from models.logistic_regression import gradient
-from algorithms import simple_gradient_descent
-from algorithms import GradientDescentResult
+from algorithms import GradientDescentResult, gradient_descent_template, standard_GD
+from algorithms.standard_GD import Standard_GD
+from algorithms.momentum_GD import Momentum
 from models.utility import accuracy
 from analysis.utility import dump_array_to_csv, euclid_distance
 
@@ -49,57 +50,57 @@ iterations = 100
 
 #Todo: set the best point to one of the tests, so the graph content matches
 
-descent_result_lipchitz: GradientDescentResult = simple_gradient_descent.find_minima(
+descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    1/lipschitz, 
+    Momentum(1/lipschitz),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
 
-descent_result_0001: GradientDescentResult = simple_gradient_descent.find_minima(
+descent_result_0001: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    0.001, 
+    Momentum(0.001),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
 
-descent_result_001: GradientDescentResult = simple_gradient_descent.find_minima(
+descent_result_001: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    0.01, 
+    Momentum(0.01),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
 
-descent_result_005: GradientDescentResult = simple_gradient_descent.find_minima(
+descent_result_005: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    0.05, 
+    Momentum(0.05),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
 
-descent_result_01: GradientDescentResult = simple_gradient_descent.find_minima(
+descent_result_01: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    0.1, 
+    Momentum(0.1), 
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
 
-descent_result_05: GradientDescentResult = simple_gradient_descent.find_minima(
-    start_gradient, 
-    0.5, 
+descent_result_05: GradientDescentResult = gradient_descent_template.find_minima(
+    start_gradient,
+    Momentum(0.5), 
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
 
-descent_result_1: GradientDescentResult = simple_gradient_descent.find_minima(
+descent_result_1: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    1, 
+    Momentum(1), 
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,

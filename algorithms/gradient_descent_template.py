@@ -23,10 +23,12 @@ def find_minima(w: np.ndarray,
     
     # Todo: Could add check to see if w or gradient changes. If not, just stop
     while not is_zero(gradient, epsilon) and (max_iter > iteration_count or max_iter == 0):
-        current_accuracy = accuracy(w)
-        if current_accuracy > best_accuracy:
-            best_accuracy = current_accuracy
-            best_weight = w
+        if accuracy is not None:
+            current_accuracy = accuracy(w)
+            if current_accuracy > best_accuracy:
+                best_accuracy = current_accuracy
+                best_weight = w
+                result.set_best_weights(best_weight)
         result.add_accuracy(current_accuracy)
         result.add_weight(w)
         w = algorithm.step(w, derivation=derivation)
@@ -34,7 +36,6 @@ def find_minima(w: np.ndarray,
         gradient = derivation(w)
         if iteration_count % 100 == 0:
             print(f"Simple Gradient Descent iteration {iteration_count} @ {w} and gradient @ {gradient}")    
-    result.set_best_weights(best_weight)
     return result
 
 

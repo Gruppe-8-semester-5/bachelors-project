@@ -16,6 +16,6 @@ class Momentum:
         b = self.beta
         lr = self.lr
         g = derivation(w)
-        self.momentum = b * self.momentum - lr * g(w)
+        self.momentum = b * self.momentum - lr * g
         res = w + self.momentum
         return res

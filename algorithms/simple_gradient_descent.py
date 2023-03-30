@@ -22,7 +22,7 @@ def find_minima(w: np.ndarray,
             if current_accuracy > best_accuracy:
                 best_accuracy = current_accuracy
                 best_weight = w
-                result.set_best_weights(w)
+                result.set_best_weights(best_weight)
         result.add_accuracy(current_accuracy)
         result.add_weight(w)
         step = step_size * gradient

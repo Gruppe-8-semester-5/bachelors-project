@@ -5,7 +5,7 @@ Either copy the code from this or move it outside the folder.
 """
 from matplotlib import pyplot as plt
 import numpy as np
-from algorithms import simple_gradient_descent
+from algorithms import gradient_descent_template, standard_GD
 from algorithms import GradientDescentResult
 def f(w):
     x = w[0]
@@ -25,9 +25,9 @@ def main():
     print(f"f'(2,3) = {fdiff(np.array([2,3]))}")
     
     print("Running gradient descent")
-    descent_result: GradientDescentResult = simple_gradient_descent.find_minima(
+    descent_result: GradientDescentResult = gradient_descent_template.find_minima(
         np.array([800,800]), 
-        0.003, 
+        standard_GD.Standard_GD(0.01),
         fdiff, 
         max_iter=200000,
         epsilon=1.0e-2)
