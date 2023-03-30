@@ -44,7 +44,7 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.random.rand(feature_size)
-iterations = 2000
+iterations = 800
 
 
 
