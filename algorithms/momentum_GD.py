@@ -4,17 +4,18 @@ from collections.abc import Callable
 import numpy as np
 
 
-class Nesterov_acceleration:
-    def __init__(self, w0: np.ndarray, alpha: int = None, beta: int = None) -> None:
-        self.w = w0
-        self.alpha = alpha
+class Momentum:
+    def __init__(self, lr: int = 0.1, beta: int = 0.9) -> None:
+        self.lr = lr
         self.beta = beta
+        self.momentum = 0
 
     def step(self, w: np.ndarray, derivation: Callable[[np.ndarray], np.ndarray]):
+        # https://en.wikipedia.org/wiki/Stochastic_gradient_descent
+        # http://www.cs.utoronto.ca/~ilya/pubs/2013/1051_2.pdf
         b = self.beta
-        a = self.alpha
-        w_k = self.w
-        diff =  b * (w - w_k)
-        res = w - a * derivation(w) + b * diff
-        self.w = res
+        lr = self.lr
+        g = derivation(w)
+        self.momentum = b * self.momentum - lr * g(w)
+        res = w + self.momentum
         return res
