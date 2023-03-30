@@ -43,7 +43,7 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.random.rand(feature_size)
-iterations = 1000
+iterations = 500
 
 
 
@@ -175,6 +175,7 @@ plt.plot(x_values, y_values, label="a = 1/L", linestyle="-")
 plt.plot(x_values, descent_result_0001.get_distances_to_best_point(), label="a = 0.01")
 plt.plot(x_values, descent_result_001.get_distances_to_best_point(), label="a = 0.01")
 plt.plot(x_values, descent_result_005.get_distances_to_best_point(), label="a = 0.05")
+plt.plot(x_values, [1/i for i in range(number_of_points)], label="1/k")
 #plt.plot(x_values, descent_result_01.get_distances_to_best_point(), label="a = 0.1")
 #plt.plot(x_values, descent_result_05.get_distances_to_best_point(), label="a = 0.5")
 #plt.plot(x_values, descent_result_1.get_distances_to_best_point(), label="a = 1")
