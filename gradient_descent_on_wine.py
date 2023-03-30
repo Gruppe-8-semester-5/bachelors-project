@@ -43,7 +43,7 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.random.rand(feature_size)
-iterations = 500
+iterations = 1000
 
 
 
@@ -139,7 +139,34 @@ print(f"Accuracy:{np.round(accuracy(color_label_array, make_predictions(w))* 100
 
 
 # plots distance to best point
+#number_of_points = descent_result_lipchitz.number_of_points()
+#plt.rcParams["figure.figsize"] = [7.50, 3.50]
+#plt.rcParams["figure.autolayout"] = True
+#x_values = [i for i in range(number_of_points)]
+#y_values = descent_result_lipchitz.get_distances_to_best_point()
+#plt.plot(x_values, y_values, label="a = 1/L", linestyle="-")
+#plt.plot(x_values, descent_result_0001.get_distances_to_best_point(), label="a = 0.01")
+#plt.plot(x_values, descent_result_001.get_distances_to_best_point(), label="a = 0.01")
+# plt.plot(x_values, descent_result_005.get_distances_to_best_point(), label="a = 0.05")
+#plt.plot(x_values, descent_result_01.get_distances_to_best_point(), label="a = 0.1")
+#plt.plot(x_values, descent_result_05.get_distances_to_best_point(), label="a = 0.5")
+#plt.plot(x_values, descent_result_1.get_distances_to_best_point(), label="a = 1")
+#plt.legend(loc='upper right')
+#plt.show()
+
+
+# plots distance to best lipschitz point
 number_of_points = descent_result_lipchitz.number_of_points()
+
+best_lipschitz_point = descent_result_lipchitz.get_best_weights()
+
+descent_result_0001.set_best_weights(best_lipschitz_point)
+descent_result_001.set_best_weights(best_lipschitz_point)
+descent_result_005.set_best_weights(best_lipschitz_point)
+descent_result_01.set_best_weights(best_lipschitz_point)
+descent_result_05.set_best_weights(best_lipschitz_point)
+descent_result_1.set_best_weights(best_lipschitz_point)
+
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
 plt.rcParams["figure.autolayout"] = True
 x_values = [i for i in range(number_of_points)]
@@ -147,7 +174,7 @@ y_values = descent_result_lipchitz.get_distances_to_best_point()
 plt.plot(x_values, y_values, label="a = 1/L", linestyle="-")
 plt.plot(x_values, descent_result_0001.get_distances_to_best_point(), label="a = 0.01")
 plt.plot(x_values, descent_result_001.get_distances_to_best_point(), label="a = 0.01")
-# plt.plot(x_values, descent_result_005.get_distances_to_best_point(), label="a = 0.05")
+plt.plot(x_values, descent_result_005.get_distances_to_best_point(), label="a = 0.05")
 #plt.plot(x_values, descent_result_01.get_distances_to_best_point(), label="a = 0.1")
 #plt.plot(x_values, descent_result_05.get_distances_to_best_point(), label="a = 0.5")
 #plt.plot(x_values, descent_result_1.get_distances_to_best_point(), label="a = 1")
