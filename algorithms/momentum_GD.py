@@ -5,7 +5,7 @@ import numpy as np
 
 
 class Momentum:
-    def __init__(self, lr: int = 0.1, beta: int = 0.9) -> None:
+    def __init__(self, lr: float = 0.1, beta: float = 0.9) -> None:
         self.lr = lr
         self.beta = beta
         self.momentum = 0

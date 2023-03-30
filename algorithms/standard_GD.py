@@ -5,7 +5,7 @@ import numpy as np
 
 
 class Standard_GD:
-    def __init__(self, step_size: int = 0.1) -> None:
+    def __init__(self, step_size: float = 0.1) -> None:
         self.step_size = step_size
 
     def step(self, w: np.ndarray, derivation: Callable[[np.ndarray], np.ndarray]):
