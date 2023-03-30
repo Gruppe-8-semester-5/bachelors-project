@@ -77,6 +77,13 @@ class GradientDescentResult:
 
         return averages
 
+    def get_running_distance_to_best_weights_average(self, average_size = 20) -> list[float]:
+        points = self.get_distances_to_best_weight()
+        averages = list()
+        for i in range(average_size, len(points)):
+            averages.append(np.mean(points[i-average_size:i]))
+        return averages
+
     def get_final_weight(self) -> np.ndarray:
         if self.number_of_points() == 0:
             raise Exception("No points available")

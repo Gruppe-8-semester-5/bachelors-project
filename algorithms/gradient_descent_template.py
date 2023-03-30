@@ -29,7 +29,7 @@ def find_minima(w: np.ndarray,
                 best_accuracy = current_accuracy
                 best_weight = w
                 result.set_best_weights(best_weight)
-        result.add_accuracy(current_accuracy)
+            result.add_accuracy(current_accuracy)
         result.add_weight(w)
         w = algorithm.step(w, derivation=derivation)
         iteration_count += 1
