@@ -1,4 +1,6 @@
 import numpy as np
+import os
+import os.path
 
 
 def euclid_distance(a: np.ndarray, b: np.ndarray) -> float:
@@ -8,3 +10,16 @@ def euclid_distance(a: np.ndarray, b: np.ndarray) -> float:
         diff = a[i] - b[i]
         sum_sq += diff**2
     return np.sqrt(sum_sq)
+
+def dump_array_to_csv(array: np.ndarray, file_name: str, override = False):
+    if not file_name.endswith(".csv"):
+        raise Exception("Please make sure the filename ends with .csv !")
+    target_file = f"./.out/{file_name}"
+    if not os.path.exists(".out/"):
+        os.mkdir(".out/")
+    if os.path.isfile(target_file):
+        if override:
+            os.remove(target_file)
+        else:
+            raise Exception("Could not dump to file. It already exists. Use override = True if you want to override it")
+    np.savetxt(target_file, array, delimiter=",")

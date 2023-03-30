@@ -8,7 +8,7 @@ from models.logistic_regression import gradient
 from algorithms import simple_gradient_descent
 from algorithms import GradientDescentResult
 from models.utility import accuracy
-from analysis.utility import euclid_distance
+from analysis.utility import dump_array_to_csv, euclid_distance
 
 # Construct np array of features
 dataset = read_wine_data()
@@ -57,53 +57,53 @@ descent_result_lipchitz: GradientDescentResult = simple_gradient_descent.find_mi
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
 
-descent_result_0001: GradientDescentResult = simple_gradient_descent.find_minima(
-    start_gradient, 
-    0.001, 
-    lambda w: gradient(feature_array, color_label_array, w), 
-    max_iter=iterations,
-    epsilon=1.0e-2,
-    accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
+# descent_result_0001: GradientDescentResult = simple_gradient_descent.find_minima(
+#     start_gradient, 
+#     0.001, 
+#     lambda w: gradient(feature_array, color_label_array, w), 
+#     max_iter=iterations,
+#     epsilon=1.0e-2,
+#     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
+# 
+# descent_result_001: GradientDescentResult = simple_gradient_descent.find_minima(
+#     start_gradient, 
+#     0.01, 
+#     lambda w: gradient(feature_array, color_label_array, w), 
+#     max_iter=iterations,
+#     epsilon=1.0e-2,
+#     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
+# 
+# descent_result_005: GradientDescentResult = simple_gradient_descent.find_minima(
+#     start_gradient, 
+#     0.05, 
+#     lambda w: gradient(feature_array, color_label_array, w), 
+#     max_iter=iterations,
+#     epsilon=1.0e-2,
+#     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
 
-descent_result_001: GradientDescentResult = simple_gradient_descent.find_minima(
-    start_gradient, 
-    0.01, 
-    lambda w: gradient(feature_array, color_label_array, w), 
-    max_iter=iterations,
-    epsilon=1.0e-2,
-    accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-
-descent_result_005: GradientDescentResult = simple_gradient_descent.find_minima(
-    start_gradient, 
-    0.05, 
-    lambda w: gradient(feature_array, color_label_array, w), 
-    max_iter=iterations,
-    epsilon=1.0e-2,
-    accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-
-descent_result_01: GradientDescentResult = simple_gradient_descent.find_minima(
-    start_gradient, 
-    0.1, 
-    lambda w: gradient(feature_array, color_label_array, w), 
-    max_iter=iterations,
-    epsilon=1.0e-2,
-    accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-
-descent_result_05: GradientDescentResult = simple_gradient_descent.find_minima(
-    start_gradient, 
-    0.5, 
-    lambda w: gradient(feature_array, color_label_array, w), 
-    max_iter=iterations,
-    epsilon=1.0e-2,
-    accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-
-descent_result_1: GradientDescentResult = simple_gradient_descent.find_minima(
-    start_gradient, 
-    1, 
-    lambda w: gradient(feature_array, color_label_array, w), 
-    max_iter=iterations,
-    epsilon=1.0e-2,
-    accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
+# descent_result_01: GradientDescentResult = simple_gradient_descent.find_minima(
+#     start_gradient, 
+#     0.1, 
+#     lambda w: gradient(feature_array, color_label_array, w), 
+#     max_iter=iterations,
+#     epsilon=1.0e-2,
+#     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
+# 
+# descent_result_05: GradientDescentResult = simple_gradient_descent.find_minima(
+#     start_gradient, 
+#     0.5, 
+#     lambda w: gradient(feature_array, color_label_array, w), 
+#     max_iter=iterations,
+#     epsilon=1.0e-2,
+#     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
+# 
+# descent_result_1: GradientDescentResult = simple_gradient_descent.find_minima(
+#     start_gradient, 
+#     1, 
+#     lambda w: gradient(feature_array, color_label_array, w), 
+#     max_iter=iterations,
+#     epsilon=1.0e-2,
+#     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
 
 w = descent_result_lipchitz.get_final_gradient()
 dataset = read_wine_data()
@@ -160,24 +160,26 @@ number_of_points = descent_result_lipchitz.number_of_points()
 
 best_lipschitz_point = descent_result_lipchitz.get_best_weights()
 
-descent_result_0001.set_best_weights(best_lipschitz_point)
-descent_result_001.set_best_weights(best_lipschitz_point)
-descent_result_005.set_best_weights(best_lipschitz_point)
-descent_result_01.set_best_weights(best_lipschitz_point)
-descent_result_05.set_best_weights(best_lipschitz_point)
-descent_result_1.set_best_weights(best_lipschitz_point)
+# descent_result_0001.set_best_weights(best_lipschitz_point)
+# descent_result_001.set_best_weights(best_lipschitz_point)
+# descent_result_005.set_best_weights(best_lipschitz_point)
+# descent_result_01.set_best_weights(best_lipschitz_point)
+# descent_result_05.set_best_weights(best_lipschitz_point)
+# descent_result_1.set_best_weights(best_lipschitz_point)
 
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
 plt.rcParams["figure.autolayout"] = True
 x_values = [i for i in range(number_of_points)]
 y_values = descent_result_lipchitz.get_distances_to_best_point()
 plt.plot(x_values, y_values, label="a = 1/L", linestyle="-")
-plt.plot(x_values, descent_result_0001.get_distances_to_best_point(), label="a = 0.01")
-plt.plot(x_values, descent_result_001.get_distances_to_best_point(), label="a = 0.01")
-plt.plot(x_values, descent_result_005.get_distances_to_best_point(), label="a = 0.05")
-plt.plot(x_values, [1/i for i in range(number_of_points)], label="1/k")
-#plt.plot(x_values, descent_result_01.get_distances_to_best_point(), label="a = 0.1")
-#plt.plot(x_values, descent_result_05.get_distances_to_best_point(), label="a = 0.5")
-#plt.plot(x_values, descent_result_1.get_distances_to_best_point(), label="a = 1")
+# plt.plot(x_values, descent_result_0001.get_distances_to_best_point(), label="a = 0.01")
+# plt.plot(x_values, descent_result_001.get_distances_to_best_point(), label="a = 0.01")
+# plt.plot(x_values, descent_result_005.get_distances_to_best_point(), label="a = 0.05")
+# plt.plot(x_values, [15000/i**2 if i != 0 else 15000 for i in range(number_of_points)], label="1/k")
+# plt.plot(x_values, descent_result_01.get_distances_to_best_point(), label="a = 0.1")
+# plt.plot(x_values, descent_result_05.get_distances_to_best_point(), label="a = 0.5")
+# plt.plot(x_values, descent_result_1.get_distances_to_best_point(), label="a = 1")
 plt.legend(loc='upper right')
 plt.show()
+
+dump_array_to_csv(descent_result_lipchitz.get_distances_to_best_point(), "lipschitz_dist_to_best_gradients.csv")
