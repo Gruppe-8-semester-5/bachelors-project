@@ -22,15 +22,15 @@ def find_minima(w: np.ndarray,
             if current_accuracy > best_accuracy:
                 best_accuracy = current_accuracy
                 best_weight = w
-        result.add_accuracy_point(current_accuracy)
-        result.add_point(w)
+                result.set_best_weights(w)
+        result.add_accuracy(current_accuracy)
+        result.add_weight(w)
         step = step_size * gradient
         w = w - step
         iteration_count += 1
         gradient = derivation(w)
         if iteration_count % 100 == 0:
             print(f"Simple Gradient Descent iteration {iteration_count} @ {w} and gradient @ {gradient}")    
-    result.set_best_weights(best_weight)
     return result
 
 

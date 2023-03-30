@@ -32,7 +32,7 @@ def main():
         max_iter=200000,
         epsilon=1.0e-2)
     
-    minima = descent_result.get_final_gradient()
+    minima = descent_result.get_final_weight()
     min_x = minima[0]
     min_y = minima[1]
     no_of_iterations = descent_result.number_of_points()
@@ -59,7 +59,7 @@ def draw_result(result: GradientDescentResult):
     
     # syntax for plotting
     i = 0
-    for point in result.get_points():
+    for point in result.get_weights_over_time():
         if i < 1800 and i % 8 == 0:
             ax.plot(point[0], point[1], fplot(point[0], point[1]),"r.", zorder=10)
         i+=1
