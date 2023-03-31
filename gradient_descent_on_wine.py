@@ -28,8 +28,8 @@ def color_to_label(color):
     return 1
 
 example_wine = wines[0]
-print("feature example", example_wine.get_feature_vector())
-print("Label example", color_to_label(example_wine.get_color())) 
+# print("feature example", example_wine.get_feature_vector())
+# print("Label example", color_to_label(example_wine.get_color())) 
 
 color_label_list = list(map(lambda wine: color_to_label(wine.get_color()), wines))
 color_label_array = np.array(color_label_list)
@@ -43,7 +43,7 @@ def make_predictions(weights):
 
     return predictions
 
-start_gradient = np.random.rand(feature_size)
+start_gradient = np.zeros(feature_size)
 iterations = 100
 
 
@@ -106,7 +106,7 @@ descent_result_1: GradientDescentResult = gradient_descent_template.find_minima(
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
 
-w = descent_result_lipchitz.get_final_weight()
+start_weights = descent_result_lipchitz.get_final_weight()
 dataset = read_wine_data()
 wines: list[Wine] = list(map(lambda d: Wine(d), dataset))
 example_wine = wines[len(wines) - 1].get_feature_vector()
@@ -115,7 +115,7 @@ print(wines[len(wines)-1].get_quality())
 
 
 
-print(f"Accuracy:{np.round(accuracy(color_label_array, make_predictions(w))* 100,decimals=2)}%")
+print(f"Accuracy:{np.round(accuracy(color_label_array, make_predictions(start_weights))* 100,decimals=2)}%")
 
 
 
@@ -193,12 +193,16 @@ best_lipschitz_point = descent_result_lipchitz.get_best_weights()
 number_of_points = descent_result_lipchitz.number_of_points()
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
 plt.rcParams["figure.autolayout"] = True
-x_values = [i for i in range(len(descent_result_lipchitz.get_running_accuracy_average()))]
-plt.plot(x_values, descent_result_lipchitz.get_running_accuracy_average(), label="a = 1/L")
-plt.plot(x_values, descent_result_0001.get_running_accuracy_average(), label="a = 0.001")
-plt.plot(x_values, descent_result_001.get_running_accuracy_average(), label="a = 0.01")
-plt.plot(x_values, descent_result_005.get_running_accuracy_average(), label="a = 0.05")
-plt.plot(x_values, descent_result_01.get_running_accuracy_average(), label="a = 0.1")
-plt.plot(x_values, descent_result_05.get_running_accuracy_average(), label="a = 0.5")
-plt.plot(x_values, descent_result_1.get_running_accuracy_average(), label="a = 1")
+x_values = [i for i in range(len(descent_result_lipchitz.get_best_weight_over_time_distances_to_best_weight()))]
+plt.plot(x_values, descent_result_lipchitz.get_best_weight_over_time_distances_to_best_weight(), label="a = 1/L")
+plt.plot(x_values, descent_result_0001.get_best_weight_over_time_distances_to_best_weight(), label="a = 0.001")
+plt.plot(x_values, descent_result_001.get_best_weight_over_time_distances_to_best_weight(), label="a = 0.01")
+plt.plot(x_values, descent_result_005.get_best_weight_over_time_distances_to_best_weight(), label="a = 0.05")
+plt.plot(x_values, descent_result_01.get_best_weight_over_time_distances_to_best_weight(), label="a = 0.1")
+#plt.plot(x_values, descent_result_05.get_best_weight_over_time_distances_to_best_weight(), label="a = 0.5")
+#plt.plot(x_values, descent_result_1.get_best_weight_over_time_distances_to_best_weight(), label="a = 1")
+plt.legend(loc='upper right')
 plt.show()
+
+
+dump_array_to_csv(descent_result_lipchitz.get_distances_to_best_weight(), "lipschitz_dist_to_best_gradients.csv", True)

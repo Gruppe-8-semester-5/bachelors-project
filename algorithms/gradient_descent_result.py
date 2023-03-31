@@ -1,11 +1,11 @@
 from typing import Callable
 
 import numpy as np
+from analysis.serialization import Serializable
 
 from analysis.utility import euclid_distance
 
-
-class GradientDescentResult:
+class GradientDescentResult(Serializable):
     """Utility class for gradient descent algorithms. Used for historic values to draw graphs"""
     def __init__(self, 
                  derivation: Callable[[np.ndarray], np.ndarray]) -> None:
@@ -14,7 +14,7 @@ class GradientDescentResult:
         self.accuracies: list[np.ndarray] = list()
         self.best_weights_list: list[np.ndarray] = list()
         self.best_weights = None
-    
+
     def add_weight(self, w: np.ndarray):
         self.weights.append(w)
         if self.best_weights is not None:
@@ -88,3 +88,19 @@ class GradientDescentResult:
         if self.number_of_points() == 0:
             raise Exception("No points available")
         return self.weights[self.number_of_points() - 1]
+    
+    def to_serialized(self) -> dict:
+        return {
+            "weights": self.weights,
+            "accuracies": self.accuracies,
+            "best_weights_list": self.best_weights_list,
+            "best_weights": self.best_weights,
+        }
+    
+    def from_serialized(self, serialized):
+        result = GradientDescentResult(self.diff)
+        result.weights = serialized["weights"]
+        result.accuracies = serialized["accuracies"]
+        result.best_weights_list = serialized["best_weights_list"]
+        result.best_weights = serialized["best_weights"]
+        return result
