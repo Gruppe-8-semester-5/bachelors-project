@@ -52,7 +52,7 @@ iterations = 100000
 
 descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Momentum(1/lipschitz),
+    Standard_GD(1/lipschitz),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
@@ -60,7 +60,7 @@ descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_
 
 descent_result_0001: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Momentum(0.001),
+    Standard_GD(0.001),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
@@ -68,7 +68,7 @@ descent_result_0001: GradientDescentResult = gradient_descent_template.find_mini
 
 descent_result_001: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Momentum(0.01),
+    Standard_GD(0.01),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
@@ -76,7 +76,7 @@ descent_result_001: GradientDescentResult = gradient_descent_template.find_minim
 
 descent_result_005: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Momentum(0.05),
+    Standard_GD(0.05),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
@@ -84,7 +84,7 @@ descent_result_005: GradientDescentResult = gradient_descent_template.find_minim
 
 descent_result_01: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Momentum(0.1), 
+    Standard_GD(0.1), 
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
@@ -92,7 +92,7 @@ descent_result_01: GradientDescentResult = gradient_descent_template.find_minima
 
 descent_result_05: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient,
-    Momentum(0.5), 
+    Standard_GD(0.5), 
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
@@ -100,7 +100,7 @@ descent_result_05: GradientDescentResult = gradient_descent_template.find_minima
 
 descent_result_1: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Momentum(1), 
+    Standard_GD(1), 
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
