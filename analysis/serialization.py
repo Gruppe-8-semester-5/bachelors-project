@@ -70,4 +70,12 @@ class Serializable(Protocol):
 
         if not os.path.exists(file_path):
             return False, file_name_hash_input
+        print("------Experiment serializer-------")
+        print("A gradient descent run was found to have been performed before!")
+        print("inputs were")
+        print("")
+        print(args)
+        print("")
+        print("If you believe this to be false, delete the file ", file_path)
+        print("----------------------------------")
         return True, file_name_hash_input

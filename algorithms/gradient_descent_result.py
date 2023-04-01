@@ -89,6 +89,9 @@ class GradientDescentResult(Serializable):
             raise Exception("No points available")
         return self.weights[self.number_of_points() - 1]
     
+    def get_best_accuracy(self) -> float:
+        return np.max(self.accuracies)
+
     def to_serialized(self) -> dict:
         return {
             "weights": self.weights,
