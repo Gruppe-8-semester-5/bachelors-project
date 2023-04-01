@@ -51,21 +51,14 @@ class Serializable(Protocol):
 
     def check_for_serialization(self, *args):
         """Returns whether the result has been serialized, along with it's serial hash"""
-        print("--------------")
-        print("Checking for serialization", args)
-        print("--------------")
         file_name_hash_input = 0
         for arg in args:
             if type(arg) is np.ndarray:
                 file_name_hash_input += hash(np.sum(arg))
             else:
                 file_name_hash_input += hash(arg)
-            print("-------TO -------")
-            print(file_name_hash_input)
-            
 
         file_name = str(hash(file_name_hash_input)) + ".json"
-        print(file_name)
 
         if not os.path.exists(".out/"):
             os.mkdir(".out/")

@@ -44,7 +44,7 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.zeros(feature_size)
-iterations = 100
+iterations = 100000
 
 
 
@@ -205,4 +205,38 @@ plt.legend(loc='upper right')
 plt.show()
 
 
-dump_array_to_csv(descent_result_lipchitz.get_distances_to_best_weight(), "lipschitz_dist_to_best_gradients.csv", True)
+dump_array_to_csv(descent_result_lipchitz.get_distances_to_best_weight(), "descent_result_lipchitz.get_distances_to_best_weight.csv", True)
+dump_array_to_csv(descent_result_lipchitz.get_distances_to_final_weight(), "descent_result_lipchitz.get_distances_to_final_weight.csv", True)
+dump_array_to_csv(descent_result_lipchitz.get_running_distance_to_best_weights_average(), "descent_result_lipchitz.get_running_distance_to_best_weights_average.csv", True)
+dump_array_to_csv(descent_result_lipchitz.get_best_weight_over_time_distances_to_best_weight(), "descent_result_lipchitz.get_best_weight_over_time_distances_to_best_weight.csv", True)
+dump_array_to_csv(descent_result_lipchitz.get_accuracy_over_time(), "descent_result_lipchitz.get_accuracy_over_time.csv", True)
+dump_array_to_csv(descent_result_lipchitz.get_best_weights_over_time(), "descent_result_lipchitz.get_best_weights_over_time.csv", True)
+dump_array_to_csv(descent_result_lipchitz.get_weights_over_time(), "descent_result_lipchitz.get_best_weights_over_time.csv", True)
+dump_array_to_csv(descent_result_lipchitz.get_best_weights(), "descent_result_lipchitz.get_best_weights.csv", True)
+
+dump_array_to_csv(descent_result_01.get_distances_to_best_weight(), "descent_result_01.get_distances_to_best_weight.csv", True)
+dump_array_to_csv(descent_result_01.get_distances_to_final_weight(), "descent_result_01.get_distances_to_final_weight.csv", True)
+dump_array_to_csv(descent_result_01.get_running_distance_to_best_weights_average(), "descent_result_01.get_running_distance_to_best_weights_average.csv", True)
+dump_array_to_csv(descent_result_01.get_best_weight_over_time_distances_to_best_weight(), "descent_result_01.get_best_weight_over_time_distances_to_best_weight.csv", True)
+dump_array_to_csv(descent_result_01.get_accuracy_over_time(), "descent_result_01.get_accuracy_over_time.csv", True)
+dump_array_to_csv(descent_result_01.get_best_weights_over_time(), "descent_result_01.get_best_weights_over_time.csv", True)
+dump_array_to_csv(descent_result_01.get_weights_over_time(), "descent_result_01.get_best_weights_over_time.csv", True)
+dump_array_to_csv(descent_result_01.get_best_weights(), "descent_result_01.get_best_weights.csv", True)
+
+dump_array_to_csv(descent_result_005.get_distances_to_best_weight(), "descent_result_005.get_distances_to_best_weight.csv", True)
+dump_array_to_csv(descent_result_005.get_distances_to_final_weight(), "descent_result_005.get_distances_to_final_weight.csv", True)
+dump_array_to_csv(descent_result_005.get_running_distance_to_best_weights_average(), "descent_result_005.get_running_distance_to_best_weights_average.csv", True)
+dump_array_to_csv(descent_result_005.get_best_weight_over_time_distances_to_best_weight(), "descent_result_005.get_best_weight_over_time_distances_to_best_weight.csv", True)
+dump_array_to_csv(descent_result_005.get_accuracy_over_time(), "descent_result_005.get_accuracy_over_time.csv", True)
+dump_array_to_csv(descent_result_005.get_best_weights_over_time(), "descent_result_005.get_best_weights_over_time.csv", True)
+dump_array_to_csv(descent_result_005.get_weights_over_time(), "descent_result_005.get_best_weights_over_time.csv", True)
+dump_array_to_csv(descent_result_005.get_best_weights(), "descent_result_005.get_best_weights.csv", True)
+
+dump_array_to_csv(descent_result_001.get_distances_to_best_weight(), "descent_result_001.get_distances_to_best_weight.csv", True)
+dump_array_to_csv(descent_result_001.get_distances_to_final_weight(), "descent_result_001.get_distances_to_final_weight.csv", True)
+dump_array_to_csv(descent_result_001.get_running_distance_to_best_weights_average(), "descent_result_001.get_running_distance_to_best_weights_average.csv", True)
+dump_array_to_csv(descent_result_001.get_best_weight_over_time_distances_to_best_weight(), "descent_result_001.get_best_weight_over_time_distances_to_best_weight.csv", True)
+dump_array_to_csv(descent_result_001.get_accuracy_over_time(), "descent_result_001.get_accuracy_over_time.csv", True)
+dump_array_to_csv(descent_result_001.get_best_weights_over_time(), "descent_result_001.get_best_weights_over_time.csv", True)
+dump_array_to_csv(descent_result_001.get_weights_over_time(), "descent_result_001.get_best_weights_over_time.csv", True)
+dump_array_to_csv(descent_result_001.get_best_weights(), "descent_result_001.get_best_weights.csv", True)
