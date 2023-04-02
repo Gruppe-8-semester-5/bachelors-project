@@ -11,10 +11,10 @@ def euclid_distance(a: np.ndarray, b: np.ndarray) -> float:
         sum_sq += diff**2
     return np.sqrt(sum_sq)
 
-def dump_array_to_csv(array: np.ndarray, file_name: str, override = False):
+def dump_array_to_csv(array: np.ndarray, file_name: str, override = False, prepend=""):
     if not file_name.endswith(".csv"):
         raise Exception("Please make sure the filename ends with .csv !")
-    target_file = f"./.out/{file_name}"
+    target_file = f"./.out/{prepend}_{file_name}"
     if not os.path.exists(".out/"):
         os.mkdir(".out/")
     if os.path.isfile(target_file):
