@@ -44,9 +44,7 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.zeros(feature_size)
-iterations = 100000
-
-
+iterations = 100
 
 #Todo: set the best point to one of the tests, so the graph content matches
 

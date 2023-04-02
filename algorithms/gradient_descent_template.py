@@ -13,12 +13,11 @@ def find_minima(start_weights: np.ndarray,
                 epsilon: float = np.finfo(float).eps,
                 max_iter = 1000,
                 accuracy: Callable[[np.ndarray], np.ndarray] = None):
-    # Attempt to deserialize the results (skip this experiment if we've already done it)
     weights = start_weights
     result = GradientDescentResult(derivation)
     
     # By hashing the input variables, we can save the result and skip the computation if it's redundant
-    is_serialized, serial_hash = result.check_for_serialization(start_weights, algorithm, np.sum(start_weights + algorithm.step(start_weights, derivation)), derivation(start_weights), epsilon, max_iter, accuracy(weights))
+    is_serialized, serial_hash = result.check_for_serialized_version(start_weights, type(algorithm), start_weights + algorithm.step(start_weights, derivation), derivation(start_weights), epsilon, max_iter, accuracy(weights))
     if is_serialized:
         result = result.deserialize(serial_hash)
         return result
@@ -42,7 +41,9 @@ def find_minima(start_weights: np.ndarray,
         iteration_count += 1
         gradient = derivation(weights)
         if iteration_count % 100 == 0:
-            print(f"Simple Gradient Descent iteration {iteration_count} @ {weights} and gradient @ {gradient}")    
+            print(f"Simple Gradient Descent iteration {iteration_count} @ {weights} and gradient @ {gradient}")
+    
+    # Save run for next time
     result.serialize(serial_hash)
     return result
 
