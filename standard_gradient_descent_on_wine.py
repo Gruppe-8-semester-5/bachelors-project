@@ -41,7 +41,6 @@ def make_predictions(weights):
     predictions = []
     for wine in wines:
         predictions.append(predict(weights, wine.get_feature_vector()))
-
     return predictions
 
 start_gradient = np.zeros(feature_size)
@@ -51,7 +50,7 @@ iterations = 100000
 
 descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Nesterov_acceleration(start_gradient, lipschitz, alpha=lipschitz),
+    Standard_GD(1/lipschitz),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
@@ -59,7 +58,7 @@ descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_
 
 descent_result_0001: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Nesterov_acceleration(start_gradient, lipschitz, alpha=0.001),
+    Standard_GD(0.001),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
@@ -67,7 +66,7 @@ descent_result_0001: GradientDescentResult = gradient_descent_template.find_mini
 
 descent_result_001: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Nesterov_acceleration(start_gradient, lipschitz, alpha=0.01),
+    Standard_GD(0.01),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
@@ -75,7 +74,7 @@ descent_result_001: GradientDescentResult = gradient_descent_template.find_minim
 
 descent_result_005: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Nesterov_acceleration(start_gradient, lipschitz, alpha=0.05),
+    Standard_GD(0.05),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
@@ -83,7 +82,7 @@ descent_result_005: GradientDescentResult = gradient_descent_template.find_minim
 
 descent_result_01: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Nesterov_acceleration(start_gradient, lipschitz, alpha=0.1),
+    Standard_GD(0.1),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
@@ -91,7 +90,7 @@ descent_result_01: GradientDescentResult = gradient_descent_template.find_minima
 
 descent_result_05: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient,
-    Nesterov_acceleration(start_gradient, lipschitz, alpha=0.5),
+    Standard_GD(0.5),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
@@ -99,23 +98,16 @@ descent_result_05: GradientDescentResult = gradient_descent_template.find_minima
 
 descent_result_1: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Nesterov_acceleration(start_gradient, lipschitz, alpha=1),
+    Standard_GD(1),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
 
-start_weights = descent_result_lipchitz.get_final_weight()
 dataset = read_wine_data()
 wines: list[Wine] = list(map(lambda d: Wine(d), dataset))
 example_wine = wines[len(wines) - 1].get_feature_vector()
 print(wines[len(wines)-1].get_quality())
-
-
-
-
-print(f"Accuracy:{np.round(accuracy(color_label_array, make_predictions(start_weights))* 100,decimals=2)}%")
-
 
 
 # plots distance to final point
@@ -233,14 +225,14 @@ descent_result_01.set_best_weights(best_performer.get_best_weights())
 number_of_points = descent_result_lipchitz.number_of_points()
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
 plt.rcParams["figure.autolayout"] = True
-x_values = [i for i in range(len(descent_result_lipchitz.get_best_weight_over_time_distances_to_best_weight()))]
-plt.plot(x_values, descent_result_lipchitz.get_best_weight_over_time_distances_to_best_weight(), label="a = 1/L")
-plt.plot(x_values, descent_result_0001.get_best_weight_over_time_distances_to_best_weight(), label="a = 0.001")
-plt.plot(x_values, descent_result_001.get_best_weight_over_time_distances_to_best_weight(), label="a = 0.01")
-plt.plot(x_values, descent_result_005.get_best_weight_over_time_distances_to_best_weight(), label="a = 0.05")
-plt.plot(x_values, descent_result_01.get_best_weight_over_time_distances_to_best_weight(), label="a = 0.1")
-#plt.plot(x_values, descent_result_05.get_best_weight_over_time_distances_to_best_weight(), label="a = 0.5")
-#plt.plot(x_values, descent_result_1.get_best_weight_over_time_distances_to_best_weight(), label="a = 1")
+x_values = [i for i in range(len(descent_result_lipchitz.get_distances_to_best_weight()))]
+plt.plot(x_values, descent_result_lipchitz.get_distances_to_best_weight(), label="a = 1/L")
+plt.plot(x_values, descent_result_0001.get_distances_to_best_weight(), label="a = 0.001")
+plt.plot(x_values, descent_result_001.get_distances_to_best_weight(), label="a = 0.01")
+plt.plot(x_values, descent_result_005.get_distances_to_best_weight(), label="a = 0.05")
+plt.plot(x_values, descent_result_01.get_distances_to_best_weight(), label="a = 0.1")
+#plt.plot(x_values, descent_result_05.get_distances_to_best_weight(), label="a = 0.5")
+#plt.plot(x_values, descent_result_1.get_distances_to_best_weight(), label="a = 1")
 plt.legend(loc='upper right')
 plt.show()
 
