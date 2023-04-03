@@ -17,7 +17,7 @@ def find_minima(start_weights: np.ndarray,
     result = GradientDescentResult(derivation)
     
     # By hashing the input variables, we can save the result and skip the computation if it's redundant
-    is_serialized, file_name = result.check_for_serialized_version(start_weights, [x for x in algorithm.__dict__], type(algorithm), start_weights + algorithm.step(start_weights, derivation), derivation(start_weights), epsilon, max_iter, accuracy(weights))
+    is_serialized, file_name = result.check_for_serialized_version(start_weights, [algorithm.__dict__[x] for x in algorithm.__dict__], type(algorithm), start_weights + algorithm.step(start_weights, derivation), derivation(start_weights), epsilon, max_iter, accuracy(weights))
     if is_serialized:
         result = result.deserialize(file_name)
         return result
@@ -47,7 +47,7 @@ def find_minima(start_weights: np.ndarray,
         iteration_count += 1
         gradient = derivation(weights)
         if iteration_count % 100 == 0:
-            print(f"Simple Gradient Descent iteration {iteration_count} @ {weights} and gradient @ {gradient}")
+            print(f"Gradient Descent iteration {iteration_count} @ {weights} and gradient @ {gradient}")
     
     # Save run for next time
     result.serialize(file_name)
