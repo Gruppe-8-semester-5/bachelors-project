@@ -41,7 +41,7 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.zeros(feature_size)
-iterations = 1000
+iterations = 500
 
 # In order to run useful experiments, test all of the following values
 testable_mus = [0.005, 0.01, 0.05, 0.1, 0.5]
@@ -60,11 +60,11 @@ for mu in testable_mus:
                     max_iter=iterations,
                     epsilon=1.0e-2,
                     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-                csv_name = f"nestorov_L{L}_mu{mu}_alpha{alpha}_beta{beta}.csv"
-                dump_array_to_csv(result.get_accuracy_over_time(), f"accuracy_over_time_{csv_name}", override=True)
-                dump_array_to_csv(result.get_best_weight_over_time_distances_to_best_weight(), f"best_weight_over_time_distances_to_best_weight_{csv_name}", override=True)
-                dump_array_to_csv(result.get_best_weights_over_time(), f"best_weights_over_time_{csv_name}", override=True)
-                dump_array_to_csv(result.get_distances_to_best_weight(), f"distances_to_best_weight_{csv_name}", override=True)
-                dump_array_to_csv(result.get_distances_to_final_weight(), f"distances_to_final_weight_{csv_name}", override=True)
-                dump_array_to_csv(result.get_running_accuracy_average(), f"running_accuracy_average_{csv_name}", override=True)
-                dump_array_to_csv(result.get_running_distance_to_best_weights_average(), f"running_distance_to_best_weights_average_{csv_name}", override=True)
+                csv_name = f"nestorov_{round(iterations/100, 0)}k_L{L}_mu{mu}_alpha{alpha}_beta{beta}"
+                dump_array_to_csv(result.get_accuracy_over_time(), f"accuracy_over_time.csv", prepend=csv_name, override=True)
+                dump_array_to_csv(result.get_best_weight_over_time_distances_to_best_weight(), f"best_weight_over_time_distances_to_best_weight.csv", prepend=csv_name, override=True)
+                dump_array_to_csv(result.get_best_weights_over_time(), f"best_weights_over_time.csv",prepend=csv_name, override=True)
+                dump_array_to_csv(result.get_distances_to_best_weight(), f"distances_to_best_weight.csv",prepend=csv_name, override=True)
+                dump_array_to_csv(result.get_distances_to_final_weight(), f"distances_to_final_weight.csv",prepend=csv_name, override=True)
+                dump_array_to_csv(result.get_running_accuracy_average(), f"running_accuracy_average.csv",prepend=csv_name, override=True)
+                dump_array_to_csv(result.get_running_distance_to_best_weights_average(), f"running_distance_to_best_weights_average.csv", override=True)

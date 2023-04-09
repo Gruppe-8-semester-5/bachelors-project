@@ -31,16 +31,16 @@ class GradientDescentResult(Serializable):
     def set_best_weights(self, weights: np.ndarray):
         self.best_weights = weights
 
-    def number_of_points(self):
+    def number_of_weights(self):
         return len(self.weights)
     
     def get_weights_over_time(self):
-        if self.number_of_points() == 0:
+        if self.number_of_weights() == 0:
             raise Exception("No points available")
         return self.weights
     
     def get_accuracy_over_time(self):
-        if self.number_of_points() == 0:
+        if self.number_of_weights() == 0:
             raise Exception("No points available")
         return self.accuracies
     
@@ -85,12 +85,28 @@ class GradientDescentResult(Serializable):
         return averages
 
     def get_final_weight(self) -> np.ndarray:
-        if self.number_of_points() == 0:
+        if self.number_of_weights() == 0:
             raise Exception("No points available")
-        return self.weights[self.number_of_points() - 1]
+        return self.weights[self.number_of_weights() - 1]
     
     def get_best_accuracy(self) -> float:
         return np.max(self.accuracies)
+    
+
+    def get_distance_to_best_improvement_deltas(self, allow_zeros=True) -> np.ndarray:
+        points = self.get_distances_to_best_weight()
+        result = list()
+        prev_delta = 0
+        for i in range(1, len(points)):
+            point = points[i]
+            prev_point = points[i - 1]
+            delta = prev_point - point
+            if allow_zeros:
+                result.append(delta)
+            else:
+                result.append(np.max([prev_delta, delta]))
+        return np.array(result)
+
 
     def to_serialized(self) -> dict:
         return {

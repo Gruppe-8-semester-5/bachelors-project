@@ -162,7 +162,7 @@ print(f"Accuracy:{np.round(accuracy(color_label_array, make_predictions(w))* 100
 
 
 # plots distance to best lipschitz point
-number_of_points = descent_result_lipchitz.number_of_points()
+number_of_points = descent_result_lipchitz.number_of_weights()
 
 best_lipschitz_point = descent_result_lipchitz.get_best_weights()
 

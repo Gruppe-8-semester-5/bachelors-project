@@ -15,11 +15,13 @@ def dump_array_to_csv(array: np.ndarray, file_name: str, override = False, prepe
     if not file_name.endswith(".csv"):
         raise Exception("Please make sure the filename ends with .csv !")
     if prepend == "":
-        target_file = f"./.out/{file_name}"
+        target_file = f"./.out/dumps/{file_name}"
     else:
-        target_file = f"./.out/{prepend}_{file_name}"
+        target_file = f"./.out/dumps/{prepend}_{file_name}"
     if not os.path.exists(".out/"):
-        os.mkdir(".out/")
+        os.mkdir(".out/")    
+    if not os.path.exists(".out/dumps/"):
+        os.mkdir(".out/dumps/")
     if os.path.isfile(target_file):
         if override:
             os.remove(target_file)
