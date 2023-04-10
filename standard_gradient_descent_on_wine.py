@@ -195,8 +195,6 @@ print(wines[len(wines)-1].get_quality())
 
 
 # plots distance to best lipschitz point
-number_of_points = descent_result_lipchitz.number_of_weights()
-
 best_lipschitz_point = descent_result_lipchitz.get_best_weights()
 
 # descent_result_0001.set_best_weights(best_lipschitz_point)
@@ -240,56 +238,41 @@ best_lipschitz_point = descent_result_lipchitz.get_best_weights()
 
 # Plot best weight to absolute best weight
 # Figure out which performed the best
-#to_compare: list[GradientDescentResult] = [
-#    descent_result_lipchitz,
-#    descent_result_l40,
-#    descent_result_l50,
-#    descent_result_l70,
-#    descent_result_l80,
-#    #descent_result_07,
-#    #descent_result_05,
-#    #descent_result_0001,
-#    #descent_result_001,
-#    #descent_result_005,
-#    #descent_result_01
-#]
-#best_accuracy = -1
-#best_performer = None
-#for result in to_compare:
-#    if result.get_best_accuracy() > best_accuracy:
-#        best_accuracy = result.get_best_accuracy()
-#        best_performer = result
+to_compare: list[GradientDescentResult] = [
+    descent_result_lipchitz,
+    descent_result_l40,
+    descent_result_l50,
+    descent_result_l70,
+    descent_result_l80,
+]
+best_accuracy = -1
+best_performer = None
+for result in to_compare:
+    if result.get_best_accuracy() > best_accuracy:
+        best_accuracy = result.get_best_accuracy()
+        best_performer = result
 
-#print("Best performer was ", best_performer, "with score ", best_accuracy)
-#
 ## Then we set the best weights of the result, such that the performance calculations will be relative to the best result
-#descent_result_lipchitz.set_best_weights(best_performer.get_best_weights())
-#descent_result_l40.set_best_weights(best_performer.get_best_weights())
-#descent_result_l50.set_best_weights(best_performer.get_best_weights())
-#descent_result_l70.set_best_weights(best_performer.get_best_weights())
-#descent_result_l80.set_best_weights(best_performer.get_best_weights())
-#descent_result_05.set_best_weights(best_performer.get_best_weights())
-#descent_result_07.set_best_weights(best_performer.get_best_weights())
-#descent_result_0001.set_best_weights(best_performer.get_best_weights())
-#descent_result_001.set_best_weights(best_performer.get_best_weights())
-#descent_result_005.set_best_weights(best_performer.get_best_weights())
-#descent_result_01.set_best_weights(best_performer.get_best_weights())
+descent_result_lipchitz.set_best_weights(best_performer.get_best_weights())
+descent_result_l40.set_best_weights(best_performer.get_best_weights())
+descent_result_l50.set_best_weights(best_performer.get_best_weights())
+descent_result_l70.set_best_weights(best_performer.get_best_weights())
+descent_result_l80.set_best_weights(best_performer.get_best_weights())
 
 
-number_of_points = descent_result_lipchitz.number_of_weights()
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
 plt.rcParams["figure.autolayout"] = True
-x_values = [i for i in range(len(descent_result_lipchitz.get_distances_to_best_weight()))]
-plt.plot(x_values, descent_result_lipchitz.get_distances_to_best_weight(), label="a = 1/L")
+x_values = [i for i in range(len(descent_result_lipchitz.get_running_distance_to_best_weights_average()))]
+plt.plot(x_values, descent_result_lipchitz.get_running_distance_to_best_weights_average(), label="a = 1/L")
 #plt.plot(x_values, descent_result_0001.get_distances_to_best_weight(), label="a = 0.001")
 #plt.plot(x_values, descent_result_001.get_distances_to_best_weight(), label="a = 0.01")
 #plt.plot(x_values, descent_result_005.get_distances_to_best_weight(), label="a = 0.05")
 #plt.plot(x_values, descent_result_01.get_distances_to_best_weight(), label="a = 0.1")
 #plt.plot(x_values, descent_result_05.get_distances_to_best_weight(), label="a = 0.5")
-plt.plot(x_values, descent_result_l40.get_distances_to_best_weight(), label="a = 1/40")
-plt.plot(x_values, descent_result_l50.get_distances_to_best_weight(), label="a = 1/50")
-plt.plot(x_values, descent_result_l70.get_distances_to_best_weight(), label="a = 1/70")
-plt.plot(x_values, descent_result_l80.get_distances_to_best_weight(), label="a = 1/80")
+plt.plot(x_values, descent_result_l40.get_running_distance_to_best_weights_average(), label="a = 1/4")
+plt.plot(x_values, descent_result_l50.get_running_distance_to_best_weights_average(), label="a = 1/5")
+plt.plot(x_values, descent_result_l70.get_running_distance_to_best_weights_average(), label="a = 1/7")
+plt.plot(x_values, descent_result_l80.get_running_distance_to_best_weights_average(), label="a = 1/8")
 #plt.plot(x_values, descent_result_07.get_distances_to_best_weight(), label="a = 0.7")
 #plt.plot(x_values, descent_result_1.get_distances_to_best_weight(), label="a = 1")
 plt.legend(loc='upper right')
