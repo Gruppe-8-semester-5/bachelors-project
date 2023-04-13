@@ -44,7 +44,7 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.random.rand(feature_size)
-iterations = 800
+iterations = 100
 
 
 
@@ -164,7 +164,7 @@ print(f"Accuracy:{np.round(accuracy(color_label_array, make_predictions(w))* 100
 # plots distance to best lipschitz point
 number_of_points = descent_result_lipchitz.number_of_weights()
 
-best_lipschitz_point = descent_result_lipchitz.get_best_weights()
+best_lipschitz_point = descent_result_lipchitz.get_most_accurate_weights()
 
 # descent_result_0001.set_best_weights(best_lipschitz_point)
 # descent_result_001.set_best_weights(best_lipschitz_point)

@@ -62,10 +62,10 @@ print(wines[len(wines)-1].get_quality())
 
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
 plt.rcParams["figure.autolayout"] = True
-x_values = [i for i in range(len(descent_result_lipchitz.get_distances_to_best_weight()))]
-plt.plot(x_values, descent_result_lipchitz.get_distances_to_best_weight(), label="a = 1/L")
+x_values = [i for i in range(len(descent_result_lipchitz.get_distances_to_most_accurate_weight()))]
+plt.plot(x_values, descent_result_lipchitz.get_distances_to_most_accurate_weight(), label="a = 1/L")
 plt.legend(loc='upper right')
 plt.show()
 
 
-dump_array_to_csv(descent_result_lipchitz.get_distances_to_best_weight(), "improvement_deltas_1_over_lipschitz.csv", True, "100k")
+dump_array_to_csv(descent_result_lipchitz.get_distances_to_most_accurate_weight(), "improvement_deltas_1_over_lipschitz.csv", True, "100k")

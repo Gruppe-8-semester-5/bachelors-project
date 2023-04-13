@@ -12,24 +12,24 @@ class GradientDescentResult(Serializable):
         self.diff: Callable[[np.ndarray], np.ndarray] = derivation
         self.weights: list[np.ndarray] = list()
         self.accuracies: list[np.ndarray] = list()
-        self.best_weights_list: list[np.ndarray] = list()
-        self.best_weights = None
+        self.most_accurate_weights_list: list[np.ndarray] = list()
+        self.most_accurate_weights = None
 
     def add_weight(self, w: np.ndarray):
         self.weights.append(w)
-        if self.best_weights is not None:
-            self.best_weights_list.append(self.best_weights)
+        if self.most_accurate_weights is not None:
+            self.most_accurate_weights_list.append(self.most_accurate_weights)
 
     def add_accuracy(self, w: np.ndarray):
         self.accuracies.append(w)
 
-    def get_best_weights(self) -> np.ndarray:
-        if self.best_weights is None:
+    def get_most_accurate_weights(self) -> np.ndarray:
+        if self.most_accurate_weights is None:
             raise Exception("No 'best' weight was ever specified. Make sure the algorithm implements this")
-        return self.best_weights
+        return self.most_accurate_weights
     
-    def set_best_weights(self, weights: np.ndarray):
-        self.best_weights = weights
+    def set_most_accurate_weights(self, weights: np.ndarray):
+        self.most_accurate_weights = weights
 
     def number_of_weights(self):
         return len(self.weights)
@@ -52,21 +52,24 @@ class GradientDescentResult(Serializable):
         return result
     
     def get_best_weights_over_time(self): 
-        return self.best_weights_list
+        return self.most_accurate_weights_list
     
+    def get_deriviation(self) -> Callable[[np.ndarray], np.ndarray]:
+        return self.diff
+
     def get_distances_to_final_weight(self) -> list[float]:
         final_point = self.get_final_weight()
         return list(map(lambda p: euclid_distance(p, final_point) ,self.get_weights_over_time()))
     
-    def get_distances_to_best_weight(self) -> list[float]:
-        best_point = self.get_best_weights()
-        return list(map(lambda p: euclid_distance(p, best_point) ,self.get_weights_over_time()))
+    def get_distances_to_most_accurate_weight(self) -> list[float]:
+        most_accurate_point = self.get_most_accurate_weights()
+        return list(map(lambda p: euclid_distance(p, most_accurate_point) ,self.get_weights_over_time()))
 
     def get_best_weight_over_time_distances_to_best_weight(self) -> list[float]:
         """This function returns the distance to the best weight, from each 'best-so-far' weight of the iteration.
            Using this eliminates the 'bad' steps"""
-        best_point = self.get_best_weights()
-        return list(map(lambda p: euclid_distance(p, best_point) ,self.get_best_weights_over_time()))
+        most_accurate_point = self.get_most_accurate_weights()
+        return list(map(lambda p: euclid_distance(p, most_accurate_point) ,self.get_best_weights_over_time()))
 
     def get_running_accuracy_average(self, average_size = 20) -> list[float]:
         points = self.get_accuracy_over_time()
@@ -78,7 +81,7 @@ class GradientDescentResult(Serializable):
         return averages
 
     def get_running_distance_to_best_weights_average(self, average_size = 20) -> list[float]:
-        points = self.get_distances_to_best_weight()
+        points = self.get_distances_to_most_accurate_weight()
         averages = list()
         for i in range(average_size, len(points)):
             averages.append(np.mean(points[i-average_size:i]))
@@ -92,9 +95,13 @@ class GradientDescentResult(Serializable):
     def get_best_accuracy(self) -> float:
         return np.max(self.accuracies)
     
+    def get_derivations_over_time(self) -> np.ndarray:
+        weights = self.get_weights_over_time()
+        return np.array(list(map(lambda w: self.get_deriviation()(w), weights)))
+    
 
     def get_distance_to_best_improvement_deltas(self, allow_zeros=True) -> np.ndarray:
-        points = self.get_distances_to_best_weight()
+        points = self.get_distances_to_most_accurate_weight()
         result = list()
         prev_delta = 0
         for i in range(1, len(points)):
@@ -112,14 +119,14 @@ class GradientDescentResult(Serializable):
         return {
             "weights": self.weights,
             "accuracies": self.accuracies,
-            "best_weights_list": self.best_weights_list,
-            "best_weights": self.best_weights,
+            "best_weights_list": self.most_accurate_weights_list,
+            "best_weights": self.most_accurate_weights,
         }
     
     def from_serialized(self, serialized):
         result = GradientDescentResult(self.diff)
         result.weights = serialized["weights"]
         result.accuracies = serialized["accuracies"]
-        result.best_weights_list = serialized["best_weights_list"]
-        result.best_weights = serialized["best_weights"]
+        result.most_accurate_weights_list = serialized["best_weights_list"]
+        result.most_accurate_weights = serialized["best_weights"]
         return result

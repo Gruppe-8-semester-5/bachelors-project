@@ -195,7 +195,7 @@ print(wines[len(wines)-1].get_quality())
 
 
 # plots distance to best lipschitz point
-best_lipschitz_point = descent_result_lipchitz.get_best_weights()
+best_lipschitz_point = descent_result_lipchitz.get_most_accurate_weights()
 
 # descent_result_0001.set_best_weights(best_lipschitz_point)
 # descent_result_001.set_best_weights(best_lipschitz_point)
@@ -253,11 +253,11 @@ for result in to_compare:
         best_performer = result
 
 ## Then we set the best weights of the result, such that the performance calculations will be relative to the best result
-descent_result_lipchitz.set_best_weights(best_performer.get_best_weights())
-descent_result_l40.set_best_weights(best_performer.get_best_weights())
-descent_result_l50.set_best_weights(best_performer.get_best_weights())
-descent_result_l70.set_best_weights(best_performer.get_best_weights())
-descent_result_l80.set_best_weights(best_performer.get_best_weights())
+descent_result_lipchitz.set_most_accurate_weights(best_performer.get_most_accurate_weights())
+descent_result_l40.set_most_accurate_weights(best_performer.get_most_accurate_weights())
+descent_result_l50.set_most_accurate_weights(best_performer.get_most_accurate_weights())
+descent_result_l70.set_most_accurate_weights(best_performer.get_most_accurate_weights())
+descent_result_l80.set_most_accurate_weights(best_performer.get_most_accurate_weights())
 
 
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
@@ -279,14 +279,14 @@ plt.legend(loc='upper right')
 plt.show()
 
 
-dump_array_to_csv(descent_result_lipchitz.get_distances_to_best_weight(), "descent_result_lipchitz.get_distances_to_best_weight.csv", True, "100k")
+dump_array_to_csv(descent_result_lipchitz.get_distances_to_most_accurate_weight(), "descent_result_lipchitz.get_distances_to_best_weight.csv", True, "100k")
 dump_array_to_csv(descent_result_lipchitz.get_distances_to_final_weight(), "descent_result_lipchitz.get_distances_to_final_weight.csv", True, "100k")
 dump_array_to_csv(descent_result_lipchitz.get_running_distance_to_best_weights_average(), "descent_result_lipchitz.get_running_distance_to_best_weights_average.csv", True, "100k")
 dump_array_to_csv(descent_result_lipchitz.get_best_weight_over_time_distances_to_best_weight(), "descent_result_lipchitz.get_best_weight_over_time_distances_to_best_weight.csv", True, "100k")
 dump_array_to_csv(descent_result_lipchitz.get_accuracy_over_time(), "descent_result_lipchitz.get_accuracy_over_time.csv", True, "100k")
 dump_array_to_csv(descent_result_lipchitz.get_best_weights_over_time(), "descent_result_lipchitz.get_best_weights_over_time.csv", True, "100k")
 dump_array_to_csv(descent_result_lipchitz.get_weights_over_time(), "descent_result_lipchitz.get_best_weights_over_time.csv", True, "100k")
-dump_array_to_csv(descent_result_lipchitz.get_best_weights(), "descent_result_lipchitz.get_best_weights.csv", True)
+dump_array_to_csv(descent_result_lipchitz.get_most_accurate_weights(), "descent_result_lipchitz.get_best_weights.csv", True)
 #
 #dump_array_to_csv(descent_result_01.get_distances_to_best_weight(), "descent_result_01.get_distances_to_best_weight.csv", True, "100k")
 #dump_array_to_csv(descent_result_01.get_distances_to_final_weight(), "descent_result_01.get_distances_to_final_weight.csv", True, "100k")

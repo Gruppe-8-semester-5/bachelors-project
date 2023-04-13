@@ -38,7 +38,7 @@ def find_minima(start_weights: np.ndarray,
             if current_accuracy > best_accuracy:
                 best_accuracy = current_accuracy
                 best_weight = weights
-                result.set_best_weights(best_weight)
+                result.set_most_accurate_weights(best_weight)
             result.add_accuracy(current_accuracy) 
         result.add_weight(weights)
 
