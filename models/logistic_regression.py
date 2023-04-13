@@ -16,4 +16,4 @@ def gradient(X, y, weights):
     z = np.dot(X, weights)
     p = 1 / (1 + np.exp(-z))
     grad = -np.dot(X.T, y - p)
-    return grad
+    return gradgit stat
