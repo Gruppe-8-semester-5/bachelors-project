@@ -253,11 +253,11 @@ for result in to_compare:
         best_performer = result
 
 ## Then we set the best weights of the result, such that the performance calculations will be relative to the best result
-descent_result_lipchitz.set_most_accurate_weights(best_performer.get_most_accurate_weights())
-descent_result_l40.set_most_accurate_weights(best_performer.get_most_accurate_weights())
-descent_result_l50.set_most_accurate_weights(best_performer.get_most_accurate_weights())
-descent_result_l70.set_most_accurate_weights(best_performer.get_most_accurate_weights())
-descent_result_l80.set_most_accurate_weights(best_performer.get_most_accurate_weights())
+descent_result_lipchitz.set_most_accurate_weights(best_performer.get_final_weight())
+descent_result_l40.set_most_accurate_weights(best_performer.get_final_weight())
+descent_result_l50.set_most_accurate_weights(best_performer.get_final_weight())
+descent_result_l70.set_most_accurate_weights(best_performer.get_final_weight())
+descent_result_l80.set_most_accurate_weights(best_performer.get_final_weight())
 
 
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
