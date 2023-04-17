@@ -80,7 +80,7 @@ class GradientDescentResult(Serializable):
 
         return averages
 
-    def get_running_distance_to_best_weights_average(self, average_size = 20) -> list[float]:
+    def get_running_distance_to_most_accurate_weights_average(self, average_size = 20) -> list[float]:
         points = self.get_distances_to_most_accurate_weight()
         averages = list()
         for i in range(average_size, len(points)):

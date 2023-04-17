@@ -67,4 +67,4 @@ for mu in testable_mus:
                 dump_array_to_csv(result.get_distances_to_most_accurate_weight(), f"distances_to_best_weight.csv",prepend=csv_name, override=True)
                 dump_array_to_csv(result.get_distances_to_final_weight(), f"distances_to_final_weight.csv",prepend=csv_name, override=True)
                 dump_array_to_csv(result.get_running_accuracy_average(), f"running_accuracy_average.csv",prepend=csv_name, override=True)
-                dump_array_to_csv(result.get_running_distance_to_best_weights_average(), f"running_distance_to_best_weights_average.csv", override=True)
+                dump_array_to_csv(result.get_running_distance_to_most_accurate_weights_average(), f"running_distance_to_best_weights_average.csv", override=True)

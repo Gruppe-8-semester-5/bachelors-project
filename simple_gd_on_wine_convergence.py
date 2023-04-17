@@ -190,17 +190,17 @@ best_lipschitz_point = descent_result_lipchitz.get_most_accurate_weights()
 # dump_array_to_csv(descent_result_lipchitz.get_distances_to_best_point(), "lipschitz_dist_to_best_gradients.csv")
 
 # Plot moving averages over time
-number_of_points = len(descent_result_lipchitz.get_running_distance_to_best_weights_average(5))
+number_of_points = len(descent_result_lipchitz.get_running_distance_to_most_accurate_weights_average(5))
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
 plt.rcParams["figure.autolayout"] = True
 x_values = [i for i in range(number_of_points)]
-plt.plot(x_values, descent_result_lipchitz.get_running_distance_to_best_weights_average(5), label="a = 1/L")
-plt.plot(x_values, descent_result_0001.get_running_distance_to_best_weights_average(5), label="a = 0.001")
-plt.plot(x_values, descent_result_001.get_running_distance_to_best_weights_average(5), label="a = 0.01")
-plt.plot(x_values, descent_result_005.get_running_distance_to_best_weights_average(5), label="a = 0.05")
-plt.plot(x_values, descent_result_01.get_running_distance_to_best_weights_average(5), label="a = 0.1")
-plt.plot(x_values, descent_result_05.get_running_distance_to_best_weights_average(5), label="a = 0.5")
-plt.plot(x_values, descent_result_1.get_running_distance_to_best_weights_average(5), label="a = 1")
+plt.plot(x_values, descent_result_lipchitz.get_running_distance_to_most_accurate_weights_average(5), label="a = 1/L")
+plt.plot(x_values, descent_result_0001.get_running_distance_to_most_accurate_weights_average(5), label="a = 0.001")
+plt.plot(x_values, descent_result_001.get_running_distance_to_most_accurate_weights_average(5), label="a = 0.01")
+plt.plot(x_values, descent_result_005.get_running_distance_to_most_accurate_weights_average(5), label="a = 0.05")
+plt.plot(x_values, descent_result_01.get_running_distance_to_most_accurate_weights_average(5), label="a = 0.1")
+plt.plot(x_values, descent_result_05.get_running_distance_to_most_accurate_weights_average(5), label="a = 0.5")
+plt.plot(x_values, descent_result_1.get_running_distance_to_most_accurate_weights_average(5), label="a = 1")
 
 plt.legend(loc='upper right')
 plt.show()
