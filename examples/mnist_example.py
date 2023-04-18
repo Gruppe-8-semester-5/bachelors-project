@@ -1,7 +1,7 @@
 """
 Just for documentation
 This is an example and will not work if run inside the examples folder.
-Either copy the code from this or move it outside the folder.
+Either copy the src from this or move it outside the folder.
 """
 from PIL import Image
 import os

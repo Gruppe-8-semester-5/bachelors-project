@@ -1,16 +1,14 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from algorithms.accelerated_GD import Nesterov_acceleration
 from datasets.winequality.files import read_wine_data
 from analysis.lipschitz import lipschitz_binary_neg_log_likelihood
 from datasets.winequality.wine import Wine
-from models.logistic_regression import predict
-from models.logistic_regression import gradient
-from algorithms import GradientDescentResult, gradient_descent_template, standard_GD
+from src.models.logistic_regression import predict
+from src.models.logistic_regression import gradient
+from algorithms import GradientDescentResult, gradient_descent_template
 from algorithms.standard_GD import Standard_GD
 from algorithms.momentum_GD import Momentum
 from models.utility import accuracy
-from analysis.utility import dump_array_to_csv, euclid_distance
 
 # Construct np array of features
 dataset = read_wine_data()

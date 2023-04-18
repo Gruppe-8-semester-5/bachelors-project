@@ -1,1 +1,0 @@
-from algorithms.gradient_descent_result import GradientDescentResult

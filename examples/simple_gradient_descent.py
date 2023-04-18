@@ -1,12 +1,16 @@
 """
 Just for documentation
 This is an example and will not work if run inside the examples folder.
-Either copy the code from this or move it outside the folder.
+Either copy the src from this or move it outside the folder.
 """
 from matplotlib import pyplot as plt
 import numpy as np
-from algorithms import gradient_descent_template, standard_GD
-from algorithms import GradientDescentResult
+
+
+# from algorithms import GradientDescentResult
+from algorithms import GradientDescentResult, gradient_descent_template, standard_GD
+
+
 def f(w):
     x = w[0]
     y = w[1]
