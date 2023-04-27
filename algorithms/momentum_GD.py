@@ -5,7 +5,9 @@ import numpy as np
 
 
 class Momentum:
-    def __init__(self, lr: float = 0.1, beta: float = 0.9) -> None:
+    def __init__(self, lr: float = 0.1, beta: float = 0.9, step_size = None) -> None:
+        if step_size is not None:
+            lr = step_size
         self.lr = lr
         self.beta = beta
         self.momentum = 0

@@ -1,7 +1,11 @@
 import csv
 import os
+from typing import Tuple
+
+import numpy as np
 
 from datasets.utility.download import download
+from datasets.winequality.wine import Wine
 
 DOWNLOAD_DESTINATION = ".data/"
 
@@ -30,3 +34,18 @@ def read_wine_headers() -> list:
             result.append(row)
             break # Read the first line, the break the loop
     return str(result[0][0]).split(",")
+
+def color_to_label(color):
+    if color == "white":
+        return 0
+    return 1
+
+
+def wine_X_y() -> Tuple[list, list]:
+    dataset = read_wine_data()
+    wines: list[Wine] = list(map(lambda d: Wine(d), dataset))
+    color_label_list = list(map(lambda wine: color_to_label(wine.get_color()), wines))
+    y = np.array(color_label_list)
+    feature_list = list(map(lambda wine: wine.get_feature_vector(), wines))
+    X = np.array(feature_list)
+    return X, y
