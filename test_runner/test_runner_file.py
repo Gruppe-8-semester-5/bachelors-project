@@ -48,8 +48,8 @@ class Runner:
         if batch is not None:
             dic['batch'] = batch
         for x in unpack_generator(dic):
-            print(self.res)
-            print(str(x))
+            # print(self.res)
+            # print(str(x))
             res.append(self.res[str(x)])
         return res
 
