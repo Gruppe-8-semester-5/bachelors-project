@@ -17,3 +17,9 @@ def gradient(X, y, weights):
     p = 1 / (1 + np.exp(-z))
     grad = -np.dot(X.T, y - p)
     return grad
+
+def gradient_regularized(X, y, weights, lda = 0.5):
+    z = np.dot(X, weights)
+    p = 1 / (1 + np.exp(-z))
+    grad = -np.dot(X.T, y - p)
+    return grad + (lda * 2 * weights)
