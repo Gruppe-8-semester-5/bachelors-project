@@ -278,6 +278,7 @@ plt.plot(x_values, descent_result_l80.get_running_distance_to_most_accurate_weig
 plt.legend(loc='upper right')
 plt.show()
 
+print(best_performer.get_best_accuracy())
 
 dump_array_to_csv(descent_result_lipchitz.get_distances_to_most_accurate_weight(), "descent_result_lipchitz.get_distances_to_best_weight.csv", True, "100k")
 dump_array_to_csv(descent_result_lipchitz.get_distances_to_final_weight(), "descent_result_lipchitz.get_distances_to_final_weight.csv", True, "100k")

@@ -29,7 +29,7 @@ random.shuffle(wines)
 
 from sklearn.preprocessing import StandardScaler
 
-train_fraction = 0.30
+train_fraction = 0.70
 data_training_size = math.floor(len(wines) * train_fraction)
 train_wines = wines[0:data_training_size]
 test_wines = wines[data_training_size:len(wines)]
@@ -62,7 +62,7 @@ from sklearn.linear_model import SGDClassifier
 def run_classifier(iter: int) -> SGDClassifier:
     return SGDClassifier(random_state=rand_seed, 
                     loss="log_loss", 
-                    alpha=0.5,
+                    alpha=0.05,
                     learning_rate="constant", 
                     early_stopping=False, 
                     fit_intercept=False,
@@ -78,7 +78,7 @@ def run_classifier(iter: int) -> SGDClassifier:
 def run_classifier_regularized(iter: int) -> SGDClassifier:
     return SGDClassifier(random_state=rand_seed, 
                     loss="log_loss", 
-                    alpha=0.5,
+                    alpha=0.05,
                     learning_rate="constant", 
                     early_stopping=False, 
                     fit_intercept=False,
@@ -94,10 +94,11 @@ def run_classifier_regularized(iter: int) -> SGDClassifier:
 def score_classifier(classifier: SGDClassifier) -> Tuple[float, float]:
     return (classifier.score(feature_array_train, quality_label_array_train), classifier.score(feature_array_test, quality_label_array_test))
 
-num_iter = run_classifier(100).n_iter_ # The number of iterations the classifier ran
+num_iter = run_classifier(2000).n_iter_ # The number of iterations the classifier ran
 
 x_values = [i for i in range(1, num_iter)]
 
+# Calculate difference between E_in and E_out
 y_values_in = []
 y_values_out = []
 y_values_diff = []
@@ -106,9 +107,13 @@ y_values_in_l2 = []
 y_values_out_l2 = []
 y_values_diff_l2 = []
 
+
+clf = run_classifier(1)
+clf_l2 = run_classifier_regularized(1)
 for i in range(1, num_iter):
-    clf = run_classifier(i)
-    clf_l2 = run_classifier_regularized(i)
+    if i % 10 == 0:
+        clf = run_classifier(i)
+        clf_l2 = run_classifier_regularized(i)
     in_error, out_error = score_classifier(clf)
     in_error_l2, out_error_l2 = score_classifier(clf_l2)
     y_values_in.append(in_error)
@@ -122,13 +127,17 @@ for i in range(1, num_iter):
 
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
 plt.rcParams["figure.autolayout"] = True
-#plt.plot(x_values, y_values_in, label="Walla")
-#plt.plot(x_values, y_values_out, label="Walla2")
-#plt.plot(x_values, y_values_in_l2, label="Walla")
-#plt.plot(x_values, y_values_out_l2, label="Walla2")
-plt.plot(x_values, y_values_diff, label="penalty=None")
-plt.plot(x_values, y_values_diff_l2, label="penalty=L2")
-plt.legend(loc='upper right')
+plt.plot(x_values, y_values_diff, label="No regularization")
+plt.plot(x_values, y_values_diff_l2, label="L2 regularization")
+plt.legend(loc='center right')
+plt.show()
+
+
+plt.rcParams["figure.figsize"] = [7.50, 3.50]
+plt.rcParams["figure.autolayout"] = True
+plt.plot(x_values, y_values_in, label="No regularization")
+plt.plot(x_values, y_values_in_l2, label="L2 regularization")
+plt.legend(loc='center right')
 plt.show()
 
 
