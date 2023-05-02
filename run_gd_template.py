@@ -9,8 +9,8 @@ from models.logistic_regression import gradient as g
 # from models.logistic_regression import gradient
 # from models.logistic_regression import predict
 
-from models.simple_nn import gradient
-from models.simple_nn import predict
+from models.logistic_torch import gradient
+from models.logistic_torch import predict
 
 epsilon=1.0e-2
 iterations = 10
