@@ -43,17 +43,60 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.zeros(feature_size)
-iterations = 100
+iterations = 10000
 
 # In order to run useful experiments, test all of the following values
-testable_mus = [0.005, 0.01, 0.05, 0.1, 0.5]
-testable_Ls = [0.005, 0.01, 0.05, 0.1, 0.5]
-testable_alphas = [0.005, 0.01, 0.05, 0.1, 0.5, 1]
-testable_betas = [0.005, 0.01, 0.05, 0.1, 0.5, 1]
-result = gradient_descent_template.find_minima(
-    start_gradient, 
-    Nesterov_acceleration(start_gradient, 0.005, 0.005, 0.005, 0.005),
-    lambda w: gradient(feature_array, color_label_array, w), 
-    max_iter=iterations,
-    epsilon=1.0e-2,
-    accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
+testable_mus = [0.01, 0.005, 0.05, 0.1, 0.5, 1]
+testable_Ls = [0.01, 0.005, 0.05, 0.1, 0.5, 1]
+testable_alphas = [0.01, 0.005, 0.05, 0.1, 0.5, 1]
+testable_betas = [0.01, 0.005, 0.05, 0.1, 0.5, 1]
+
+gd_results = []
+
+for mu in testable_mus:
+    for L in testable_Ls:
+        for alpha in testable_alphas:
+            for beta in testable_betas:
+                result = gradient_descent_template.find_minima(
+                    start_gradient, 
+                    Nesterov_acceleration(start_gradient, L, mu, alpha, beta),
+                    lambda w: gradient(feature_array, color_label_array, w), 
+                    max_iter=iterations,
+                    epsilon=1.0e-2,
+                    accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
+                gd_results.append({
+                    "mu":mu,
+                    "L":L,
+                    "alpha":alpha,
+                    "beta":beta,
+                    "result":result
+                })
+
+
+x_values = [i for i in range(0, len(gd_results[0]['result'].get_best_weight_over_time_distances_to_best_weight()))]
+
+best_performer: GradientDescentResult = gd_results[0]['result']
+worst_performer: GradientDescentResult = gd_results[0]['result']
+for res in gd_results:
+    result: GradientDescentResult = res['result']
+
+    if result.get_final_distance_to_most_accurate_weight() < best_performer.get_final_distance_to_most_accurate_weight():
+        best_performer = result
+    if result.get_final_distance_to_most_accurate_weight() > worst_performer.get_final_distance_to_most_accurate_weight():
+        worst_performer = result
+
+plt.rcParams["figure.figsize"] = [7.50, 3.50]
+plt.rcParams["figure.autolayout"] = True
+for res in gd_results:
+    print(res)
+    result = res['result']
+    is_worst = result == worst_performer
+    result.set_most_accurate_weights(best_performer.get_most_accurate_weights())
+    if is_worst:
+        plt.plot(x_values, result.get_distances_to_most_accurate_weight(), label=f"Worst performer ({res['mu']},{res['L']}, {res['alpha']}, {res['beta']})", color='r')
+    else:
+        plt.plot(x_values, result.get_distances_to_most_accurate_weight(), label=f"({res['mu']},{res['L']}, {res['alpha']}, {res['beta']})")
+plt.legend(loc='center right')
+plt.show()
+
+

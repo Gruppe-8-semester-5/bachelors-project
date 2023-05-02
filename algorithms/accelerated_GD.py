@@ -5,7 +5,7 @@ import numpy as np
 
 
 class Nesterov_acceleration:
-    def __init__(self, w0: np.ndarray, L: float = 0.01, mu: float = None, alpha: float = None, beta: int = None) -> None:
+    def __init__(self, w0: np.ndarray, L: float = 0.01, mu: float = None, alpha: float = None, beta: float = None) -> None:
         self.w0 = w0
         self.alpha = alpha
         self.beta = beta
@@ -27,7 +27,7 @@ class Nesterov_acceleration:
         if self.beta is not None:
             self.beta = beta
 
-    def beta_mu_strong(self, L:int, mu: int):
+    def beta_mu_strong(self, L:float, mu: float):
         return (sqrt(L)-sqrt(mu)) / (sqrt(L) + sqrt(mu))
 
     def get_beta(self):
