@@ -9,11 +9,11 @@ from models.logistic_regression import gradient as g
 # from models.logistic_regression import gradient
 # from models.logistic_regression import predict
 
-from models.simple_nn import gradient
-from models.simple_nn import predict
+from models.logistic_torch import gradient
+from models.logistic_torch import predict
 
 epsilon=1.0e-2
-iterations = 100
+iterations = 10
 
 def make_predictions(weights, wines):
     predictions = []
@@ -55,14 +55,20 @@ test_set = {
 # print(gradient(np.array([2.]), np.array([0]), np.array([1.])))
 
 # runner = Runner(dic = test_set)
-
+# print(gradient(X, y, w0))
+# print(g(X, y, w0))
+# import torch
+# print(torch.sum(torch.logaddexp(torch.tensor([-1.0]), torch.tensor([-1.0, -2, -3]))))
+# a = torch.randn(3, 3)
+# print(torch.logsumexp(a, 0))
+# exit()
 
 runner = Runner(dic = test_set)
 
 results = runner.get_res(alg=Standard_GD)
 results = runner.get_res()
-# for r in results:
-#     print(r.to_serialized())
+for r in results:
+    print(r.to_serialized())
 
 test_set = {
     'w0': w0,
