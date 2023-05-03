@@ -2,6 +2,8 @@ import numpy as np
 from algorithms import GradientDescentResult, gradient_descent_template, standard_GD
 from algorithms.standard_GD import Standard_GD
 from algorithms.momentum_GD import Momentum
+from algorithms.accelerated_GD import Nesterov_acceleration
+from algorithms.adam import Adam
 from datasets.mnist.files import mnist_train_X_y
 from datasets.winequality.files import wine_X_y
 from analysis.lipschitz import lipschitz_binary_neg_log_likelihood
@@ -10,6 +12,7 @@ from test_runner.test_runner_file import Runner
 import models.logistic_torch as torch_logistic
 import models.logistic_regression as normal_logistic
 import models.one_hidden_softmax as cur_model
+# import models.logistic_torch as cur_model
 # from models.logistic_regression import logistic_regression
 # from models.logistic_regression import gradient
 # from models.logistic_regression import predict
@@ -32,13 +35,15 @@ else:
 
 # w0 = cur_model.initial_params(X.shape[1], y.shape[1])
 w0 = cur_model.initial_params(X.shape[1], output_shape)
+# w0 = cur_model.initial_params(X)
 # grad = lambda w: gradient(X, y, w)
 # List of things we want to test. Form (optimizer, params)
 
 test_set = {
     'w0': w0,
     'GD_params': {'step_size': [0.01]},
-    'alg': [Standard_GD],
+    # 'GD_params': {'L': [0.01], 'w0': w0},
+    'alg': [Nesterov_acceleration],
     'model': cur_model,
     'max_iter': iterations,
     'data_set': (X, y),
