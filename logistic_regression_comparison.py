@@ -41,7 +41,7 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.zeros(feature_size)
-iterations = 500
+iterations = 30
 
 
 descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_minima(
@@ -56,30 +56,35 @@ descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_
 
 # Notes for nestorov:
 # - Lower alphas seem to be best (< 0.01)
+# - Higher mus are fine 
 
 descent_result_nestorov1: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Nesterov_acceleration(np.zeros(feature_size), 1/lipschitz, 0.01, 0.01, 0.01),
+    Nesterov_acceleration(np.zeros(feature_size), 0.001, 0.01, 0.0001, 0.0001),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
+
 
 descent_result_nestorov2: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Nesterov_acceleration(np.zeros(feature_size), 1/lipschitz, 0.1, 0.005, 0.01),
+    Nesterov_acceleration(np.zeros(feature_size), 0.001, 0.001, 0.0001, 0.0001),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
 
+
 descent_result_nestorov3: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Nesterov_acceleration(np.zeros(feature_size), 1/lipschitz, 0.1, 0.001, 0.01),
+    Nesterov_acceleration(np.zeros(feature_size), 0.001, 0.0001, 0.00001, 0.0001),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
+
+
 
 # descent_result_nestorov4: GradientDescentResult = gradient_descent_template.find_minima(
 #     start_gradient, 
@@ -100,11 +105,11 @@ descent_result_momentum: GradientDescentResult = gradient_descent_template.find_
 best_lipschitz_point = descent_result_lipchitz.get_most_accurate_weights()
 
 items_to_compare = [
-    descent_result_lipchitz,
+    #descent_result_lipchitz,
     descent_result_nestorov1,
     descent_result_nestorov2,
     descent_result_nestorov3,
-    descent_result_momentum
+    #descent_result_momentum
 ]
 
 best_performer = descent_result_lipchitz
@@ -121,10 +126,10 @@ for result in items_to_compare:
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
 plt.rcParams["figure.autolayout"] = True
 x_values = [i for i in range(len(descent_result_lipchitz.get_distances_to_most_accurate_weight()))]
-plt.plot(x_values, descent_result_lipchitz.get_distances_to_most_accurate_weight(), label="No acceleration")
+#plt.plot(x_values, descent_result_lipchitz.get_distances_to_most_accurate_weight(), label="No acceleration")
 plt.plot(x_values, descent_result_nestorov1.get_distances_to_most_accurate_weight(), label="Nestorov1")
 plt.plot(x_values, descent_result_nestorov2.get_distances_to_most_accurate_weight(), label="Nestorov2")
 plt.plot(x_values, descent_result_nestorov3.get_distances_to_most_accurate_weight(), label="Nestorov3")
-plt.plot(x_values, descent_result_momentum.get_distances_to_most_accurate_weight(), label="Momentum")
+#plt.plot(x_values, descent_result_momentum.get_distances_to_most_accurate_weight(), label="Momentum")
 plt.legend(loc='upper left')
 plt.show()

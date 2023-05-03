@@ -5,6 +5,16 @@ def initial_params(X) -> any:
     w0 = np.random.rand(X.shape[1])
     return w0
 
+def predict_with_softmax(w:np.ndarray, features: np.ndarray):
+    """Adds a soft-max step to prediction todo: 
+       fix numerical issues with softmax"""
+    pred = predict(w, features)
+    result = []
+    for z in pred:
+        result.append(np.exp(z) / np.sum([np.exp(x) for x in pred]))
+
+    return np.array(result)
+
 def predict(w:np.ndarray, features: np.ndarray):
     """The logistic regression prediction for a single point"""
     return sigmoid(features @ w)

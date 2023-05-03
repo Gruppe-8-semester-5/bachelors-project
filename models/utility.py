@@ -10,6 +10,16 @@ def accuracy(actual: np.ndarray, predictions: np.ndarray):
     return 1 - np.mean(actual != predictions)
     # return 1 - (np.sum(np.abs(actual - predictions)) / len(predictions))
 
+def accuracy_k_encoded(labels: np.ndarray, predictions: np.ndarray):
+    """Compute the accuracy of a k-encoded label and prediction, remember these are probabilities"""
+    # Get the index of the maximum value for each prediction
+    predicted_labels = np.argmax(predictions, axis=1)
+    
+    # Compute the accuracy by comparing the predicted labels with the actual labels
+    accuracy = np.mean(predicted_labels == labels)
+    
+    return accuracy
+
 def mini_batch_generator(X, y, batch_size: int):
     N = math.ceil(y.shape[0] / batch_size)
     while True:
