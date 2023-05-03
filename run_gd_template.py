@@ -2,30 +2,36 @@ import numpy as np
 from algorithms import GradientDescentResult, gradient_descent_template, standard_GD
 from algorithms.standard_GD import Standard_GD
 from algorithms.momentum_GD import Momentum
+from datasets.mnist.files import mnist_train_X_y
 from datasets.winequality.files import wine_X_y
 from analysis.lipschitz import lipschitz_binary_neg_log_likelihood
 from test_runner.test_runner_file import Runner
-from models.logistic_regression import gradient as g
+# from models.logistic_torch import logistic_regression_torch
+import models.logistic_torch as torch_logistic
+import models.logistic_regression as normal_logistic
+import models.one_hidden_softmax as cur_model
+# from models.logistic_regression import logistic_regression
 # from models.logistic_regression import gradient
 # from models.logistic_regression import predict
 
-from models.logistic_torch import gradient
-from models.logistic_torch import predict
-
 epsilon=1.0e-2
-iterations = 10
+iterations = 100
+one_in_k = False
 
-def make_predictions(weights, wines):
-    predictions = []
-    for wine in wines:
-        predictions.append(predict(weights, wine))
-    return predictions
+X, y = mnist_train_X_y(one_in_k)
 
-X, y = wine_X_y()
+# X, y = wine_X_y()
 n = X.shape[0]
 
 np.random.seed(0)
-w0 = np.random.rand(X.shape[1])
+output_shape = 0
+if one_in_k:
+    output_shape = y.shape[1]
+else:
+    output_shape = np.amax(y) + 1
+
+# w0 = cur_model.initial_params(X.shape[1], y.shape[1])
+w0 = cur_model.initial_params(X.shape[1], output_shape)
 # grad = lambda w: gradient(X, y, w)
 # List of things we want to test. Form (optimizer, params)
 
@@ -33,8 +39,7 @@ test_set = {
     'w0': w0,
     'GD_params': {'step_size': [0.01]},
     'alg': [Standard_GD],
-    'derivation': gradient,
-    'predictor': make_predictions,
+    'model': cur_model,
     'max_iter': iterations,
     'data_set': (X, y),
     'epsilon':1.0e-10,
@@ -65,17 +70,18 @@ test_set = {
 
 runner = Runner(dic = test_set)
 
-results = runner.get_res(alg=Standard_GD)
+# results = runner.get_res(alg=Standard_GD)
 results = runner.get_res()
-for r in results:
-    print(r.to_serialized())
+print(results[0].get_best_accuracy())
+# for r in results:
+#     print(r.to_serialized())
+exit()
 
 test_set = {
     'w0': w0,
     'GD_params': {'step_size': [0.01, 0.05, 0.1, 0.5, 1]},
     'alg': [Standard_GD, Momentum],
-    'derivation': g,
-    'predictor': make_predictions,
+    'model': normal_logistic,
     'max_iter': iterations,
     'data_set': (X, y),
     'epsilon':1.0e-2,

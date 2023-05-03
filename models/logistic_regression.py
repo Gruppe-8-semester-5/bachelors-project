@@ -1,9 +1,13 @@
 import numpy as np
 from models.utility import sigmoid
 
+def initial_params(X) -> any:
+    w0 = np.random.rand(X.shape[1])
+    return w0
+
 def predict(w:np.ndarray, features: np.ndarray):
     """The logistic regression prediction for a single point"""
-    return sigmoid(w.transpose() @ features)
+    return sigmoid(features @ w)
 
 
 def negative_log_likelihood(X, y, weights):

@@ -7,7 +7,8 @@ def sigmoid(z):
 
 
 def accuracy(actual: np.ndarray, predictions: np.ndarray):
-    return 1 - (np.sum(np.abs(actual - predictions)) / len(predictions))
+    return 1 - np.mean(actual != predictions)
+    # return 1 - (np.sum(np.abs(actual - predictions)) / len(predictions))
 
 def mini_batch_generator(X, y, batch_size: int):
     N = math.ceil(y.shape[0] / batch_size)

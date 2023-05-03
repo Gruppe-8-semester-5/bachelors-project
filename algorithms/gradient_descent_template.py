@@ -55,4 +55,10 @@ def find_minima(start_weights: np.ndarray,
 
 
 def is_zero(w, eps): 
+    res = True
+    # If matrix consists of multiple weights, check all.
+    if w.dtype == 'object':
+        for i in range(w.shape[0]):
+            res &= np.allclose(w[i], 0, 0, eps)
+        return res
     return np.allclose(w, 0, 0, eps)

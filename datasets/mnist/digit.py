@@ -29,6 +29,9 @@ class Digit:
     
     def get_label(self) -> str:
         return self.label
+    
+    def get_label_int(self) -> int:
+        return int(self.label)
 
     def get_image(self) -> Image:
         """Creates an image of the digit"""

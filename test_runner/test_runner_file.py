@@ -4,11 +4,11 @@ from models.utility import accuracy, make_mini_batch_gradient
 
 
 class Runner:
-    def __init__(self, w0=None, alg=None, derivation=None, epsilon=None, max_iter=None, accuracy=None, GD_params=None, batch=None, dic=None) -> None:
+    def __init__(self, w0=None, alg=None, model = None, epsilon=None, max_iter=None, GD_params=None, batch=None, dic=None) -> None:
         if dic is None and w0 is None:
             raise Exception('You must give some arguments...')
         if dic is None:
-            self.dict = {'w0': w0, 'alg': alg, 'derivation': derivation, 'epsilon': epsilon, 'max_iter': max_iter, 'accuracy': accuracy, 'GD_params': GD_params, batch: batch}
+            self.dict = {'w0': w0, 'alg': alg, 'model': model, 'epsilon': epsilon, 'max_iter': max_iter, 'GD_params': GD_params, batch: batch}
         else:
             self.dict = dic
             if 'batch' not in dic:
@@ -24,7 +24,7 @@ class Runner:
     def get_res(self, *args, **kwargs):
         return [x for _, x in self.get_res_and_description(*args, **kwargs)]
 
-    def get_res_and_description(self, dic = None, alg = None, derivation=None,epsilon=None,max_iter=None, accuracy=None,w0=None, GD_params=None, batch=None):
+    def get_res_and_description(self, dic = None, alg = None, model = None, epsilon=None,max_iter=None,w0=None, GD_params=None, batch=None):
         if not self.res:
             self.run()
         res = []
@@ -37,10 +37,8 @@ class Runner:
             dic['epsilon'] = epsilon
         if max_iter is not None:
             dic['max_iter'] = max_iter
-        if derivation is not None:
-            dic['derivation'] = derivation
-        if accuracy is not None:
-            dic['accuracy'] = accuracy
+        if model is not None:
+            dic['model'] = model
         if w0 is not None:
             dic['w0'] = w0
         if GD_params is not None:
@@ -82,14 +80,14 @@ def unpack_generator(dic, acc = {}) -> dict:
 def actual_run(dic):
     algo = dic['alg'](**dic['GD_params'])
     (X, y) = dic['data_set']
-    pred = dic['predictor']
-    acc = lambda w: accuracy(y, pred(w, X))
+    model = dic['model']
+    acc = lambda w: accuracy(y, make_predictions(w, X, model.predict))
     batch = dic['batch']
-    grad = dic['derivation']
+    gradient = model.gradient
     if batch is not None:
-        grad = make_mini_batch_gradient(X, y, batch, grad)
+        grad = make_mini_batch_gradient(X, y, batch, gradient)
     else:
-        grad = lambda w: dic['derivation'](X, y, w)
+        grad = lambda w: gradient(X, y, w)
     return gradient_descent_template.find_minima(
         start_weights=dic['w0'],
         algorithm=algo,
@@ -98,3 +96,8 @@ def actual_run(dic):
         max_iter=dic['max_iter'],
         accuracy=acc,
     )
+
+def make_predictions(weights, data, predictor):
+    # predictions = []
+    return predictor(weights, data)
+    # return predictions
