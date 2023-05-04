@@ -5,7 +5,7 @@ import numpy as np
 
 
 class Nesterov_acceleration:
-    def __init__(self, w0: np.ndarray, L: float = 0.01, mu: float = None, alpha: float = None, beta: float = None, step_size = None) -> None:
+    def __init__(self, w0: np.ndarray, L: float = 0.01, mu: float = None, alpha: float = None, beta: float = None) -> None:
         self.w0 = w0
         self.alpha = alpha
         self.beta = beta
@@ -14,9 +14,6 @@ class Nesterov_acceleration:
         self.w_cur = w0
         self.L = L
 
-        if step_size != None:
-            alpha = step_size
-        
         if self.mu == 0 or self.mu is None:
             self.t_k = 0
             self.mu = None

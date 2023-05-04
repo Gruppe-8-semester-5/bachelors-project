@@ -12,12 +12,13 @@ def find_minima(start_weights: np.ndarray,
                 derivation: Callable[[np.ndarray], np.ndarray], 
                 epsilon: float = np.finfo(float).eps,
                 max_iter = 1000,
+                auto_stop: bool = True,
                 accuracy: Callable[[np.ndarray], np.ndarray] = None):
     weights = start_weights
     result = GradientDescentResult(derivation)
     
     # By hashing the input variables, we can save the result and skip the computation if it's redundant
-    is_serialized, file_name = result.check_for_serialized_version(start_weights, [algorithm.__dict__[x] for x in algorithm.__dict__], type(algorithm), start_weights + algorithm.step(start_weights, derivation), derivation(start_weights), epsilon, max_iter, accuracy(weights))
+    is_serialized, file_name = result.check_for_serialized_version(start_weights, vars(algorithm), [algorithm.__dict__[x] for x in algorithm.__dict__], type(algorithm), start_weights + algorithm.step(start_weights, derivation), derivation(start_weights), epsilon, max_iter, accuracy(weights))
     if is_serialized:
         result = result.deserialize(file_name)
         return result
@@ -29,7 +30,7 @@ def find_minima(start_weights: np.ndarray,
     best_accuracy = 0
     
     # Todo: Could add check to see if w or gradient changes. If not, just stop
-    while not is_zero(gradient, epsilon) and (max_iter > iteration_count or max_iter == 0):
+    while not (is_zero(gradient, epsilon) and auto_stop) and (max_iter > iteration_count or max_iter == 0):
         # Add logging
         if accuracy is not None:
             # Accuracy is usally quite costly, as it computes E_in for each iteration. 

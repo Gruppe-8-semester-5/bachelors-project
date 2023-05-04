@@ -2,6 +2,7 @@ import math
 import random
 import matplotlib.pyplot as plt
 import numpy as np
+from analysis.gradient_descent_result_plotting import GradientDescentResultPlotter
 from datasets.winequality.files import read_wine_data
 from datasets.winequality.wine import Wine
 from models.logistic_regression import gradient_k, predict_with_softmax
@@ -17,7 +18,7 @@ wines: list[Wine] = list(map(lambda d: Wine(d), dataset))
 rand_seed = 1
 random.seed(rand_seed)
 random.shuffle(wines)
-
+np.random.seed(rand_seed)
 K = 7
 
 train_fraction = 0.10
@@ -40,11 +41,11 @@ label_array_train = np.array(label_list_train)
 label_list_test = list(map(lambda wine: wine.get_quality(), test_wines))
 label_array_test = np.array(label_list_test)
 
-iterations = 1000
+iterations = 200
 
 test_set = {
     'w0': start_weight,
-    'GD_params': {"w0": start_weight, 'step_size': [0.000000000001,0.00000000001,0.0000000001,0.000000001,0.00000001,0.0000001,0.000001,0.00001]},
+    'GD_params': {"w0": start_weight, 'alpha': [10, 0.00001], "mu": [0.1], "L":[0.5], "beta": [10, 0.1]},
     # 'GD_params': {'L': [0.01], 'w0': w0},
     'alg': [Nesterov_acceleration],
     'model': multinomial_logistic_regression,
@@ -52,10 +53,17 @@ test_set = {
     'data_set': (feature_array_train, label_array_train),
     'test_set': (feature_array_test, label_array_test),
     'epsilon':0,
+    'auto_stop': False,
     'batch': None
 }
 
 runner = Runner(dic = test_set)
+results: list[GradientDescentResult] = runner.get_result()
+
+GradientDescentResultPlotter(results).plot_accuracies_over_time().legend_placed().with_labels(["0.4","0.2","0.1", "0.05", "0.01","0.001", "0.0001"]).plot()
+
+raise Exception("Stop prematurely")
+
 #simple_result: GradientDescentResult = runner.get_result(dic = test_set | {'alg': Standard_GD})[0]
 nest_result: GradientDescentResult = runner.get_result()[0]
 print(nest_result.weights)
@@ -70,7 +78,6 @@ print("plotting")
 plt.legend(loc='center right')
 plt.show()
 
-raise Exception("Stop prematurely")
 
 descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_minima(
     start_weight, 

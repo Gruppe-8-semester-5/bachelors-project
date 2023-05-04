@@ -43,7 +43,7 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.zeros(feature_size)
-iterations = 10000
+iterations = 400
 
 # In order to run useful experiments, test all of the following values
 testable_mus = [0.01, 0.005, 0.05, 0.1, 0.5, 1]

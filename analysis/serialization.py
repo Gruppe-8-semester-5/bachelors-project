@@ -19,6 +19,9 @@ def hash_args(*args)->str:
     return arg_hash.hexdigest()
 
 class Serializable(Protocol):
+
+    logging_minified = True
+
     def serialize(self, file_name):
         if not os.path.exists(".out/"):
             os.mkdir(".out/")
@@ -71,12 +74,16 @@ class Serializable(Protocol):
         file_path = '.out/persistent_experiments/' + file_name
         if not os.path.exists(file_path):
             return False, file_name
-        print("------Experiment serializer-------")
-        print("A gradient descent run was found to have been performed before!")
-        print("inputs were")
-        print("")
-        print(args)
-        print("")
-        print("If you believe this to be false, delete the file ", file_path)
-        print("----------------------------------")
+        
+        if self.logging_minified:
+            print("(minified log) Experiment was serialized at " , file_path)
+        else:
+            print("------Experiment serializer-------")
+            print("A gradient descent run was found to have been performed before!")
+            print("inputs were")
+            print("")
+            print(args)
+            print("")
+            print("If you believe this to be false, delete the file ", file_path)
+            print("----------------------------------")
         return True, file_name

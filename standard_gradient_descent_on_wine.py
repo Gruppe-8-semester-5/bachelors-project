@@ -44,7 +44,7 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.zeros(feature_size)
-iterations = 100000
+iterations = 500
 
 #Todo: set the best point to one of the tests, so the graph content matches
 
@@ -275,7 +275,7 @@ plt.plot(x_values, descent_result_l70.get_running_distance_to_most_accurate_weig
 plt.plot(x_values, descent_result_l80.get_running_distance_to_most_accurate_weights_average(), label="a = 1/8")
 #plt.plot(x_values, descent_result_07.get_distances_to_best_weight(), label="a = 0.7")
 #plt.plot(x_values, descent_result_1.get_distances_to_best_weight(), label="a = 1")
-plt.legend(loc='upper right')
+plt.legend(loc='lower left')
 plt.show()
 
 print(best_performer.get_best_accuracy())

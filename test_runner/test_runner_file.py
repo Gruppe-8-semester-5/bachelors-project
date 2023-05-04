@@ -95,6 +95,10 @@ def actual_run(dic):
         grad = make_mini_batch_gradient(X, y, batch, gradient)
     else:
         grad = lambda w: gradient(X, y, w)
+
+    auto_stop = True
+    if "auto_stop" in dic:
+        auto_stop = dic["auto_stop"]
     return gradient_descent_template.find_minima(
         start_weights=dic['w0'],
         algorithm=algo,
@@ -102,6 +106,7 @@ def actual_run(dic):
         epsilon=dic['epsilon'],
         max_iter=dic['max_iter'],
         accuracy=acc,
+        auto_stop=auto_stop
     )
 
 def make_predictions(weights, data, predictor):
