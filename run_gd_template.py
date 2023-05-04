@@ -79,7 +79,7 @@ test_set = {
 runner = Runner(dic = test_set)
 
 # results = runner.get_res(alg=Standard_GD)
-results = runner.get_res()
+results = runner.get_result()
 print(results[0].get_best_accuracy())
 # for r in results:
 #     print(r.to_serialized())
@@ -98,4 +98,4 @@ test_set = {
 
 runner = Runner(dic = test_set)
 
-results = runner.get_res(alg=Standard_GD)
+results = runner.get_result(alg=Standard_GD)

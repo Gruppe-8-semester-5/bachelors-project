@@ -11,6 +11,8 @@ class Runner:
             self.dict = {'w0': w0, 'alg': alg, 'model': model, 'epsilon': epsilon, 'max_iter': max_iter, 'GD_params': GD_params, batch: batch}
         else:
             self.dict = dic
+            if 'test_set' not in dic:
+                self.dict['test_set'] = None
             if 'batch' not in dic:
                 self.dict['batch'] = batch
         self.res = None
@@ -21,7 +23,7 @@ class Runner:
                 res[str(x)] = (x, actual_run(x))
             self.res = res
 
-    def get_res(self, *args, **kwargs):
+    def get_result(self, *args, **kwargs):
         return [x for _, x in self.get_res_and_description(*args, **kwargs)]
 
     def get_res_and_description(self, dic = None, alg = None, model = None, epsilon=None,max_iter=None,w0=None, GD_params=None, batch=None):
@@ -81,7 +83,12 @@ def actual_run(dic):
     algo = dic['alg'](**dic['GD_params'])
     (X, y) = dic['data_set']
     model = dic['model']
-    acc = lambda w: accuracy(y, make_predictions(w, X, model.predict))
+    if dic['test_set'] is not None:
+        (X_test, y_test) = dic['test_set']
+        acc = lambda w: accuracy(y_test, make_predictions(w, X_test, model.predict))
+    else:
+        acc = lambda w: accuracy(y, make_predictions(w, X, model.predict))
+        
     batch = dic['batch']
     gradient = model.gradient
     if batch is not None:

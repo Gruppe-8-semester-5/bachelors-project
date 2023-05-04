@@ -8,7 +8,6 @@ def sigmoid(z):
 
 def accuracy(actual: np.ndarray, predictions: np.ndarray):
     return 1 - np.mean(actual != predictions)
-    # return 1 - (np.sum(np.abs(actual - predictions)) / len(predictions))
 
 def accuracy_k_encoded(labels: np.ndarray, predictions: np.ndarray):
     """Compute the accuracy of a k-encoded label and prediction, remember these are probabilities"""

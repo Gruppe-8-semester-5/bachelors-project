@@ -9,7 +9,7 @@ def euclid_distance(a: np.ndarray, b: np.ndarray) -> float:
     for i in range(len(a)):
         diff = a[i] - b[i]
         sum_sq += diff**2
-    return np.sqrt(sum_sq)
+    return np.sqrt(np.sum(sum_sq))
 
 def dump_array_to_csv(array: np.ndarray, file_name: str, override = False, prepend=""):
     if not file_name.endswith(".csv"):

@@ -15,7 +15,7 @@ class GradientDescentResult(Serializable):
         self.most_accurate_weights_list: list[np.ndarray] = list()
         self.most_accurate_weights = None
 
-    def add_weight(self, w: np.ndarray):
+    def add_weight(self, w: np.ndarray):    
         self.weights.append(w)
         if self.most_accurate_weights is not None:
             self.most_accurate_weights_list.append(self.most_accurate_weights)
