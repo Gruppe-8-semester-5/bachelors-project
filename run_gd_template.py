@@ -43,7 +43,7 @@ test_set = {
     'w0': w0,
     'GD_params': {'step_size': [0.01]},
     # 'GD_params': {'L': [0.01], 'w0': w0},
-    'alg': [Nesterov_acceleration],
+    'alg': [Adam],
     'model': cur_model,
     'max_iter': iterations,
     'data_set': (X, y),

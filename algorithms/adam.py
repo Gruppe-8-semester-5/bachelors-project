@@ -26,5 +26,14 @@ class Adam:
         self.mh_t = self.m_t/(1-(self.b1 ** self.t))
         self.vh_t = self.v_t/(1-(self.b2 ** self.t))
 
-        res = w - (self.step_size * (self.mh_t/(np.sqrt(self.vh_t)+self.e)))
+        res = w - (self.step_size * (self.mh_t/(safe_sqrt(self.vh_t)+self.e)))
         return res
+
+def safe_sqrt(w):
+    if w.dtype != 'object':
+        return np.sqrt(w)
+    res = []
+    # Probably quite inefficient, but works just fine.
+    for i in range(w.shape[0]):
+        res.append(np.sqrt(w[i]))
+    return np.array(res, dtype=object)
