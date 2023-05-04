@@ -44,7 +44,7 @@ iterations = 1000
 
 test_set = {
     'w0': start_weight,
-    'GD_params': {"w0": start_weight, 'step_size': [0.0000001]},
+    'GD_params': {"w0": start_weight, 'step_size': [0.000000000001,0.00000000001,0.0000000001,0.000000001,0.00000001,0.0000001,0.000001,0.00001]},
     # 'GD_params': {'L': [0.01], 'w0': w0},
     'alg': [Nesterov_acceleration],
     'model': multinomial_logistic_regression,
