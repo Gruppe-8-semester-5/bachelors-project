@@ -91,8 +91,10 @@ def actual_run(dic):
         
     batch = dic['batch']
     gradient = model.gradient
+    complete_gradient = None
     if batch is not None:
         grad = make_mini_batch_gradient(X, y, batch, gradient)
+        complete_gradient = lambda w: gradient(X, y, w)
     else:
         grad = lambda w: gradient(X, y, w)
 
@@ -106,7 +108,8 @@ def actual_run(dic):
         epsilon=dic['epsilon'],
         max_iter=dic['max_iter'],
         accuracy=acc,
-        auto_stop=auto_stop
+        auto_stop=auto_stop,
+        complete_derivation=complete_gradient,
     )
 
 def make_predictions(weights, data, predictor):
