@@ -36,7 +36,7 @@ descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_
     start_gradient, 
     Standard_GD(1/shitz),
     lambda w: gradient(features, labels, w), 
-    max_iter=500,
+    max_iter=5000,
     epsilon=1.0e-100,
     accuracy=(lambda w: accuracy(labels, make_predictions(w))))
 

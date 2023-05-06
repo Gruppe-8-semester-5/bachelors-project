@@ -12,7 +12,7 @@ def predict_with_softmax(features: np.ndarray, w:np.ndarray):
     return torch.argmax(soft_max(features, w), dim=1).numpy()
 
 def predict(w:np.ndarray, features: np.ndarray):
-    """The logistic regression prediction for a single point"""
+    """The logistic regression prediction for a single point. Gives outputs of {-1, 1}"""
     return np.sign(sigmoid(features @ w) * 2 - 1)
 
 
@@ -26,7 +26,7 @@ def gradient(X, y, weights):
     """The gradient for negative log likelihood
        Expects labels to be 0 or 1"""
     # Convert if labels are -1 and 1
-    y = [0. if l < 0 else 1. for l in y]
+    y = [0. if l <= 0 else 1. for l in y]
     z = np.dot(X, weights)
     p = 1 / (1 + np.exp(-z))
     grad = -np.dot(X.T, y - p)

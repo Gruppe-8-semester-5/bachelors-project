@@ -15,10 +15,10 @@ from analysis.utility import dump_array_to_csv, euclid_distance
 # Construct np array of features
 def color_to_label(color):
     if color == "white":
-        return -1
-    return 1
+        return -1.
+    return 1.
 
-dataset = read_wine_data()[::2]
+dataset = read_wine_data()
 wines: list[Wine] = list(map(lambda d: Wine(d), dataset))
 feature_list = list(map(lambda wine: wine.get_feature_vector(), wines))
 feature_array = np.array(feature_list)
@@ -44,7 +44,7 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.zeros(feature_size)
-iterations = 100
+iterations = 10000
 
 #Todo: set the best point to one of the tests, so the graph content matches
 

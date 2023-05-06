@@ -9,6 +9,8 @@ def lipschitz_binary_neg_log_likelihood(feature_set: np.ndarray, labels: np.ndar
     Use feature set X as input to compute it's lipschitz constant. 
     Can only be used for binary classification models! todo: maybe change to allow for intervals
     """
+    labels = [0. if l <= 0 else 1 for l in labels]
+
     feature_norm_sum = 0
     n = len(feature_set)
     for i in range(0, n):
