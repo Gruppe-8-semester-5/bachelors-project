@@ -23,6 +23,10 @@ def negative_log_likelihood(X, y, weights):
     return nll
 
 def gradient(X, y, weights):
+    """The gradient for negative log likelihood
+       Expects labels to be 0 or 1"""
+    # Convert if labels are -1 and 1
+    y = [0. if l < 0 else 1. for l in y]
     z = np.dot(X, weights)
     p = 1 / (1 + np.exp(-z))
     grad = -np.dot(X.T, y - p)

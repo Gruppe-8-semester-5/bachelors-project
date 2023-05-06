@@ -256,17 +256,17 @@ descent_result_l80.set_most_accurate_weights(best_performer.get_final_weight())
 
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
 plt.rcParams["figure.autolayout"] = True
-x_values = [i for i in range(len(descent_result_lipchitz.get_running_distance_to_most_accurate_weights_average()))]
-plt.plot(x_values, descent_result_lipchitz.get_running_distance_to_most_accurate_weights_average(), label="a = 1/L")
+x_values = [i for i in range(len(descent_result_lipchitz.get_distances_to_most_accurate_weight()))]
+plt.plot(x_values, descent_result_lipchitz.get_distances_to_most_accurate_weight(), label="a = 1/L")
 #plt.plot(x_values, descent_result_0001.get_distances_to_best_weight(), label="a = 0.001")
 #plt.plot(x_values, descent_result_001.get_distances_to_best_weight(), label="a = 0.01")
 #plt.plot(x_values, descent_result_005.get_distances_to_best_weight(), label="a = 0.05")
 #plt.plot(x_values, descent_result_01.get_distances_to_best_weight(), label="a = 0.1")
 #plt.plot(x_values, descent_result_05.get_distances_to_best_weight(), label="a = 0.5")
-plt.plot(x_values, descent_result_l40.get_running_distance_to_most_accurate_weights_average(), label="a = 1/4")
-plt.plot(x_values, descent_result_l50.get_running_distance_to_most_accurate_weights_average(), label="a = 1/5")
-plt.plot(x_values, descent_result_l70.get_running_distance_to_most_accurate_weights_average(), label="a = 1/7")
-plt.plot(x_values, descent_result_l80.get_running_distance_to_most_accurate_weights_average(), label="a = 1/8")
+plt.plot(x_values, descent_result_l40.get_distances_to_most_accurate_weight(), label="a = 1/4")
+plt.plot(x_values, descent_result_l50.get_distances_to_most_accurate_weight(), label="a = 1/5")
+plt.plot(x_values, descent_result_l70.get_distances_to_most_accurate_weight(), label="a = 1/7")
+plt.plot(x_values, descent_result_l80.get_distances_to_most_accurate_weight(), label="a = 1/8")
 #plt.plot(x_values, descent_result_07.get_distances_to_best_weight(), label="a = 0.7")
 #plt.plot(x_values, descent_result_1.get_distances_to_best_weight(), label="a = 1")
 plt.legend(loc='upper left')
