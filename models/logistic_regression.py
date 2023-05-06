@@ -11,7 +11,7 @@ def predict_with_softmax(features: np.ndarray, w:np.ndarray):
        fix numerical issues with softmax"""
     return torch.argmax(soft_max(features, w), dim=1).numpy()
 
-def predict(w:np.ndarray, features: np.ndarray):
+def predict(w:np.ndarray, features: np.ndarray) -> int:
     """The logistic regression prediction for a single point. Gives outputs of {-1, 1}"""
     return np.sign(sigmoid(features @ w) * 2 - 1)
 
