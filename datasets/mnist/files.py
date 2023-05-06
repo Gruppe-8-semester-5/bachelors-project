@@ -49,7 +49,7 @@ def read_train_data():
             result.append(row_data)
     return result[1:] # Skip the first, because its the header labels of a table
 
-def mnist_train_X_y(one_in_k = True) -> Tuple[list, list]:
+def mnist_train_X_y(one_in_k = False) -> Tuple[list, list]:
     dataset = read_train_data()
     digits: list[Digit] = list(map(lambda d: Digit(d), dataset))
     color_label_list = list(map(lambda digit: digit.get_label_int(), digits))

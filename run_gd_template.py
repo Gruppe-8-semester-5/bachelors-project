@@ -9,9 +9,9 @@ from datasets.winequality.files import wine_X_y
 from analysis.lipschitz import lipschitz_binary_neg_log_likelihood
 from test_runner.test_runner_file import Runner
 # from models.logistic_torch import logistic_regression_torch
-import models.logistic_torch as torch_logistic
+import models.logistic_torch as cur_model
 import models.logistic_regression as normal_logistic
-import models.one_hidden_softmax as cur_model
+# import models.one_hidden_softmax as cur_model
 # import models.two_hidden_relu_softmax as cur_model
 # Adam, two_hidden, 1000 iterations: 0.8255333333333333
 # Adam, one_hidden, 1000 iterations: 0.7707833333333334
@@ -24,9 +24,9 @@ epsilon=1.0e-2
 iterations = 1000
 one_in_k = False
 
-X, y = mnist_train_X_y(one_in_k)
+# X, y = mnist_train_X_y(one_in_k)
 
-# X, y = wine_X_y()
+X, y = wine_X_y()
 n = X.shape[0]
 
 np.random.seed(0)
@@ -36,12 +36,11 @@ if one_in_k:
 else:
     output_shape = np.amax(y) + 1
 
-w0 = cur_model.initial_params(X.shape[1], output_shape)
+# w0 = cur_model.initial_params(X.shape[1], output_shape)
 # w0 = cur_model.initial_params(X.shape[1], 100, output_shape)
-# w0 = cur_model.initial_params(X)
+w0 = cur_model.initial_params(X)
 # grad = lambda w: gradient(X, y, w)
 # List of things we want to test. Form (optimizer, params)
-
 test_set = {
     'w0': w0,
     'GD_params': {'step_size': [0.01]},

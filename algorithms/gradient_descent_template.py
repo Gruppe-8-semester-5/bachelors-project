@@ -13,7 +13,8 @@ def find_minima(start_weights: np.ndarray,
                 epsilon: float = np.finfo(float).eps,
                 max_iter = 1000,
                 auto_stop: bool = True,
-                accuracy: Callable[[np.ndarray], np.ndarray] = None):
+                accuracy: Callable[[np.ndarray], np.ndarray] = None,
+                complete_derivation = None):
     weights = start_weights
     result = GradientDescentResult(derivation)
     
@@ -30,7 +31,7 @@ def find_minima(start_weights: np.ndarray,
     best_accuracy = 0
     
     # Todo: Could add check to see if w or gradient changes. If not, just stop
-    while not (is_zero(gradient, epsilon) and auto_stop) and (max_iter > iteration_count or max_iter == 0):
+    while True:
         # Add logging
         if accuracy is not None:
             # Accuracy is usally quite costly, as it computes E_in for each iteration. 
@@ -49,7 +50,13 @@ def find_minima(start_weights: np.ndarray,
         gradient = derivation(weights)
         if iteration_count % 100 == 0:
             print(f"Gradient Descent iteration {iteration_count} @ {weights} and gradient @ {gradient}")
-    
+        # If batching we will not stop before the actual gradient is 0
+        check_grad = gradient
+        if complete_derivation is not None:
+            check_grad = complete_derivation(weights)
+        if (auto_stop and is_zero(check_grad, epsilon)) or (max_iter <= iteration_count):
+            break
+        
     # Save run for next time
     result.serialize(file_name)
     return result
