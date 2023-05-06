@@ -15,10 +15,10 @@ from analysis.utility import dump_array_to_csv, euclid_distance
 # Construct np array of features
 def color_to_label(color):
     if color == "white":
-        return 0
+        return -1
     return 1
 
-dataset = read_wine_data()
+dataset = read_wine_data()[::2]
 wines: list[Wine] = list(map(lambda d: Wine(d), dataset))
 feature_list = list(map(lambda wine: wine.get_feature_vector(), wines))
 feature_array = np.array(feature_list)
@@ -44,7 +44,7 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.zeros(feature_size)
-iterations = 500
+iterations = 100
 
 #Todo: set the best point to one of the tests, so the graph content matches
 
@@ -145,12 +145,6 @@ descent_result_l80: GradientDescentResult = gradient_descent_template.find_minim
 #    max_iter=iterations,
 #    epsilon=1.0e-2,
 #    accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-
-dataset = read_wine_data()
-wines: list[Wine] = list(map(lambda d: Wine(d), dataset))
-example_wine = wines[len(wines) - 1].get_feature_vector()
-print(wines[len(wines)-1].get_quality())
-
 
 # plots distance to final point
 # number_of_points = descent_result.number_of_points()
@@ -275,7 +269,7 @@ plt.plot(x_values, descent_result_l70.get_running_distance_to_most_accurate_weig
 plt.plot(x_values, descent_result_l80.get_running_distance_to_most_accurate_weights_average(), label="a = 1/8")
 #plt.plot(x_values, descent_result_07.get_distances_to_best_weight(), label="a = 0.7")
 #plt.plot(x_values, descent_result_1.get_distances_to_best_weight(), label="a = 1")
-plt.legend(loc='lower left')
+plt.legend(loc='upper left')
 plt.show()
 
 print(best_performer.get_best_accuracy())

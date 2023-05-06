@@ -6,6 +6,8 @@ import numpy as np
 
 class Momentum:
     def __init__(self, lr: float = 0.1, beta: float = 0.9, step_size = None) -> None:
+        """lr is learning rate, step_size is merely an added argument that can be used by the test runner class. 
+           It does not relate to momentum. lr is alpha in literature"""
         if step_size is not None:
             lr = step_size
         self.lr = lr

@@ -13,7 +13,7 @@ def predict_with_softmax(features: np.ndarray, w:np.ndarray):
 
 def predict(w:np.ndarray, features: np.ndarray):
     """The logistic regression prediction for a single point"""
-    return sigmoid(features @ w)
+    return np.sign(sigmoid(features @ w) * 2 - 1)
 
 
 def negative_log_likelihood(X, y, weights):
