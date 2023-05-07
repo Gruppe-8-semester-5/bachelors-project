@@ -5,20 +5,24 @@ from algorithms.gradient_descent_result import GradientDescentResult
 
 
 class GradientDescentResultPlotter:
+    """Builder pattern for showing plots"""
     
-    results: list[GradientDescentResult]
-    labels: list[str]
-    legend_placement: str | None
+    _results: list[GradientDescentResult]
+    _labels: list[str]
+    _legend_placement: str | None
+    _y_axis_hidden: bool
 
     def __init__(self, results: list[GradientDescentResult]) -> None:
         # Check all results are of the same dimension
         if len(results) < 1:
             raise Exception("There must be at least 1 GradientDescentResult for plotter!")
         first_result = results[0]
-        self.labels = []
+        self._labels = []
         self.plot_targets = []
-        self.legend_placement = None
-        self.results = results;
+        self._legend_placement = None
+        self._results = results;
+        self._y_axis_hidden = False
+    
         for result in results:
             if len(result.get_accuracy_over_time()) != len(first_result.get_accuracy_over_time()):
                 raise Exception("Failed to create plotter. All results must have comparable data. Not all accuracy arrays are of the same size!")
@@ -35,38 +39,43 @@ class GradientDescentResultPlotter:
         x_values = [x for x in range(0, len(y_values_for_plot))]
         return x_values
 
-    def plot_accuracies_over_time(self):
-        return self._add_plot_values(lambda gd_result: gd_result.get_accuracy_over_time())
+    def plot_accuracies_over_time(self, subsect = 0):
+        return self._add_plot_values(lambda gd_result: gd_result.get_accuracy_over_time()[subsect:])
     
     def plot_distance_to_final_weight_over_time(self):
         return self._add_plot_values(lambda gd_result: gd_result.get_distances_to_final_weight())
     
     def plot_distance_to_absolute_best_weight(self):
-        best_performer = self.results[0]
+        best_performer = self._results[0]
         # Find best performer
-        for result in self.results:
+        for result in self._results:
             if best_performer.get_best_accuracy() < result.get_best_accuracy():
                 best_performer = result
 
         # Set best weights for other results
-        for result in self.results:
+        for result in self._results:
             result.set_most_accurate_weights(best_performer.get_most_accurate_weights())
 
         return self._add_plot_values(lambda gd_result: gd_result.get_distances_to_most_accurate_weight())
     
     def _add_plot_values(self, plot_target_func: Callable[[GradientDescentResult], np.ndarray]):
-        self.x_values = self._get_linear_x_values(plot_target_func(self.results[0]))
+        self.x_values = self._get_linear_x_values(plot_target_func(self._results[0]))
         
-        for result in self.results:
+        for result in self._results:
             self.plot_targets.append(plot_target_func(result))
         return self
 
     def legend_placed(self, location: str = 'center right'):
-        self.legend_placement = location
+        self._legend_placement = location
         return self
     
+    def hide_y_axis(self):
+        self._y_axis_hidden = True
+        return self
+
+    
     def with_labels(self, labels: list[str] = []):
-        self.labels = labels
+        self._labels = labels
         return self
 
     def plot(self):
@@ -74,9 +83,14 @@ class GradientDescentResultPlotter:
             raise Exception("Failed to find any x-values for plot!")
         
         for index, target in enumerate(self.plot_targets):
-            label = self.labels[index] if len(self.labels) > index else None
+            label = self._labels[index] if len(self._labels) > index else None
             print(label)
             plt.plot(self.x_values, target, label=label)
-        if self.legend_placement is not None:
-            plt.legend(loc=self.legend_placement)
+        if self._legend_placement is not None:
+            plt.legend(loc=self._legend_placement)
+        
+        if self._y_axis_hidden:
+            ax = plt.gca()
+            ax.get_yaxis().set_visible(False)
+
         plt.show()

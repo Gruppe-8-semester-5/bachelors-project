@@ -45,26 +45,26 @@ label_list_test = list(map(lambda wine: wine.get_quality(), test_wines))
 label_array_test = np.array(label_list_test)
 
 iterations = 80
+runner_results: list[GradientDescentResult] = [] # Our results
+#test_set = {
+#    'w0': start_weight,
+#    'GD_params': {"w0": start_weight, 'alpha': [1/60.2], "mu": [0.01], "L":[0.01], "beta": [0.01]},
+#    # 'GD_params': {'L': [0.01], 'w0': w0},
+#    'alg': [Nesterov_acceleration],
+#    'model': multinomial_logistic_regression,
+#    'max_iter': iterations,
+#    'data_set': (feature_array_train, label_array_train),
+#    'test_set': (feature_array_test, label_array_test),
+#    'epsilon':0,
+#    'auto_stop': False,
+#    'batch': None
+#}
+#runner = Runner(dic = test_set)
+#runner_results: list[GradientDescentResult] = runner.get_result()
 
 test_set = {
     'w0': start_weight,
-    'GD_params': {"w0": start_weight, 'alpha': [1/60.2], "mu": [0.01], "L":[0.01], "beta": [0.01]},
-    # 'GD_params': {'L': [0.01], 'w0': w0},
-    'alg': [Nesterov_acceleration],
-    'model': multinomial_logistic_regression,
-    'max_iter': iterations,
-    'data_set': (feature_array_train, label_array_train),
-    'test_set': (feature_array_test, label_array_test),
-    'epsilon':0,
-    'auto_stop': False,
-    'batch': None
-}
-runner = Runner(dic = test_set)
-runner_results: list[GradientDescentResult] = runner.get_result()
-
-test_set = {
-    'w0': start_weight,
-    'GD_params': {'lr': 1/60.2, 'beta': 0.9, 'step_size': None},
+    'GD_params': {'lr': [1/100], 'beta': [0, 0.1, 0.2, 0.4, 0.6, 0.8, 0.9], 'step_size': None},
     # 'GD_params': {'L': [0.01], 'w0': w0},
     'alg': [Momentum],
     'model': multinomial_logistic_regression,
@@ -77,25 +77,30 @@ test_set = {
 }
 runner = Runner(dic = test_set)
 runner_results.append(runner.get_result()[0])
+runner_results.append(runner.get_result()[1])
+runner_results.append(runner.get_result()[2])
+runner_results.append(runner.get_result()[3])
+runner_results.append(runner.get_result()[4])
+runner_results.append(runner.get_result()[5])
 
-test_set = {
-    'w0': start_weight,
-    'GD_params': {"step_size":1/60.2},
-    # 'GD_params': {'L': [0.01], 'w0': w0},
-    'alg': [Standard_GD],
-    'model': multinomial_logistic_regression,
-    'max_iter': iterations,
-    'data_set': (feature_array_train, label_array_train),
-    'test_set': (feature_array_test, label_array_test),
-    'epsilon':0,
-    'auto_stop': False,
-    'batch': None
-}
-runner = Runner(dic = test_set)
-runner_results.append(runner.get_result()[0])
+#test_set = {
+#    'w0': start_weight,
+#    'GD_params': {"step_size":1/6},
+#    # 'GD_params': {'L': [0.01], 'w0': w0},
+#    'alg': [Standard_GD],
+#    'model': multinomial_logistic_regression,
+#    'max_iter': iterations,
+#    'data_set': (feature_array_train, label_array_train),
+#    'test_set': (feature_array_test, label_array_test),
+#    'epsilon':0,
+#    'auto_stop': False,
+#    'batch': None
+#}
+#runner = Runner(dic = test_set)
+#runner_results.append(runner.get_result()[0])
 #print(ra, runner_results[0].accuracies[0] - runner_results[0].accuracies[iterations-1])
 
-GradientDescentResultPlotter(runner_results).plot_accuracies_over_time().legend_placed("lower right").with_labels(["Nestorov", "Momentum", "No acceleration"]).plot()
+GradientDescentResultPlotter(runner_results).plot_accuracies_over_time().hide_y_axis().legend_placed("center right").with_labels(["Beta = 0", "Beta = 0.1", "Beta = 0.2", "Beta = 0.4", "Beta = 0.8", "Beta = 0.9"]).plot()
 
 raise Exception("Stop prematurely")
 
