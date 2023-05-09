@@ -45,6 +45,9 @@ class GradientDescentResultPlotter:
     def plot_distance_to_final_weight_over_time(self):
         return self._add_plot_values(lambda gd_result: gd_result.get_distances_to_final_weight())
     
+    def plot_distance_to_zero_gradient_over_time(self):
+        return self._add_plot_values(lambda gd_result: gd_result.get_derivation_distances_to_zero_over_time())
+    
     def plot_distance_to_absolute_best_weight(self):
         best_performer = self._results[0]
         # Find best performer

@@ -3,7 +3,7 @@ import random
 import matplotlib.pyplot as plt
 import numpy as np
 from analysis.gradient_descent_result_plotting import GradientDescentResultPlotter
-from datasets.winequality.files import read_wine_data
+from datasets.mnist.files import read_train_data, read_test_data
 from datasets.winequality.wine import Wine
 from models.logistic_regression import gradient_k, predict_with_softmax
 from algorithms import GradientDescentResult, gradient_descent_template
@@ -13,10 +13,16 @@ from algorithms.accelerated_GD import Nesterov_acceleration
 from models.utility import accuracy_k_encoded
 from models import multinomial_logistic_regression
 from test_runner.test_runner_file import Runner
-
+from sklearn.preprocessing import PolynomialFeatures
 #for ra in range(0, 100):
 
-dataset = read_wine_data()
+X_train = read_train_data()
+
+print(X_train)
+
+
+exit()
+
 wines: list[Wine] = list(map(lambda d: Wine(d), dataset))
 rand_seed = 33
 random.seed(rand_seed)
@@ -29,15 +35,17 @@ data_training_size = math.floor(len(wines) * train_fraction)
 train_wines = wines[0:data_training_size]
 test_wines = wines[data_training_size:len(wines)]
 
+poly_features = PolynomialFeatures(degree=2, include_bias=False)
+
 example_wine = wines[0]
 feature_size = example_wine.get_feature_vector().size
 
 start_weight = np.random.normal(size=(feature_size, K))
 
 feature_list_train = list(map(lambda wine: wine.get_feature_vector(), train_wines))
-feature_array_train = np.array(feature_list_train)
+feature_array_train = poly_features.fit_transform(np.array(feature_list_train).reshape(-1,1))
 feature_list_test = list(map(lambda wine: wine.get_feature_vector(), test_wines))
-feature_array_test = np.array(feature_list_test)
+feature_array_test = poly_features.fit_transform(np.array(feature_list_test).reshape(-1,1))
 
 label_list_train= list(map(lambda wine: wine.get_quality(), train_wines))
 label_array_train = np.array(label_list_train)
