@@ -100,7 +100,7 @@ runner_results.append(runner.get_result()[5])
 #runner_results.append(runner.get_result()[0])
 #print(ra, runner_results[0].accuracies[0] - runner_results[0].accuracies[iterations-1])
 
-GradientDescentResultPlotter(runner_results).plot_accuracies_over_time().hide_y_axis().legend_placed("center right").with_labels(["Beta = 0", "Beta = 0.1", "Beta = 0.2", "Beta = 0.4", "Beta = 0.8", "Beta = 0.9"]).plot()
+GradientDescentResultPlotter(runner_results).plot_accuracies_over_time().hide_y_axis().legend_placed("center right").with_result_labelled(["Beta = 0", "Beta = 0.1", "Beta = 0.2", "Beta = 0.4", "Beta = 0.8", "Beta = 0.9"]).plot()
 
 raise Exception("Stop prematurely")
 

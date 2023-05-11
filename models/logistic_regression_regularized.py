@@ -17,20 +17,10 @@ def predict(w:np.ndarray, features: np.ndarray) -> int:
 
 
 def negative_log_likelihood(X, y, weights):
-    nll = torch.nn.BCEWithLogitsLoss()
-    X = torch.from_numpy(X)
-    y = torch.from_numpy(y)
-    return nll(X @ weights, y.double())
-
-def gradient(X, y, weights):
-    """The gradient for negative log likelihood
-       Expects labels to be 0 or 1"""
-    # Convert if labels are -1 and 1
-    y = [0. if l <= 0 else 1. for l in y]
     z = np.dot(X, weights)
     p = 1 / (1 + np.exp(-z))
-    grad = -np.dot(X.T, y - p)
-    return grad
+    nll = -np.sum(y * np.log(p) + (1 - y) * np.log(1 - p))
+    return nll
 
 def gradient_k(X, y, weights) -> np.ndarray:
     X = torch.from_numpy(X)
@@ -50,8 +40,7 @@ def soft_max(X, w) -> torch.Tensor:
         w = torch.from_numpy(w)
     return softmax(X @ w)
 
-
-def gradient_regularized(X, y, weights, lda = 0.5):
+def gradient(X, y, weights, lda = 0.5):
     z = np.dot(X, weights)
     p = 1 / (1 + np.exp(-z))
     grad = -np.dot(X.T, y - p)

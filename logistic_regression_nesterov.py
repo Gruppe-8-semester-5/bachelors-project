@@ -65,7 +65,7 @@ runner_results.append(runner.get_result()[0])
 runner_results.append(runner.get_result()[1])
 runner_results.append(runner.get_result()[2])
 runner_results.append(runner.get_result()[3])
-GradientDescentResultPlotter(runner_results).plot_distance_to_zero_gradient_over_time().hide_y_axis().legend_placed("center right").with_labels(["beta = 0.9","beta = 0.7","beta = 0.5","beta = 0.1"]).plot()
+GradientDescentResultPlotter(runner_results).plot_distance_to_zero_gradient_over_time().hide_y_axis().legend_placed("center right").with_result_labelled(["beta = 0.9","beta = 0.7","beta = 0.5","beta = 0.1"]).plot()
 
 
 
@@ -117,4 +117,4 @@ test_set = {
 }
 runner = Runner(dic = test_set)
 runner_results.append(runner.get_result()[0])
-GradientDescentResultPlotter(runner_results).plot_accuracies_over_time().legend_placed("center right").with_labels(["Momentum", "NAG", "No acceleration"]).plot()
+GradientDescentResultPlotter(runner_results).plot_accuracies_over_time().legend_placed("center right").with_result_labelled(["Momentum", "NAG", "No acceleration"]).plot()

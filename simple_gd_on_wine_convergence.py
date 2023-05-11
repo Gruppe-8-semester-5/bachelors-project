@@ -16,8 +16,6 @@ dataset = read_wine_data()
 wines: list[Wine] = list(map(lambda d: Wine(d), dataset))
 feature_list = list(map(lambda wine: wine.get_feature_vector(), wines))
 feature_array = np.array(feature_list)
-lipschitz = lipschitz_binary_neg_log_likelihood(feature_array)
-print(f"lipschitz = {lipschitz}")
 n = len(dataset)
 print(f"n = {n}")
 
@@ -33,6 +31,8 @@ print("Label example", color_to_label(example_wine.get_color()))
 
 color_label_list = list(map(lambda wine: color_to_label(wine.get_color()), wines))
 color_label_array = np.array(color_label_list)
+lipschitz = lipschitz_binary_neg_log_likelihood(feature_array, color_label_array)
+print(f"lipschitz = {lipschitz}")
 
 feature_size = example_wine.get_feature_vector().size
 
@@ -57,6 +57,8 @@ descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
+
+print(accuracy(color_label_array, make_predictions(descent_result_lipchitz.get_final_weight())))
 
 descent_result_0001: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
