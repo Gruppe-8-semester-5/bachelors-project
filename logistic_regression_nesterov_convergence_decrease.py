@@ -58,8 +58,8 @@ descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_
 first_weight = descent_result_lipchitz.get_first_weight()
 final_weight = descent_result_lipchitz.get_final_weight()
 normDiff = np.linalg.norm(first_weight - final_weight)
-expected_rate_function = lambda x : ((lipschitz * normDiff**2)/2) * (1/x if x>0 else 1)
+expected_rate_function = lambda x : 0.0002 * ((lipschitz * normDiff**2)/2) * 1/x
 
 log_likelihood_values = lambda x : negative_log_likelihood(feature_array, color_label_array,descent_result_lipchitz.get_weights_over_time()[x])
 
-GradientDescentResultPlotter([descent_result_lipchitz]).plot_best_weight_distance_to_zero_gradient_over_time().plot_function(log_likelihood_values).legend_placed("upper right").with_result_labelled(["GD"]).with_functions_labelled(["1/x*700k", "derived rate"]).plot()
+GradientDescentResultPlotter([descent_result_lipchitz]).with_x_values([x for x in range(1, iterations)]).plot_function(expected_rate_function).plot_function(log_likelihood_values).legend_placed("upper right").with_functions_labelled(["1 / 5000 of expected", "f(x)"]).plot()

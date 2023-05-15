@@ -12,6 +12,7 @@ class GradientDescentResultPlotter:
     _function_labels: list[str]
     _legend_placement: str | None
     _y_axis_hidden: bool
+    _x_values: list[int | float] | np.ndarray | None
 
     def __init__(self, results: list[GradientDescentResult]) -> None:
         # Check all results are of the same dimension
@@ -25,6 +26,7 @@ class GradientDescentResultPlotter:
         self._legend_placement = None
         self._results = results;
         self._y_axis_hidden = False
+        self._x_values = None
     
         for result in results:
             if len(result.get_accuracy_over_time()) != len(first_result.get_accuracy_over_time()):
@@ -54,6 +56,11 @@ class GradientDescentResultPlotter:
     def plot_best_weight_distance_to_zero_gradient_over_time(self):
         return self._add_plot_values(lambda gd_result: gd_result.get_best_weight_derivation_distances_to_zero_over_time())
     
+    def with_x_values(self, x_values):
+        self._x_values = x_values
+        return self
+    
+
     def plot_function(self, function: Callable[[int], float]):
         self._plotted_functions.append(function)
         return self
@@ -72,7 +79,8 @@ class GradientDescentResultPlotter:
         return self._add_plot_values(lambda gd_result: gd_result.get_distances_to_most_accurate_weight())
     
     def _add_plot_values(self, plot_target_func: Callable[[GradientDescentResult], np.ndarray]):
-        self.x_values = self._get_linear_x_values(plot_target_func(self._results[0]))
+        if self._x_values == None:
+            self._x_values = self._get_linear_x_values(plot_target_func(self._results[0]))
         
         for result in self._results:
             self._plot_targets.append(plot_target_func(result))
@@ -86,7 +94,6 @@ class GradientDescentResultPlotter:
         self._y_axis_hidden = True
         return self
 
-    
     def with_result_labelled(self, labels: list[str] = []):
         self._result_labels = labels
         return self
@@ -96,17 +103,17 @@ class GradientDescentResultPlotter:
         return self
 
     def plot(self):
-        if self.x_values is None:
+        if self._x_values is None:
             raise Exception("Failed to find any x-values for plot!")
         
         for index, target in enumerate(self._plot_targets):
             label = self._result_labels[index] if len(self._result_labels) > index else None
             print(label)
-            plt.plot(self.x_values, target, label=label)
+            plt.plot(self._x_values, target, label=label)
         for index, target in enumerate(self._plotted_functions):
             label = self._function_labels[index] if len(self._function_labels) > index else None
             print(label)
-            plt.plot(self.x_values, [target(x) for x in self.x_values], label=label)
+            plt.plot(self._x_values, [target(x) for x in self._x_values], label=label)
         if self._legend_placement is not None:
             plt.legend(loc=self._legend_placement)
         
