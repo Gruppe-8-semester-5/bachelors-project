@@ -44,10 +44,7 @@ class Nesterov_acceleration:
     def step(self, w: np.ndarray, derivation: Callable[[np.ndarray], np.ndarray]):
         b = self.get_beta()
         a = self.get_alpha()
-        w_k = self.w_cur
-        w_k_1 = self.w_prev
-        diff =  b * (w_k - w_k_1)
-        res = w - a * derivation(self.w0 + diff) + diff
-        self.w_prev = self.w_cur
-        self.w_cur = w
+        diff =  b * (w - self.w_prev)
+        res = w - a * derivation(w + diff) + diff
+        self.w_prev = w
         return res
