@@ -68,13 +68,13 @@ runner_results.append(runner.get_result()[3])
 GradientDescentResultPlotter(runner_results).plot_distance_to_zero_gradient_over_time().hide_y_axis().legend_placed("center right").with_result_labelled(["beta = 0.9","beta = 0.7","beta = 0.5","beta = 0.1"]).plot()
 
 
-
 # Compare nesterov and momentum
-iterations = 20
+iterations = 40
 runner_results = [] # Our results
 test_set = {
     'w0': start_weight,
-    'GD_params': {'lr': [0.05], 'beta': [0.9]},
+    # We do the long computation below to an apples-to-apples comparison with nesterov
+    'GD_params': {'lr': [0.2], 'beta': [(0.2-1)/((np.sqrt(4*0.2**2+1)+1)/2)]},
     # 'GD_params': {'L': [0.01], 'w0': w0},
     'alg': [Momentum],
     'model': multinomial_logistic_regression,
@@ -89,7 +89,7 @@ runner = Runner(dic = test_set)
 runner_results.append(runner.get_result()[0])
 test_set = {
     'w0': start_weight,
-    'GD_params': {'w0': start_weight, 'L':None,'mu':None, 'alpha': [0.05], 'beta': [0.9]},
+    'GD_params': {'w0': start_weight, 'L':None,'mu':None, 'alpha': [0.2], 'beta': None},
     # 'GD_params': {'L': [0.01], 'w0': w0},
     'alg': [Nesterov_acceleration],
     'model': multinomial_logistic_regression,
