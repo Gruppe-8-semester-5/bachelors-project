@@ -30,6 +30,12 @@ class GradientDescentResult(Serializable):
     
     def set_most_accurate_weights(self, weights: np.ndarray):
         self.most_accurate_weights = weights
+    
+    def set_closest_to_zero_derivation_weight(self, weights: np.ndarray):
+        self.closest_to_zero_derivation_weight = weights
+
+    def get_closest_to_zero_derivation_weight(self):
+        return self.closest_to_zero_derivation_weight
 
     def number_of_weights(self):
         return len(self.weights)
@@ -64,6 +70,10 @@ class GradientDescentResult(Serializable):
     def get_distances_to_most_accurate_weight(self) -> list[float]:
         most_accurate_point = self.get_most_accurate_weights()
         return list(map(lambda p: euclid_distance(p, most_accurate_point) ,self.get_weights_over_time()))
+    
+    def get_closest_derivation_distance_to_closest_to_zero_derivation_over_time(self) -> list[float]:
+        closest_to_zero_weight = self.get_closest_to_zero_derivation_weight()
+        return list(map(lambda p: euclid_distance(p, closest_to_zero_weight) ,self.get_closest_to_zero_derivation_weights_over_time()))
     
     def get_final_distance_to_most_accurate_weight(self) -> float:
         most_accurate_point = self.get_most_accurate_weights()
@@ -101,25 +111,47 @@ class GradientDescentResult(Serializable):
     
     def get_derivations_over_time(self) -> np.ndarray:
         weights = self.get_weights_over_time()
-        return np.array(list(map(lambda w: self.get_deriviation()(w), weights)))
+        if self._derivations_over_time is None:
+            self._derivations_over_time = np.array(list(map(lambda w: self.get_deriviation()(w), weights))) 
+        return self._derivations_over_time
     
     def get_closest_to_zero_derivations_over_time(self) -> np.ndarray:
         weights = self.get_weights_over_time()
 
-        best_weight = weights[0]
-
-        best_weights = []
+        best_derivations = []
+        best_div = self.get_deriviation()(weights[0])
 
         for weight in weights:
-            zero_distance_to_best = euclid_distance(np.zeros_like(weight), self.get_deriviation()(best_weight))
-            zero_distance_to_current = euclid_distance(np.zeros_like(weight), self.get_deriviation()(weight))
+            zero_distance_to_best = euclid_distance(np.zeros_like(weight), best_div)
+            current_div = self.get_deriviation()(weight)
+            zero_distance_to_current = euclid_distance(np.zeros_like(weight), current_div)
 
             if (zero_distance_to_best > zero_distance_to_current):
-                best_weight = weight
+                best_div = current_div
 
-            best_weights.append(best_weight)
+            best_derivations.append(best_div)
 
-        return np.array(list(map(lambda w: self.get_deriviation()(w), best_weights)))
+        return best_derivations
+    
+    def get_closest_to_zero_derivation_weights_over_time(self) -> np.ndarray:
+        weights = self.get_weights_over_time()
+
+        best_div = self.get_deriviation()(weights[0])
+        closest_weight = weights[0]
+        closest_derivation_weights = []
+
+        for weight in weights:
+            zero_distance_to_best = euclid_distance(np.zeros_like(weight), best_div)
+            current_div = self.get_deriviation()(weight)
+            zero_distance_to_current = euclid_distance(np.zeros_like(weight), current_div)
+
+            if (zero_distance_to_best > zero_distance_to_current):
+                best_div = current_div
+                closest_weight = weight
+
+            closest_derivation_weights.append(closest_weight)
+
+        return closest_derivation_weights
     
     def get_final_derivation(self):
         return self.get_deriviation()(self.get_weights_over_time()[len(self.get_weights_over_time()) - 1])

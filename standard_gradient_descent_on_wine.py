@@ -44,9 +44,8 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.zeros(feature_size)
-iterations = 1000
+iterations = 3000
 
-#Todo: set the best point to one of the tests, so the graph content matches
 
 descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
@@ -55,30 +54,30 @@ descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-descent_result_l50: GradientDescentResult = gradient_descent_template.find_minima(
+descent_result_l46: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Standard_GD(1/5),
+    Standard_GD(1/4600),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-descent_result_l40: GradientDescentResult = gradient_descent_template.find_minima(
+descent_result_l44: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Standard_GD(1/4),
+    Standard_GD(1/4400),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-descent_result_l70: GradientDescentResult = gradient_descent_template.find_minima(
+descent_result_l47: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Standard_GD(1/7),
+    Standard_GD(1/4700),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-descent_result_l80: GradientDescentResult = gradient_descent_template.find_minima(
+descent_result_l48: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Standard_GD(1/8),
+    Standard_GD(1/4800),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
@@ -234,42 +233,44 @@ best_lipschitz_point = descent_result_lipchitz.get_most_accurate_weights()
 # Figure out which performed the best
 to_compare: list[GradientDescentResult] = [
     descent_result_lipchitz,
-    descent_result_l40,
-    descent_result_l50,
-    descent_result_l70,
-    descent_result_l80,
+    descent_result_l44,
+    descent_result_l46,
+    descent_result_l47,
+    descent_result_l48,
 ]
-best_accuracy = -1
+closest_distance = np.Infinity
 best_performer = None
 for result in to_compare:
-    if result.get_best_accuracy() > best_accuracy:
-        best_accuracy = result.get_best_accuracy()
+    result_closest = result.get_best_weight_derivation_distances_to_zero_over_time()[iterations-1]
+    if result_closest < closest_distance:
+        closest_distance = result_closest
         best_performer = result
 
 ## Then we set the best weights of the result, such that the performance calculations will be relative to the best result
-descent_result_lipchitz.set_most_accurate_weights(best_performer.get_final_weight())
-descent_result_l40.set_most_accurate_weights(best_performer.get_final_weight())
-descent_result_l50.set_most_accurate_weights(best_performer.get_final_weight())
-descent_result_l70.set_most_accurate_weights(best_performer.get_final_weight())
-descent_result_l80.set_most_accurate_weights(best_performer.get_final_weight())
+descent_result_lipchitz.set_closest_to_zero_derivation_weight(best_performer.get_closest_to_zero_derivation_weights_over_time()[iterations-1])
+descent_result_l44.set_closest_to_zero_derivation_weight(best_performer.get_closest_to_zero_derivation_weights_over_time()[iterations-1])
+descent_result_l46.set_closest_to_zero_derivation_weight(best_performer.get_closest_to_zero_derivation_weights_over_time()[iterations-1])
+descent_result_l47.set_closest_to_zero_derivation_weight(best_performer.get_closest_to_zero_derivation_weights_over_time()[iterations-1])
+descent_result_l48.set_closest_to_zero_derivation_weight(best_performer.get_closest_to_zero_derivation_weights_over_time()[iterations-1])
 
 
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
 plt.rcParams["figure.autolayout"] = True
-x_values = [i for i in range(len(descent_result_lipchitz.get_derivation_distances_to_zero_over_time()))]
-plt.plot(x_values, descent_result_lipchitz.get_derivation_distances_to_zero_over_time(), label="a = 1/L")
+x_values = [i for i in range(len(descent_result_lipchitz.get_closest_derivation_distance_to_closest_to_zero_derivation_over_time()))]
+plt.plot(x_values, descent_result_lipchitz.get_closest_derivation_distance_to_closest_to_zero_derivation_over_time(), label="a = 1/L")
 #plt.plot(x_values, descent_result_0001.get_distances_to_best_weight(), label="a = 0.001")
 #plt.plot(x_values, descent_result_001.get_distances_to_best_weight(), label="a = 0.01")
 #plt.plot(x_values, descent_result_005.get_distances_to_best_weight(), label="a = 0.05")
 #plt.plot(x_values, descent_result_01.get_distances_to_best_weight(), label="a = 0.1")
 #plt.plot(x_values, descent_result_05.get_distances_to_best_weight(), label="a = 0.5")
-plt.plot(x_values, descent_result_l40.get_derivation_distances_to_zero_over_time(), label="a = 1/4")
-plt.plot(x_values, descent_result_l50.get_derivation_distances_to_zero_over_time(), label="a = 1/5")
-plt.plot(x_values, descent_result_l70.get_derivation_distances_to_zero_over_time(), label="a = 1/7")
-plt.plot(x_values, descent_result_l80.get_derivation_distances_to_zero_over_time(), label="a = 1/8")
+plt.plot(x_values, descent_result_l44.get_closest_derivation_distance_to_closest_to_zero_derivation_over_time(), label="a = 1/4400")
+plt.plot(x_values, descent_result_l46.get_closest_derivation_distance_to_closest_to_zero_derivation_over_time(), label="a = 1/4600")
+plt.plot(x_values, descent_result_l47.get_closest_derivation_distance_to_closest_to_zero_derivation_over_time(), label="a = 1/4700")
+plt.plot(x_values, descent_result_l48.get_closest_derivation_distance_to_closest_to_zero_derivation_over_time(), label="a = 1/4800")
 #plt.plot(x_values, descent_result_07.get_distances_to_best_weight(), label="a = 0.7")
 #plt.plot(x_values, descent_result_1.get_distances_to_best_weight(), label="a = 1")
 plt.legend(loc='upper left')
+plt.yscale('log')
 plt.show()
 
 print(best_performer.get_best_accuracy())

@@ -49,15 +49,17 @@ def read_train_data():
             result.append(row_data)
     return result[1:] # Skip the first, because its the header labels of a table
 
-def mnist_train_X_y(one_in_k = False) -> Tuple[list, list]:
-    dataset = read_train_data()
+def mnist_train_X_y(num_elements:int = None) -> Tuple[np.ndarray, np.ndarray]:
+    if num_elements is None:
+        dataset = read_train_data()
+    else:
+        dataset = read_train_data()
+        np.random.shuffle(dataset)
+        dataset = dataset[0:num_elements]
     digits: list[Digit] = list(map(lambda d: Digit(d), dataset))
     color_label_list = list(map(lambda digit: digit.get_label_int(), digits))
     y = np.array(color_label_list)
-    if one_in_k:
-        # Apparently one_hot must have a int64, but numpy int-arrays translates to int32.
-        y = torch.nn.functional.one_hot(torch.from_numpy(y).to(torch.int64)).numpy()
-    feature_list = list(map(lambda digit: digit.get_features(), digits))
+    normalizer = lambda digit: (digit.get_features() - np.mean(digit.get_features()))/np.std(digit.get_features()) # (x - mean(x))/std(x)
+    feature_list = list(map(normalizer, digits))
     X = np.array(feature_list).astype(float)
     return X, y
-

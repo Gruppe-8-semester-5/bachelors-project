@@ -3,6 +3,7 @@ import os
 from typing import Tuple
 
 import numpy as np
+import torch
 
 from datasets.utility.download import download
 from datasets.winequality.wine import Wine
@@ -46,6 +47,8 @@ def wine_X_y() -> Tuple[list, list]:
     wines: list[Wine] = list(map(lambda d: Wine(d), dataset))
     color_label_list = list(map(lambda wine: color_to_label(wine.get_color()), wines))
     y = np.array(color_label_list)
-    feature_list = list(map(lambda wine: wine.get_feature_vector(), wines))
+    # Normalized features (centering around origo. [[1],[2]] -> [[-0.5],[0.5]])
+    feature_normalizer = lambda wine: (wine.get_feature_vector() -np.mean(wine.get_feature_vector())) /  np.std(wine.get_feature_vector())
+    feature_list = list(map(feature_normalizer, wines))
     X = np.array(feature_list)
     return X, y

@@ -16,7 +16,7 @@ def lipschitz_binary_neg_log_likelihood(feature_set: np.ndarray, labels: np.ndar
     for i in range(0, n):
         features = feature_set[i]
         label = np.abs(labels[i])
-        feature_norm_sum += label * np.linalg.norm(features)**2
+        feature_norm_sum += np.linalg.norm(features)**2
 
     scale = 1/(4*n)
 
