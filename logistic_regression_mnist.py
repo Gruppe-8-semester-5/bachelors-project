@@ -15,6 +15,7 @@ from models.utility import accuracy_k_encoded
 from models import multinomial_logistic_regression, two_hidden_relu_softmax
 from test_runner.test_runner_file import Runner
 from sklearn.preprocessing import PolynomialFeatures
+np.random.seed(0)
 
 X_train, y_train = mnist_train_X_y(1000)
 
@@ -24,7 +25,7 @@ iterations = 1000
 runner_results = [] # Our results
 input_dim = X_train.shape[1]
 print(input_dim)
-w0 = two_hidden_relu_softmax.initial_params(X_train.shape[1], 2, K)
+w0 = two_hidden_relu_softmax.initial_params(X_train.shape[1], 200, K)
 print("HELLO W0")
 test_set = {
     'w0': w0,

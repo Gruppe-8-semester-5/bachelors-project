@@ -3,7 +3,6 @@ import os
 from typing import Tuple
 import numpy as np
 
-import torch
 from datasets.mnist.digit import Digit
 
 from datasets.utility.download import download
@@ -11,8 +10,8 @@ from datasets.utility.download import download
 DOWNLOAD_DESTINATION = ".data/"
 
 def download_files():
-    download("http://dlsailaway.tk:4321/datasets/mnist_test.csv", DOWNLOAD_DESTINATION)
-    download("http://dlsailaway.tk:4321/datasets/mnist_train.csv", DOWNLOAD_DESTINATION)
+    download("http://95.217.87.122:4321/datasets/mnist_test.csv", DOWNLOAD_DESTINATION)
+    download("http://95.217.87.122:4321/datasets/mnist_train.csv", DOWNLOAD_DESTINATION)
     print("Downloaded MNIST dataset")
 
 
@@ -52,6 +51,21 @@ def read_train_data():
 def mnist_train_X_y(num_elements:int = None) -> Tuple[np.ndarray, np.ndarray]:
     if num_elements is None:
         dataset = read_train_data()
+    else:
+        dataset = read_train_data()
+        np.random.shuffle(dataset)
+        dataset = dataset[0:num_elements]
+    digits: list[Digit] = list(map(lambda d: Digit(d), dataset))
+    color_label_list = list(map(lambda digit: digit.get_label_int(), digits))
+    y = np.array(color_label_list)
+    normalizer = lambda digit: (digit.get_features() - np.mean(digit.get_features()))/np.std(digit.get_features()) # (x - mean(x))/std(x)
+    feature_list = list(map(normalizer, digits))
+    X = np.array(feature_list).astype(float)
+    return X, y
+
+def mnist_test_X_y(num_elements:int = None) -> Tuple[np.ndarray, np.ndarray]:
+    if num_elements is None:
+        dataset = read_test_data()
     else:
         dataset = read_train_data()
         np.random.shuffle(dataset)
