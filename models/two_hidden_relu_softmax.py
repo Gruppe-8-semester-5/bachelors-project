@@ -46,7 +46,7 @@ def predict(w:np.ndarray, features: np.ndarray):
 
 
 def negative_log_likelihood(X, y, w):
-    pred = forward(X, w)
+    pred = torch.log(forward(X, w))
     loss = torch.nn.NLLLoss()
     return loss(pred, y.long())
 
