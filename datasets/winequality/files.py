@@ -11,7 +11,7 @@ from datasets.winequality.wine import Wine
 DOWNLOAD_DESTINATION = ".data/"
 
 def download_files():
-    download("http://dlsailaway.tk:4321/datasets/wine_quality.csv", DOWNLOAD_DESTINATION)
+    download("http://95.217.87.122:4321/datasets/wine_quality.csv", DOWNLOAD_DESTINATION)
     print("Downloaded wine quality dataset")
 
 
