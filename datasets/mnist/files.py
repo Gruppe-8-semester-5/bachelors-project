@@ -67,7 +67,7 @@ def mnist_test_X_y(num_elements:int = None) -> Tuple[np.ndarray, np.ndarray]:
     if num_elements is None:
         dataset = read_test_data()
     else:
-        dataset = read_train_data()
+        dataset = read_test_data()
         np.random.shuffle(dataset)
         dataset = dataset[0:num_elements]
     digits: list[Digit] = list(map(lambda d: Digit(d), dataset))
