@@ -3,6 +3,7 @@ import torch
 import numpy as np
 
 softmax = torch.nn.Softmax(dim = 1) 
+log_softmax = torch.nn.LogSoftmax(dim = 1)
 relu = torch.nn.ReLU()
 
 class WeightDict(TypedDict):
@@ -20,7 +21,10 @@ def initial_params(input_dim, hidden_layer, output_dim):
     return np.array([W1, b1, W2, b2], dtype=object)
 
 def forward(X, w: WeightDict):
-    return softmax(relu(X @ w['W1'] + w['b1']) @ w['W2'] + w['b2'])
+    return softmax(fw(X, w))
+
+def fw(X, w: WeightDict):
+    return relu(X @ w['W1'] + w['b1']) @ w['W2'] + w['b2']
 
 def dict_to_torch(dic):
     return {k: torch.from_numpy(v) for k, v in dic.items()}
@@ -46,7 +50,7 @@ def predict(w:np.ndarray, features: np.ndarray):
 
 
 def negative_log_likelihood(X, y, w):
-    pred = torch.log(forward(X, w))
+    pred = log_softmax(fw(X, w))
     loss = torch.nn.NLLLoss()
     return loss(pred, y.long())
 
