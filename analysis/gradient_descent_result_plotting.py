@@ -13,6 +13,7 @@ class GradientDescentResultPlotter:
     _legend_placement: str | None
     _y_axis_hidden: bool
     _x_values: list[int | float] | np.ndarray | None
+    _y_logarithmic: bool
 
     def __init__(self, results: list[GradientDescentResult]) -> None:
         # Check all results are of the same dimension
@@ -27,6 +28,7 @@ class GradientDescentResultPlotter:
         self._results = results;
         self._y_axis_hidden = False
         self._x_values = None
+        self._y_logarithmic = False
     
         for result in results:
             if len(result.get_accuracy_over_time()) != len(first_result.get_accuracy_over_time()):
@@ -43,6 +45,10 @@ class GradientDescentResultPlotter:
     def _get_linear_x_values(self, y_values_for_plot: np.ndarray | list[float]):
         x_values = [x for x in range(0, len(y_values_for_plot))]
         return x_values
+    
+    def plot_with_y_axis_logarithmic(self):
+        self._y_logarithmic = True
+        return self
 
     def plot_accuracies_over_time(self, subsect = 0):
         return self._add_plot_values(lambda gd_result: gd_result.get_accuracy_over_time()[subsect:])
@@ -106,6 +112,9 @@ class GradientDescentResultPlotter:
         if self._x_values is None:
             raise Exception("Failed to find any x-values for plot!")
         
+        if self._y_logarithmic:
+            plt.yscale('log')
+
         for index, target in enumerate(self._plot_targets):
             label = self._result_labels[index] if len(self._result_labels) > index else None
             print(label)

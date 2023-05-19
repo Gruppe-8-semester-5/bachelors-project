@@ -50,7 +50,7 @@ iterations = 50
 runner_results = [] # Our results
 test_set = {
     'w0': start_weight,
-    'GD_params': {'w0': start_weight, 'L':None,'mu':None, 'alpha': [0.01], 'beta': [0.9,0.7,0.5,0.1]},
+    'GD_params': {'w0': start_weight, 'start_alpha': [0.000001], 'overridden_beta': [0.9,0.7,0.5,0.1]},
     # 'GD_params': {'L': [0.01], 'w0': w0},
     'alg': [Nesterov_acceleration_adaptive],
     'model': multinomial_logistic_regression,
@@ -90,7 +90,7 @@ runner = Runner(dic = test_set)
 runner_results.append(runner.get_result()[0])
 test_set = {
     'w0': start_weight,
-    'GD_params': {'w0': start_weight, 'L':None,'mu':None, 'alpha': [0.2], 'beta': None},
+    'GD_params': {'w0': start_weight, 'start_alpha': [0.2]},
     # 'GD_params': {'L': [0.01], 'w0': w0},
     'alg': [Nesterov_acceleration_adaptive],
     'model': multinomial_logistic_regression,
