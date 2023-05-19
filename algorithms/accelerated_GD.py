@@ -6,6 +6,7 @@ import numpy as np
 
 class Nesterov_acceleration:
     def __init__(self, w0: np.ndarray, L: float = 0.01, mu: float = None, alpha: float = None, beta: float = None) -> None:
+        print("Note: Using NON-adaptive nesterov, make sure this is intended!")
         self.w0 = w0
         self.alpha = alpha
         self.beta = beta

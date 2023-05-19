@@ -44,4 +44,20 @@ runner = Runner(dic = test_set)
 std_gd_result: GradientDescentResult = runner.get_result()[0]
 runner_results.append(std_gd_result)
 
+test_set = {
+    'w0': w0[0],
+    'GD_params': {'step_size': [0.05]},
+    # 'GD_params': {'L': [0.01], 'w0': w0},
+    'alg': [Standard_GD],
+    'model': multinomial_logistic_regression,
+    'max_iter': iterations,
+    'data_set': (X_train, y_train),
+    'test_set': (X_test, y_test),
+    'epsilon':0,
+    'auto_stop': False,
+    'batch': None
+}
+runner = Runner(dic = test_set)
+runner_results.append(runner.get_result()[0])
+
 # GradientDescentResultPlotter(runner_results).plot_distance_to_zero_gradient_over_time().plot()

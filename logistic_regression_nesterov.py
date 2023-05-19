@@ -2,6 +2,7 @@ import math
 import random
 import matplotlib.pyplot as plt
 import numpy as np
+from algorithms.accelerated_GD_adaptive import Nesterov_acceleration_adaptive
 from analysis.gradient_descent_result_plotting import GradientDescentResultPlotter
 from datasets.winequality.files import read_wine_data
 from datasets.winequality.wine import Wine
@@ -51,7 +52,7 @@ test_set = {
     'w0': start_weight,
     'GD_params': {'w0': start_weight, 'L':None,'mu':None, 'alpha': [0.01], 'beta': [0.9,0.7,0.5,0.1]},
     # 'GD_params': {'L': [0.01], 'w0': w0},
-    'alg': [Nesterov_acceleration],
+    'alg': [Nesterov_acceleration_adaptive],
     'model': multinomial_logistic_regression,
     'max_iter': iterations,
     'data_set': (feature_array_train, label_array_train),
@@ -91,7 +92,7 @@ test_set = {
     'w0': start_weight,
     'GD_params': {'w0': start_weight, 'L':None,'mu':None, 'alpha': [0.2], 'beta': None},
     # 'GD_params': {'L': [0.01], 'w0': w0},
-    'alg': [Nesterov_acceleration],
+    'alg': [Nesterov_acceleration_adaptive],
     'model': multinomial_logistic_regression,
     'max_iter': iterations,
     'data_set': (feature_array_train, label_array_train),
