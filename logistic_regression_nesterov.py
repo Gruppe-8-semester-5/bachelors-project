@@ -45,30 +45,6 @@ label_array_train = np.array(label_list_train)
 label_list_test = list(map(lambda wine: wine.get_quality(), test_wines))
 label_array_test = np.array(label_list_test)
 
-# Compare different values for beta in nesterov
-iterations = 50
-runner_results = [] # Our results
-test_set = {
-    'w0': start_weight,
-    'GD_params': {'w0': start_weight, 'start_alpha': [0.000001], 'overridden_beta': [0.9,0.7,0.5,0.1]},
-    # 'GD_params': {'L': [0.01], 'w0': w0},
-    'alg': [Nesterov_acceleration_adaptive],
-    'model': multinomial_logistic_regression,
-    'max_iter': iterations,
-    'data_set': (feature_array_train, label_array_train),
-    'test_set': (feature_array_test, label_array_test),
-    'epsilon':0,
-    'auto_stop': False,
-    'batch': None
-}
-runner = Runner(dic = test_set)
-runner_results.append(runner.get_result()[0])
-runner_results.append(runner.get_result()[1])
-runner_results.append(runner.get_result()[2])
-runner_results.append(runner.get_result()[3])
-GradientDescentResultPlotter(runner_results).plot_distance_to_zero_gradient_over_time().hide_y_axis().legend_placed("center right").with_result_labelled(["beta = 0.9","beta = 0.7","beta = 0.5","beta = 0.1"]).plot()
-
-
 # Compare nesterov and momentum
 iterations = 40
 runner_results = [] # Our results

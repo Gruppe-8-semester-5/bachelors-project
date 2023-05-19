@@ -29,10 +29,8 @@ feature_norm_sum = 0
 n = len(feature_array)
 for i in range(0, n):
     features = feature_array[i]
-    label = label_array[i]
-    feature_norm_sum += label * np.linalg.norm(features)
+    feature_norm_sum += np.linalg.norm(features) ** 2
 
-
-print("sum ||y_i||||x_i||^2 = ", feature_norm_sum)
+print("sum ||x_i||^2 = ", feature_norm_sum)
 
 print("Giving us L = ", lipschitz_binary_neg_log_likelihood(feature_array, label_array))
