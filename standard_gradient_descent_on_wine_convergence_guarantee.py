@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from algorithms.accelerated_GD import Nesterov_acceleration
+from analysis.gradient_descent_result_plotting import GradientDescentResultPlotter
 from datasets.winequality.files import read_wine_data
 from analysis.lipschitz import lipschitz_binary_neg_log_likelihood
 from datasets.winequality.wine import Wine
@@ -44,269 +45,69 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.zeros(feature_size)
-iterations = 100000
+iterations = 100
 
 
 descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Standard_GD(1/lipschitz),
+    Standard_GD(1/(lipschitz)),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-descent_result_l46: GradientDescentResult = gradient_descent_template.find_minima(
+
+descent_result_025lipchitz: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Standard_GD(1/4300),
+    Standard_GD(1/(lipschitz/4)),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-descent_result_l44: GradientDescentResult = gradient_descent_template.find_minima(
+
+descent_result_05lipchitz: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Standard_GD(1/4400),
+    Standard_GD(1/(lipschitz/2)),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-descent_result_l47: GradientDescentResult = gradient_descent_template.find_minima(
+
+descent_result_2lipchitz: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Standard_GD(1/4600),
+    Standard_GD(1/(lipschitz*2)),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-descent_result_l48: GradientDescentResult = gradient_descent_template.find_minima(
+
+descent_result_4lipchitz: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Standard_GD(1/4700),
+    Standard_GD(1/(lipschitz*4)),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-# descent_result_07: GradientDescentResult = gradient_descent_template.find_minima(
-#     start_gradient, 
-#     Standard_GD(0.7),
-#     lambda w: gradient(feature_array, color_label_array, w), 
-#     max_iter=iterations,
-#     epsilon=1.0e-2,
-#     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-# descent_result_05: GradientDescentResult = gradient_descent_template.find_minima(
-#     start_gradient, 
-#     Standard_GD(0.5),
-#     lambda w: gradient(feature_array, color_label_array, w), 
-#     max_iter=iterations,
-#     epsilon=1.0e-2,
-#     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-
-#descent_result_0001: GradientDescentResult = gradient_descent_template.find_minima(
-#    start_gradient, 
-#    Standard_GD(0.001),
-#    lambda w: gradient(feature_array, color_label_array, w), 
-#    max_iter=iterations,
-#    epsilon=1.0e-2,
-#    accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-#
-#descent_result_001: GradientDescentResult = gradient_descent_template.find_minima(
-#    start_gradient, 
-#    Standard_GD(0.01),
-#    lambda w: gradient(feature_array, color_label_array, w), 
-#    max_iter=iterations,
-#    epsilon=1.0e-2,
-#    accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-#
-#descent_result_005: GradientDescentResult = gradient_descent_template.find_minima(
-#    start_gradient, 
-#    Standard_GD(0.05),
-#    lambda w: gradient(feature_array, color_label_array, w), 
-#    max_iter=iterations,
-#    epsilon=1.0e-2,
-#    accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-#
-#descent_result_01: GradientDescentResult = gradient_descent_template.find_minima(
-#    start_gradient, 
-#    Standard_GD(0.1),
-#    lambda w: gradient(feature_array, color_label_array, w), 
-#    max_iter=iterations,
-#    epsilon=1.0e-2,
-#    accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-#
-#descent_result_05: GradientDescentResult = gradient_descent_template.find_minima(
-#    start_gradient,
-#    Standard_GD(0.5),
-#    lambda w: gradient(feature_array, color_label_array, w), 
-#    max_iter=iterations,
-#    epsilon=1.0e-2,
-#    accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-#
-#descent_result_1: GradientDescentResult = gradient_descent_template.find_minima(
-#    start_gradient, 
-#    Standard_GD(1),
-#    lambda w: gradient(feature_array, color_label_array, w), 
-#    max_iter=iterations,
-#    epsilon=1.0e-2,
-#    accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
-
-# plots distance to final point
-# number_of_points = descent_result.number_of_points()
-# plt.rcParams["figure.figsize"] = [7.50, 3.50]
-# plt.rcParams["figure.autolayout"] = True
-# x_values = [i for i in range(number_of_points)]
-# y_values = descent_result.get_distances_to_final_point()
-# plt.plot(x_values, y_values, linestyle="-")
-# plt.show()
-
-
-# Plot accuracy over time
-#number_of_points = descent_result_lipchitz.number_of_points()
-#plt.rcParams["figure.figsize"] = [7.50, 3.50]
-#plt.rcParams["figure.autolayout"] = True
-#x_values = [i for i in range(number_of_points)]
-#plt.plot(x_values, descent_result_lipchitz.get_accuracy_over_time(), label="a = 1/L")
-#plt.plot(x_values, descent_result_0001.get_accuracy_over_time(), label="a = 0.001")
-#plt.plot(x_values, descent_result_001.get_accuracy_over_time(), label="a = 0.01")
-#plt.plot(x_values, descent_result_005.get_accuracy_over_time(), label="a = 0.05")
-#plt.plot(x_values, descent_result_01.get_accuracy_over_time(), label="a = 0.1")
-#plt.plot(x_values, descent_result_05.get_accuracy_over_time(), label="a = 0.5")
-#plt.plot(x_values, descent_result_1.get_accuracy_over_time(), label="a = 1")
-#plt.show()
-
-
-# plots distance to best point
-# number_of_points = descent_result_lipchitz.number_of_points()
-# plt.rcParams["figure.figsize"] = [7.50, 3.50]
-# plt.rcParams["figure.autolayout"] = True
-# x_values = [i for i in range(number_of_points)]
-# y_values = descent_result_lipchitz.get_distances_to_best_point()
-# plt.plot(x_values, y_values, label="a = 1/L", linestyle="-")
-# plt.plot(x_values, descent_result_0001.get_distances_to_best_point(), label="a = 0.01")
-# plt.plot(x_values, descent_result_001.get_distances_to_best_point(), label="a = 0.01")
-# plt.plot(x_values, descent_result_005.get_distances_to_best_point(), label="a = 0.05")
-# plt.plot(x_values, descent_result_01.get_distances_to_best_point(), label="a = 0.1")
-# plt.plot(x_values, descent_result_05.get_distances_to_best_point(), label="a = 0.5")
-# plt.plot(x_values, descent_result_1.get_distances_to_best_point(), label="a = 1")
-# plt.legend(loc='upper right')
-# plt.show()
-
-
-# plots distance to best lipschitz point
-best_lipschitz_point = descent_result_lipchitz.get_most_accurate_weights()
-
-# descent_result_0001.set_best_weights(best_lipschitz_point)
-# descent_result_001.set_best_weights(best_lipschitz_point)
-# descent_result_005.set_best_weights(best_lipschitz_point)
-# descent_result_01.set_best_weights(best_lipschitz_point)
-# descent_result_05.set_best_weights(best_lipschitz_point)
-# descent_result_1.set_best_weights(best_lipschitz_point)
-
-# plt.rcParams["figure.figsize"] = [7.50, 3.50]
-# plt.rcParams["figure.autolayout"] = True
-# x_values = [i for i in range(number_of_points)]
-# y_values = descent_result_lipchitz.get_distances_to_best_point()
-# plt.plot(x_values, y_values, label="a = 1/L", linestyle="-")
-# plt.plot(x_values, descent_result_0001.get_distances_to_best_point(), label="a = 0.01")
-# plt.plot(x_values, descent_result_001.get_distances_to_best_point(), label="a = 0.01")
-# plt.plot(x_values, descent_result_005.get_distances_to_best_point(), label="a = 0.05")
-# plt.plot(x_values, descent_result_01.get_distances_to_best_point(), label="a = 0.1")
-# plt.plot(x_values, descent_result_05.get_distances_to_best_point(), label="a = 0.5")
-# plt.plot(x_values, descent_result_1.get_distances_to_best_point(), label="a = 1")
-# plt.legend(loc='upper right')
-# plt.show()
-
-# dump_array_to_csv(descent_result_lipchitz.get_distances_to_best_point(), "lipschitz_dist_to_best_gradients.csv")
-
-# Plot best weight to respective best weight
-# number_of_points = descent_result_lipchitz.number_of_points()
-# plt.rcParams["figure.figsize"] = [7.50, 3.50]
-# plt.rcParams["figure.autolayout"] = True
-# x_values = [i for i in range(len(descent_result_lipchitz.get_best_weight_over_time_distances_to_best_weight()))]
-# plt.plot(x_values, descent_result_lipchitz.get_best_weight_over_time_distances_to_best_weight(), label="a = 1/L")
-# plt.plot(x_values, descent_result_0001.get_best_weight_over_time_distances_to_best_weight(), label="a = 0.001")
-# plt.plot(x_values, descent_result_001.get_best_weight_over_time_distances_to_best_weight(), label="a = 0.01")
-# plt.plot(x_values, descent_result_005.get_best_weight_over_time_distances_to_best_weight(), label="a = 0.05")
-# plt.plot(x_values, descent_result_01.get_best_weight_over_time_distances_to_best_weight(), label="a = 0.1")
-# #plt.plot(x_values, descent_result_05.get_best_weight_over_time_distances_to_best_weight(), label="a = 0.5")
-# #plt.plot(x_values, descent_result_1.get_best_weight_over_time_distances_to_best_weight(), label="a = 1")
-# plt.legend(loc='upper right')
-# plt.show()
-
 
 # Plot best weight to absolute best weight
 # Figure out which performed the best
-to_compare: list[GradientDescentResult] = [
-    descent_result_lipchitz,
-    descent_result_l44,
-    descent_result_l46,
-    descent_result_l47,
-    descent_result_l48,
+results: list[GradientDescentResult] = [
+    descent_result_025lipchitz, 
+    descent_result_05lipchitz, 
+    descent_result_lipchitz, 
+    descent_result_2lipchitz, 
+    descent_result_4lipchitz
 ]
+
 closest_distance = np.Infinity
 best_performer = None
-for result in to_compare:
+for result in results:
     result_closest = result.get_best_weight_derivation_distances_to_zero_over_time()[iterations-1]
     if result_closest < closest_distance:
         closest_distance = result_closest
         best_performer = result
 
 ## Then we set the best weights of the result, such that the performance calculations will be relative to the best result
-descent_result_lipchitz.set_closest_to_zero_derivation_weight(best_performer.get_closest_to_zero_derivation_weights_over_time()[iterations-1])
-descent_result_l44.set_closest_to_zero_derivation_weight(best_performer.get_closest_to_zero_derivation_weights_over_time()[iterations-1])
-descent_result_l46.set_closest_to_zero_derivation_weight(best_performer.get_closest_to_zero_derivation_weights_over_time()[iterations-1])
-descent_result_l47.set_closest_to_zero_derivation_weight(best_performer.get_closest_to_zero_derivation_weights_over_time()[iterations-1])
-descent_result_l48.set_closest_to_zero_derivation_weight(best_performer.get_closest_to_zero_derivation_weights_over_time()[iterations-1])
+for result in results:
+    result.set_closest_to_zero_derivation_weight(best_performer.get_closest_to_zero_derivation_weights_over_time()[iterations - 1])
 
-
-plt.rcParams["figure.figsize"] = [7.50, 3.50]
-plt.rcParams["figure.autolayout"] = True
-x_values = [i for i in range(len(descent_result_lipchitz.get_closest_derivation_distance_to_closest_to_zero_derivation_over_time()))]
-plt.plot(x_values, descent_result_lipchitz.get_closest_derivation_distance_to_closest_to_zero_derivation_over_time(), label="a = 1/L")
-#plt.plot(x_values, descent_result_0001.get_distances_to_best_weight(), label="a = 0.001")
-#plt.plot(x_values, descent_result_001.get_distances_to_best_weight(), label="a = 0.01")
-#plt.plot(x_values, descent_result_005.get_distances_to_best_weight(), label="a = 0.05")
-#plt.plot(x_values, descent_result_01.get_distances_to_best_weight(), label="a = 0.1")
-#plt.plot(x_values, descent_result_05.get_distances_to_best_weight(), label="a = 0.5")
-plt.plot(x_values, descent_result_l44.get_closest_derivation_distance_to_closest_to_zero_derivation_over_time(), label="a = 1/4400")
-plt.plot(x_values, descent_result_l46.get_closest_derivation_distance_to_closest_to_zero_derivation_over_time(), label="a = 1/4600")
-plt.plot(x_values, descent_result_l47.get_closest_derivation_distance_to_closest_to_zero_derivation_over_time(), label="a = 1/4700")
-plt.plot(x_values, descent_result_l48.get_closest_derivation_distance_to_closest_to_zero_derivation_over_time(), label="a = 1/4800")
-#plt.plot(x_values, descent_result_07.get_distances_to_best_weight(), label="a = 0.7")
-#plt.plot(x_values, descent_result_1.get_distances_to_best_weight(), label="a = 1")
-plt.legend(loc='upper left')
-# plt.yscale('log')
-plt.show()
-
-print(best_performer.get_best_accuracy())
-
-dump_array_to_csv(descent_result_lipchitz.get_distances_to_most_accurate_weight(), "descent_result_lipchitz.get_distances_to_best_weight.csv", True, "100k")
-dump_array_to_csv(descent_result_lipchitz.get_distances_to_final_weight(), "descent_result_lipchitz.get_distances_to_final_weight.csv", True, "100k")
-dump_array_to_csv(descent_result_lipchitz.get_running_distance_to_most_accurate_weights_average(), "descent_result_lipchitz.get_running_distance_to_best_weights_average.csv", True, "100k")
-dump_array_to_csv(descent_result_lipchitz.get_best_weight_over_time_distances_to_best_weight(), "descent_result_lipchitz.get_best_weight_over_time_distances_to_best_weight.csv", True, "100k")
-dump_array_to_csv(descent_result_lipchitz.get_accuracy_over_time(), "descent_result_lipchitz.get_accuracy_over_time.csv", True, "100k")
-dump_array_to_csv(descent_result_lipchitz.get_best_weights_over_time(), "descent_result_lipchitz.get_best_weights_over_time.csv", True, "100k")
-dump_array_to_csv(descent_result_lipchitz.get_weights_over_time(), "descent_result_lipchitz.get_best_weights_over_time.csv", True, "100k")
-dump_array_to_csv(descent_result_lipchitz.get_most_accurate_weights(), "descent_result_lipchitz.get_best_weights.csv", True)
-#
-#dump_array_to_csv(descent_result_01.get_distances_to_best_weight(), "descent_result_01.get_distances_to_best_weight.csv", True, "100k")
-#dump_array_to_csv(descent_result_01.get_distances_to_final_weight(), "descent_result_01.get_distances_to_final_weight.csv", True, "100k")
-#dump_array_to_csv(descent_result_01.get_running_distance_to_best_weights_average(), "descent_result_01.get_running_distance_to_best_weights_average.csv", True, "100k")
-#dump_array_to_csv(descent_result_01.get_best_weight_over_time_distances_to_best_weight(), "descent_result_01.get_best_weight_over_time_distances_to_best_weight.csv", True, "100k")
-#dump_array_to_csv(descent_result_01.get_accuracy_over_time(), "descent_result_01.get_accuracy_over_time.csv", True, "100k")
-#dump_array_to_csv(descent_result_01.get_best_weights_over_time(), "descent_result_01.get_best_weights_over_time.csv", True, "100k")
-#dump_array_to_csv(descent_result_01.get_weights_over_time(), "descent_result_01.get_best_weights_over_time.csv", True, "100k")
-#dump_array_to_csv(descent_result_01.get_best_weights(), "descent_result_01.get_best_weights.csv", True, "100k")
-#
-#dump_array_to_csv(descent_result_005.get_distances_to_best_weight(), "descent_result_005.get_distances_to_best_weight.csv", True, "100k")
-#dump_array_to_csv(descent_result_005.get_distances_to_final_weight(), "descent_result_005.get_distances_to_final_weight.csv", True, "100k")
-#dump_array_to_csv(descent_result_005.get_running_distance_to_best_weights_average(), "descent_result_005.get_running_distance_to_best_weights_average.csv", True, "100k")
-#dump_array_to_csv(descent_result_005.get_best_weight_over_time_distances_to_best_weight(), "descent_result_005.get_best_weight_over_time_distances_to_best_weight.csv", True, "100k")
-#dump_array_to_csv(descent_result_005.get_accuracy_over_time(), "descent_result_005.get_accuracy_over_time.csv", True, "100k")
-#dump_array_to_csv(descent_result_005.get_best_weights_over_time(), "descent_result_005.get_best_weights_over_time.csv", True, "100k")
-#dump_array_to_csv(descent_result_005.get_weights_over_time(), "descent_result_005.get_best_weights_over_time.csv", True, "100k")
-#dump_array_to_csv(descent_result_005.get_best_weights(), "descent_result_005.get_best_weights.csv", True, "100k")
-#
-#dump_array_to_csv(descent_result_001.get_distances_to_best_weight(), "descent_result_001.get_distances_to_best_weight.csv", True, "100k")
-#dump_array_to_csv(descent_result_001.get_distances_to_final_weight(), "descent_result_001.get_distances_to_final_weight.csv", True, "100k")
-#dump_array_to_csv(descent_result_001.get_running_distance_to_best_weights_average(), "descent_result_001.get_running_distance_to_best_weights_average.csv", True, "100k")
-#dump_array_to_csv(descent_result_001.get_best_weight_over_time_distances_to_best_weight(), "descent_result_001.get_best_weight_over_time_distances_to_best_weight.csv", True, "100k")
-#dump_array_to_csv(descent_result_001.get_accuracy_over_time(), "descent_result_001.get_accuracy_over_time.csv", True, "100k")
-#dump_array_to_csv(descent_result_001.get_best_weights_over_time(), "descent_result_001.get_best_weights_over_time.csv", True, "100k")
-#dump_array_to_csv(descent_result_001.get_weights_over_time(), "descent_result_001.get_best_weights_over_time.csv", True, "100k")
-#dump_array_to_csv(descent_result_001.get_best_weights(), "descent_result_001.get_best_weights.csv", True, "100k")
+GradientDescentResultPlotter(results).plot_best_weight_distance_to_zero_gradient_over_time(20).hide_y_axis().with_result_labelled(["1/0.25L","1/0.5L","1/L","1/2L","1/4L"]).legend_placed("upper left").plot()

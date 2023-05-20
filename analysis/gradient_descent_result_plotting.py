@@ -55,8 +55,10 @@ class GradientDescentResultPlotter:
         self._y_logarithmic = True
         return self
 
-    def plot_accuracies_over_time(self, subsect = 0):
-        return self._add_plot_values(lambda gd_result: gd_result.get_accuracy_over_time()[subsect:])
+    def plot_accuracies_over_time(self, plot_from = 0, plot_to = None):
+        if plot_to is None:
+            return self._add_plot_values(lambda gd_result: gd_result.get_accuracy_over_time()[plot_from:])
+        return self._add_plot_values(lambda gd_result: gd_result.get_accuracy_over_time()[plot_from : plot_to])
     
     def plot_distance_to_final_weight_over_time(self):
         return self._add_plot_values(lambda gd_result: gd_result.get_distances_to_final_weight())
@@ -64,9 +66,11 @@ class GradientDescentResultPlotter:
     def plot_distance_to_zero_gradient_over_time(self):
         return self._add_plot_values(lambda gd_result: gd_result.get_derivation_distances_to_zero_over_time())
     
-    def plot_best_weight_distance_to_zero_gradient_over_time(self):
-        return self._add_plot_values(lambda gd_result: gd_result.get_best_weight_derivation_distances_to_zero_over_time())
-    
+    def plot_best_weight_distance_to_zero_gradient_over_time(self, plot_from = 0, plot_to = None):
+        if plot_to is None:
+            return self._add_plot_values(lambda gd_result: gd_result.get_best_weight_derivation_distances_to_zero_over_time(plot_from))
+        return self._add_plot_values(lambda gd_result: gd_result.get_best_weight_derivation_distances_to_zero_over_time(plot_from, plot_to))
+       
     def with_x_values(self, x_values):
         self._x_values = x_values
         return self

@@ -96,4 +96,6 @@ results = [
     descent_result_4lipchitz
     ]
 
-GradientDescentResultPlotter(results).plot_distance_to_absolute_most_accurate_weight().hide_y_axis().with_result_labelled(["0.25L","0.5L","L","2L","4L"]).legend_placed("upper left").plot()
+GradientDescentResultPlotter(results).plot_distance_to_absolute_most_accurate_weight().hide_y_axis().with_result_labelled(["1/0.25L","1/0.5L","1/L","1/2L","1/4L"]).legend_placed("upper left").plot()
+
+GradientDescentResultPlotter([results[2], results[4]]).plot_best_weight_distance_to_zero_gradient_over_time(0, 150).hide_y_axis().with_result_labelled(["1/L","1/2L"]).legend_placed("upper left").plot()

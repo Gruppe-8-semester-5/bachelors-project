@@ -116,8 +116,11 @@ class GradientDescentResult(Serializable):
             self._derivations_over_time = np.array(list(map(lambda w: self.get_deriviation()(w), weights))) 
         return self._derivations_over_time
     
-    def get_closest_to_zero_derivations_over_time(self) -> np.ndarray:
-        weights = self.get_weights_over_time()
+    def get_closest_to_zero_derivations_over_time(self, from_iteration = 0, to_iteration = None) -> np.ndarray:
+        if to_iteration is None:
+            weights = self.get_weights_over_time()[from_iteration:]
+        else:
+            weights = self.get_weights_over_time()[from_iteration : to_iteration]
 
         best_derivations = []
         best_div = self.get_deriviation()(weights[0])
@@ -163,9 +166,9 @@ class GradientDescentResult(Serializable):
     def get_derivation_distances_to_zero_over_time(self):
         return list(map(lambda div: euclid_distance(np.zeros_like(div), div), self.get_derivations_over_time()))
     
-    def get_best_weight_derivation_distances_to_zero_over_time(self):
-        return list(map(lambda div: euclid_distance(np.zeros_like(div), div), self.get_closest_to_zero_derivations_over_time()))
-        
+    def get_best_weight_derivation_distances_to_zero_over_time(self, from_iteration = 0, to_iteration = None):
+        return list(map(lambda div: euclid_distance(np.zeros_like(div), div), self.get_closest_to_zero_derivations_over_time(from_iteration, to_iteration)))
+
     def get_distance_to_best_improvement_deltas(self, allow_zeros=True) -> np.ndarray:
         points = self.get_distances_to_most_accurate_weight()
         result = list()

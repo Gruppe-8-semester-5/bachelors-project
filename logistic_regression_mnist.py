@@ -60,4 +60,4 @@ test_set = {
 runner = Runner(dic = test_set)
 runner_results.append(runner.get_result()[0])
 
-# GradientDescentResultPlotter(runner_results).plot_distance_to_zero_gradient_over_time().plot()
+GradientDescentResultPlotter(runner_results).plot_distance_to_zero_gradient_over_time().plot()
