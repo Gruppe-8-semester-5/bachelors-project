@@ -5,7 +5,12 @@ from algorithms.gradient_descent_result import GradientDescentResult
 
 
 class GradientDescentResultPlotter:
-    """Builder pattern for showing plots"""
+    """Builder pattern for showing plots
+    Ends with `.plot()`
+    
+    Example use
+    `GradientDescentResultPlotter(results).plot_accuracies_over_time().plot()`
+    """
     
     _results: list[GradientDescentResult]
     _result_labels: list[str]
@@ -71,7 +76,7 @@ class GradientDescentResultPlotter:
         self._plotted_functions.append(function)
         return self
 
-    def plot_distance_to_absolute_best_weight(self):
+    def plot_distance_to_absolute_most_accurate_weight(self):
         best_performer = self._results[0]
         # Find best performer
         for result in self._results:

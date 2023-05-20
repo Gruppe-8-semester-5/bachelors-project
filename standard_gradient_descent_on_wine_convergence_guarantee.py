@@ -44,7 +44,7 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.zeros(feature_size)
-iterations = 3000
+iterations = 100000
 
 
 descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_minima(
@@ -56,7 +56,7 @@ descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
 descent_result_l46: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Standard_GD(1/4600),
+    Standard_GD(1/4300),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
@@ -70,14 +70,14 @@ descent_result_l44: GradientDescentResult = gradient_descent_template.find_minim
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
 descent_result_l47: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Standard_GD(1/4700),
+    Standard_GD(1/4600),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
     accuracy=(lambda w: accuracy(color_label_array, make_predictions(w))))
 descent_result_l48: GradientDescentResult = gradient_descent_template.find_minima(
     start_gradient, 
-    Standard_GD(1/4800),
+    Standard_GD(1/4700),
     lambda w: gradient(feature_array, color_label_array, w), 
     max_iter=iterations,
     epsilon=1.0e-2,
@@ -270,7 +270,7 @@ plt.plot(x_values, descent_result_l48.get_closest_derivation_distance_to_closest
 #plt.plot(x_values, descent_result_07.get_distances_to_best_weight(), label="a = 0.7")
 #plt.plot(x_values, descent_result_1.get_distances_to_best_weight(), label="a = 1")
 plt.legend(loc='upper left')
-plt.yscale('log')
+# plt.yscale('log')
 plt.show()
 
 print(best_performer.get_best_accuracy())
