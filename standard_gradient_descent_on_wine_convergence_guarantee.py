@@ -45,7 +45,7 @@ def make_predictions(weights):
     return predictions
 
 start_gradient = np.zeros(feature_size)
-iterations = 100
+iterations = 1000
 
 
 descent_result_lipchitz: GradientDescentResult = gradient_descent_template.find_minima(
@@ -110,4 +110,6 @@ for result in results:
 for result in results:
     result.set_closest_to_zero_derivation_weight(best_performer.get_closest_to_zero_derivation_weights_over_time()[iterations - 1])
 
-GradientDescentResultPlotter(results).plot_best_weight_distance_to_zero_gradient_over_time(20).hide_y_axis().with_result_labelled(["1/0.25L","1/0.5L","1/L","1/2L","1/4L"]).legend_placed("upper left").plot()
+convergence_rate_multiplier = 4000000 # Labeled C in plot
+
+GradientDescentResultPlotter(results).plot_best_weight_distance_to_zero_gradient_over_time(1).set_y_limit(0, 0.1*1e6).plot_function(lambda x: convergence_rate_multiplier/x if x != 0 else convergence_rate_multiplier).with_result_labelled(["1/0.25L","1/0.5L","1/L","1/2L","1/4L"]).with_functions_labelled(["C/x"]).legend_placed("upper left").plot()

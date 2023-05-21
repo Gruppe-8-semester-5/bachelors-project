@@ -19,6 +19,7 @@ class GradientDescentResultPlotter:
     _y_axis_hidden: bool
     _x_values: list[int | float] | np.ndarray | None
     _y_logarithmic: bool
+    _y_limit: None | tuple
 
     def __init__(self, results: list[GradientDescentResult]) -> None:
         # Check all results are of the same dimension
@@ -34,6 +35,7 @@ class GradientDescentResultPlotter:
         self._y_axis_hidden = False
         self._x_values = None
         self._y_logarithmic = False
+        self._y_limit = None
     
         for result in results:
             if len(result.get_accuracy_over_time()) != len(first_result.get_accuracy_over_time()):
@@ -41,7 +43,7 @@ class GradientDescentResultPlotter:
             if len(result.get_weights_over_time()) != len(first_result.get_weights_over_time()):
                 raise Exception("Failed to create plotter. All results must have comparable data. Not all weight arrays are of the same size!")
             if result.get_final_weight().shape != first_result.get_final_weight().shape:
-                raise Exception("Failed to create plotter. All results must have comparable data. Weight shape are not the same!")
+                print("Warning! All results do not have comparable data. Weight shape are not the same! Some plotting functions will not work properly.")
         
         # Initialize plt to plot 
         plt.rcParams["figure.figsize"] = [7.50, 3.50]
@@ -105,6 +107,11 @@ class GradientDescentResultPlotter:
         self._legend_placement = location
         return self
     
+    def set_y_limit(self, min: float, max: float):
+        self._y_limit = (min, max)
+        return self
+
+
     def hide_y_axis(self):
         self._y_axis_hidden = True
         return self
@@ -138,5 +145,9 @@ class GradientDescentResultPlotter:
         if self._y_axis_hidden:
             ax = plt.gca()
             ax.get_yaxis().set_visible(False)
+
+        if self._y_limit is not None:
+            ax = plt.gca()
+            ax.set(ylim=self._y_limit)
 
         plt.show()

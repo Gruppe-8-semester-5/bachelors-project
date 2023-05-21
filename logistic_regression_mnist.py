@@ -23,8 +23,8 @@ X_test, y_test = mnist_test_X_y(1000)
 
 K = 10
 
-iterations = 1000
-runner_results = [] # Our results
+iterations = 100000
+runner_results: list[GradientDescentResult] = [] # Our results
 input_dim = X_train.shape[1]
 w0 = two_hidden_relu_softmax.initial_params(X_train.shape[1], 50, K)
 test_set = {
@@ -46,7 +46,7 @@ runner_results.append(std_gd_result)
 
 test_set = {
     'w0': w0[0],
-    'GD_params': {'step_size': [0.05]},
+    'GD_params': {'step_size': [0.2]},
     # 'GD_params': {'L': [0.01], 'w0': w0},
     'alg': [Standard_GD],
     'model': multinomial_logistic_regression,
@@ -60,4 +60,7 @@ test_set = {
 runner = Runner(dic = test_set)
 runner_results.append(runner.get_result()[0])
 
-GradientDescentResultPlotter(runner_results).plot_distance_to_zero_gradient_over_time().plot()
+
+#print(runner_results[0].accuracies)
+
+GradientDescentResultPlotter([runner_results[1]]).plot_accuracies_over_time().plot()

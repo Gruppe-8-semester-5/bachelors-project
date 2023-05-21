@@ -15,13 +15,6 @@ def predict(w:np.ndarray, features: np.ndarray) -> int:
     """The logistic regression prediction for a single point. Gives outputs of {-1, 1}"""
     return np.sign(sigmoid(features @ w) * 2 - 1)
 
-
-def negative_log_likelihood(X, y, weights):
-    z = np.dot(X, weights)
-    p = 1 / (1 + np.exp(-z))
-    nll = -np.sum(y * np.log(p) + (1 - y) * np.log(1 - p))
-    return nll
-
 def gradient_k(X, y, weights) -> np.ndarray:
     X = torch.from_numpy(X)
     y = torch.from_numpy(y)
