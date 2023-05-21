@@ -1,10 +1,13 @@
 import math
 import numpy as np
+import torch
 
 
 def sigmoid(z):
     return 1/(1+(np.exp(-z)))
 
+def to_torch(*vals):
+    return map(torch.from_numpy, vals)
 
 def accuracy(actual: np.ndarray, predictions: np.ndarray):
     return 1 - np.mean(actual != predictions)
