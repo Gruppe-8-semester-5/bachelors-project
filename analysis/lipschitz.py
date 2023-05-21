@@ -20,3 +20,9 @@ def lipschitz_binary_neg_log_likelihood(feature_set: np.ndarray, labels: np.ndar
     scale = 1/(4*n)
 
     return scale * feature_norm_sum
+
+def lipschitz_binary_neg_log_likelihood_regularized(feature_set: np.ndarray, labels: np.ndarray, weight_factor: float = 0.01):
+    """
+    2 + binary neg log.
+    """
+    return weight_factor * 2 + lipschitz_binary_neg_log_likelihood(feature_set, labels)
