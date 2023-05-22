@@ -135,4 +135,4 @@ dmypy.json
 webservice/node_modules
 webservice/dist
 .out/
-.figures/
+.figures
