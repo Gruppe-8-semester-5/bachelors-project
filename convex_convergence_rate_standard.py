@@ -8,8 +8,15 @@ from test_runner.test_runner_file import Runner
 from models.utility import to_torch
 import models.logistic_torch as cur_model
 
+folder = 'figures/'
+
+def save(fname):
+    plt.savefig(fname=folder + fname + '.png', format='png')
+    plt.close()
+
+
 epsilon=1.0e-10
-iterations = 200
+iterations = 150
 
 # X, y = mnist_train_X_y()
 
@@ -67,24 +74,29 @@ for res in results_large:
 # y_vals = [L * diff / 2 * 1 / (k) for k in x_values]
 
 # import pyperclip
-# pyperclip.copy('\n'.join(map(lambda x: str(x.item()), loss_diff_normal[1])))
+# pyperclip.copy('\n'.join(map(lambda x: str(x.item()), loss_diff_normal[2])))
 for i, loss in enumerate(loss_diff_normal):
     plt.plot(x_values, loss, label=f"{constants_normal[i]}/L")
 # plt.plot(x_values, y_vals, label=f"(Worst case)")
 plt.legend(loc='center right')
-plt.show()
+# plt.savefig(fname='Test.png', format='png')
+save('convergence_convex_normal')
+# plt.show()
 
 for i, loss in enumerate(loss_diff_large):
     plt.plot(x_values[:100], loss_diff_large[i], label=f"{constants_large[i]}/L")
 plt.legend(loc='center right')
-plt.show()
+save('convergence_convex_large')
+# plt.show()
 
 plt.plot(x_values, loss_diff_normal[2], label=f"1/L")
 # Values found using LoggerPro
-y_vals_1_x = [1.539 / (k) for k in x_values]
-y_vals_1_sqrt_x = [1.387 / (np.sqrt(k)) for k in x_values]
+y_vals_1_x = [1.694 / (k) for k in x_values]
+y_vals_1_sqrt_x = [1.623 / (np.sqrt(k)) for k in x_values]
 plt.plot(x_values, y_vals_1_x, label=f"1.539/k")
 plt.plot(x_values, y_vals_1_sqrt_x, label=f"1.387/sqrt(k)")
 plt.legend(loc='center right')
 plt.yscale('log')
-plt.show()
+save('convergence_convex_best_fit')
+# plt.savefig(fname=folder + 'convergence_convex_best_fit.png', format='png')
+# plt.show()

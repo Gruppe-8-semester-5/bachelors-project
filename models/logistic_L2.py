@@ -5,14 +5,16 @@ from models.utility import to_torch
 sigmoid = torch.nn.Sigmoid() 
 nll = torch.nn.BCEWithLogitsLoss()
 
-initial_params = original.initial_params
+L2_const = 1 / 50
+
+initial_params = lambda X: 1 / L2_const * original.initial_params(X)
 
 predict = original.predict
 
 negative_log_likelihood = original.negative_log_likelihood
 
 def L2(X):
-    return 1 / 100 * torch.sum(X ** 2)
+    return L2_const * torch.sum(X ** 2)
 
 def loss(X, y, weights):
     return negative_log_likelihood(X, y, weights) + L2(weights)
