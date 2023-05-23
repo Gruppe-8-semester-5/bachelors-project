@@ -2,26 +2,11 @@ import numpy as np
 from algorithms.accelerated_GD_adaptive import Nesterov_acceleration_adaptive
 from algorithms.adam import Adam
 from algorithms.gradient_descent_result import GradientDescentResult
-from analysis.gradient_descent_result_plotting import GradientDescentResultPlotter
-from datasets.mnist.files import mnist_test_X_y, mnist_train_X_y
-from algorithms.standard_GD import Standard_GD
-from datasets.winequality.files import wine_X_y_quality
-from models import one_hidden_relu_softmax, softmax_regression, two_hidden_relu_softmax
+from models import softmax_regression, two_hidden_relu_softmax
 from models.utility import make_train_and_test_sets
 from test_runner.test_runner_file import Runner
-from torchvision import datasets, transforms
 from datasets.fashion_mnist.files import fashion_mnist_X_y
-import torch
 
-transform = transforms.Compose(
-    [
-        transforms.ToTensor(),
-        transforms.Normalize(
-            (0.5,),
-            (0.5,),
-        ),
-    ]
-)
 np.random.seed(2)
 
 X, y = fashion_mnist_X_y()
@@ -62,8 +47,8 @@ print(
 
 K = 10
 comparison_results = []
-for layer1_size in [10, 20, 30, 40, 50, 70, 90, 120, 160, 200, 300]:
-    for layer2_size in [10, 20, 30, 40, 50, 70, 90, 120]:
+for layer1_size in [10, 20, 30, 40, 50, 70, 90, 120, 160, 200, 300, 600]:
+    for layer2_size in [10, 20, 30, 40, 50, 70, 90, 120, 200, 300, 600]:
         w0 = two_hidden_relu_softmax.initial_params(
             X_train.shape[1], layer1_size, layer2_size, K
         )
