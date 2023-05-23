@@ -10,31 +10,16 @@ from models import one_hidden_relu_softmax, softmax_regression, two_hidden_relu_
 from models.utility import make_train_and_test_sets
 from test_runner.test_runner_file import Runner
 from torchvision import datasets, transforms
+from datasets.fashion_mnist.files import fashion_mnist_X_y
 import torch
 transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,),(0.5,),)])
 np.random.seed(2)
 
-trainset = datasets.FashionMNIST('.data/fmnist', download=True, train=True, transform=transform)
-testset = datasets.FashionMNIST('.data/fmnist', download=True, train=False, transform=transform)
-
-
-x = torch.utils.data.DataLoader(trainset)
-dataiter = iter(x)
-X = []
-y = []
-for img, label in dataiter:
-    X.append(torch.flatten(img).tolist())
-    y.append(label.item())
-# print(X[0])
-# print(y[0])
-# exit()
-X = np.array(X)
-y = np.array(y)
-# X, y = wine_X_y_quality()
+X, y = fashion_mnist_X_y()
 (X_train, y_train), (X_test, y_test) = make_train_and_test_sets(X, y, 0.8)
 
 
-iterations = 1000
+iterations = 10000
 np.random.seed(0)
 
 startw = softmax_regression.initial_params(X_train, y_train)
