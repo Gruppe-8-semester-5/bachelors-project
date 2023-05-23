@@ -12,7 +12,16 @@ from test_runner.test_runner_file import Runner
 from torchvision import datasets, transforms
 from datasets.fashion_mnist.files import fashion_mnist_X_y
 import torch
-transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,),(0.5,),)])
+
+transform = transforms.Compose(
+    [
+        transforms.ToTensor(),
+        transforms.Normalize(
+            (0.5,),
+            (0.5,),
+        ),
+    ]
+)
 np.random.seed(2)
 
 X, y = fashion_mnist_X_y()
@@ -24,54 +33,58 @@ np.random.seed(0)
 startw = softmax_regression.initial_params(X_train, y_train)
 
 test_set = {
-    'w0': startw,
+    "w0": startw,
     # 'GD_params': {'step_size': 0.1},
-    'GD_params': {'L': [0.1], 'w0': startw},
-    'alg': [Nesterov_acceleration_adaptive],
-    'model': softmax_regression,
-    'max_iter': iterations,
-    'data_set': (X_train, y_train),
-    'test_set': (X_test, y_test),
-    'epsilon': 0,
-    'auto_stop': False,
-    'batch': None
+    "GD_params": {"L": [0.1], "w0": startw},
+    "alg": [Nesterov_acceleration_adaptive],
+    "model": softmax_regression,
+    "max_iter": iterations,
+    "data_set": (X_train, y_train),
+    "test_set": (X_test, y_test),
+    "epsilon": 0,
+    "auto_stop": False,
+    "batch": None,
 }
 runner = Runner(dic=test_set)
 logistic_regression_mnist: GradientDescentResult = runner.get_result()[0]
 
 
-print("Logistic regression accuracy",
-      logistic_regression_mnist.get_best_accuracy())
+print("Logistic regression accuracy", logistic_regression_mnist.get_best_accuracy())
 # GradientDescentResultPlotter(
 #     [logistic_regression_mnist]).plot_accuracies_over_time().plot()
-print(softmax_regression.predict(logistic_regression_mnist.get_best_weights_over_time()[-1], X_train) == y_train)
-
-
+print(
+    softmax_regression.predict(
+        logistic_regression_mnist.get_best_weights_over_time()[-1], X_train
+    )
+    == y_train
+)
 
 
 K = 10
 comparison_results = []
 for layer1_size in [10, 20, 30, 40, 50, 70, 90, 120, 160, 200, 300]:
-      for layer2_size in [10, 20, 30, 40, 50, 70, 90, 120]:
-            w0 = two_hidden_relu_softmax.initial_params(X_train.shape[1], layer1_size, layer2_size, K)
-            test_set = {
-            'w0': w0,
+    for layer2_size in [10, 20, 30, 40, 50, 70, 90, 120]:
+        w0 = two_hidden_relu_softmax.initial_params(
+            X_train.shape[1], layer1_size, layer2_size, K
+        )
+        test_set = {
+            "w0": w0,
             # 'GD_params': {'L': [0.1], 'w0': w0},
-            'GD_params': {'step_size': [0.1]},
+            "GD_params": {"step_size": [0.1]},
             # 'GD_params': {'L': [0.01], 'w0': w0},
-            'alg': [Adam],
-            'model': two_hidden_relu_softmax,
-            'max_iter': iterations,
-            'data_set': (X_train, y_train),
-            'test_set': (X_test, y_test),
-            'epsilon': 0,
-            'auto_stop': False,
-            'batch': 64
-            }
-            runner = Runner(dic=test_set)
-            nn_result: GradientDescentResult = runner.get_result()[0]
-            comparison_results.append(f"NN accuracy ({layer1_size},{layer2_size}) - {nn_result.get_best_accuracy()}")
+            "alg": [Adam],
+            "model": two_hidden_relu_softmax,
+            "max_iter": iterations,
+            "data_set": (X_train, y_train),
+            "test_set": (X_test, y_test),
+            "epsilon": 0,
+            "auto_stop": False,
+            "batch": 64,
+        }
+        runner = Runner(dic=test_set)
+        nn_result: GradientDescentResult = runner.get_result()[0]
+        comparison_results.append(
+            f"NN accuracy ({layer1_size},{layer2_size}) - {nn_result.get_best_accuracy()}"
+        )
 for res in comparison_results:
-      print(res)
-
-
+    print(res)

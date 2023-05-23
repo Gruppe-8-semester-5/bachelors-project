@@ -1,18 +1,21 @@
 from matplotlib import pyplot as plt
 import numpy as np
-from datasets.winequality.files import wine_X_y, wine_X_y_quality
+from datasets.winequality.files import wine_X_y
 from models.utility import to_torch
 import models.logistic_torch as logistic
 import models.softmax_regression as softmax
 from models.utility import accuracy as acc
 
-epsilon=1.0e-11
+epsilon = 1.0e-11
 iterations = 1000
 
-folder = 'figures/'
+folder = "figures/"
+
+
 def save(fname):
-    plt.savefig(fname=folder + fname + '.png', format='png')
+    plt.savefig(fname=folder + fname + ".png", format="png")
     plt.close()
+
 
 X, y = wine_X_y()
 n = X.shape[0]
@@ -28,12 +31,12 @@ for i in range(points.shape[0]):
     loss.append(logistic.negative_log_likelihood(*to_torch(X, y, w)))
     accuracy.append(acc(y, logistic.predict(w, X)))
 
-plt.plot(loss, accuracy, label=f"Some text", marker='o', markersize=0.2, linestyle='')
-plt.xlabel('loss')
-plt.ylabel('accuracy')
-plt.yscale('log')
-plt.xscale('log')
-save('loss_vs_accuracy_logistic')
+plt.plot(loss, accuracy, label="Some text", marker="o", markersize=0.2, linestyle="")
+plt.xlabel("loss")
+plt.ylabel("accuracy")
+plt.yscale("log")
+plt.xscale("log")
+save("loss_vs_accuracy_logistic")
 
 
 np.random.seed(0)
@@ -46,9 +49,9 @@ for i in range(points.shape[0]):
     loss.append(softmax.loss(*to_torch(X, y, w)))
     accuracy.append(acc(y, softmax.predict(w, X)))
 
-plt.plot(loss, accuracy, label=f"Some text", marker='o', markersize=0.2, linestyle='')
-plt.xlabel('loss')
-plt.ylabel('accuracy')
+plt.plot(loss, accuracy, label="Some text", marker="o", markersize=0.2, linestyle="")
+plt.xlabel("loss")
+plt.ylabel("accuracy")
 # plt.yscale('log')
 # plt.xscale('log')
-save('loss_vs_accuracy_softmax')
+save("loss_vs_accuracy_softmax")
