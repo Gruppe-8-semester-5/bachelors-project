@@ -19,8 +19,11 @@ def loss(X, y, W):
     return nll_loss(pred, y.long())
 
 def gradient(X, y, weights):
+    return gradient_and_loss(X, y, weights)[0]
+
+def gradient_and_loss(X, y, weights):
     X, y, W = to_torch(X, y, weights)
     W.requires_grad_()
     nll = loss(X, y, W)
     nll.backward()
-    return W.grad.numpy()
+    return W.grad.numpy(), nll.item()

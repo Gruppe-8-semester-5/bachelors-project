@@ -14,6 +14,7 @@ class GradientDescentResult(Serializable):
         self.accuracies: list[np.ndarray] = list()
         self.most_accurate_weights_list: list[np.ndarray] = list()
         self.most_accurate_weights = None
+        self.losses: list[float] = []
         self._derivations_over_time = None
 
     def add_weight(self, w: np.ndarray):    
@@ -24,6 +25,12 @@ class GradientDescentResult(Serializable):
     def add_accuracy(self, w: np.ndarray):
         self.accuracies.append(w)
 
+    def add_loss(self, loss: float):
+        self.losses.append(loss)
+
+    def get_losses_over_time(self) -> np.ndarray:
+        return np.array(self.losses)
+    
     def get_most_accurate_weights(self) -> np.ndarray:
         if self.most_accurate_weights is None:
             raise Exception("No 'best' weight was ever specified. Make sure the algorithm implements this")

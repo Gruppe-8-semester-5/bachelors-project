@@ -54,6 +54,9 @@ def negative_log_likelihood(X, y, w):
     return loss(pred, y.long())
 
 def gradient(X, y, weights):
+    return gradient_and_loss(X, y, weights)[0]
+
+def gradient_and_loss(X, y, weights):
     X, y = to_torch(X, y)
     w = get_params(weights)
     w['W1'].requires_grad_()
@@ -68,4 +71,4 @@ def gradient(X, y, weights):
     # print(k)
     arr = [w['W1'], w['b1'], w['W2'], w['b2'], w['W3'], w['b3']]
     res_arr = [x.grad.numpy() for x in arr]
-    return np.array(res_arr, dtype=object)
+    return np.array(res_arr, dtype=object), nll.item()

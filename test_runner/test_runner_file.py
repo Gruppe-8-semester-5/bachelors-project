@@ -97,6 +97,7 @@ def actual_run(dic):
         complete_gradient = lambda w: gradient(X, y, w)
     else:
         grad = lambda w: gradient(X, y, w)
+    gradient_and_loss = lambda w: model.gradient_and_loss(X, y, w)
 
     auto_stop = True
     if "auto_stop" in dic:
@@ -105,6 +106,7 @@ def actual_run(dic):
         start_weights=dic['w0'],
         algorithm=algo,
         derivation=grad,
+        gradient_and_loss=gradient_and_loss,
         epsilon=dic['epsilon'],
         max_iter=dic['max_iter'],
         accuracy=acc,

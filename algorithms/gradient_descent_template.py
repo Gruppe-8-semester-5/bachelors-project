@@ -10,6 +10,7 @@ class GD(Protocol):
 def find_minima(start_weights: np.ndarray, 
                 algorithm: GD,
                 derivation: Callable[[np.ndarray], np.ndarray], 
+                gradient_and_loss: Callable[[np.ndarray], (np.ndarray, float)], 
                 epsilon: float = np.finfo(float).eps,
                 max_iter = 1000,
                 auto_stop: bool = True,
@@ -25,7 +26,7 @@ def find_minima(start_weights: np.ndarray,
         return result
     
     # Initialise
-    gradient = derivation(weights)
+    gradient, loss = gradient_and_loss(weights)
     iteration_count = 0
     best_weight = weights
     best_accuracy = 0
@@ -43,11 +44,12 @@ def find_minima(start_weights: np.ndarray,
                 result.set_most_accurate_weights(best_weight)
             result.add_accuracy(current_accuracy) 
         result.add_weight(weights)
+        result.add_loss(loss)
 
         # Perform gradient descent
         weights = algorithm.step(weights, derivation=derivation)
         iteration_count += 1
-        gradient = derivation(weights)
+        gradient, loss = gradient_and_loss(weights)
         if iteration_count % 100 == 0:
             print(f"Gradient Descent iteration {iteration_count} @ {weights} and gradient @ {gradient}")
         # If batching we will not stop before the actual gradient is 0

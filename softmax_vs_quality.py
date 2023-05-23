@@ -62,7 +62,7 @@ print("Logistic regression accuracy",
 print(softmax_regression.predict(logistic_regression_mnist.get_best_weights_over_time()[-1], X_train) == y_train)
 
 K = 10
-w0 = two_hidden_relu_softmax.initial_params(X_train.shape[1], 20, 20, K)
+w0 = two_hidden_relu_softmax.initial_params(X_train.shape[1], 10, 10, K)
 
 test_set = {
     'w0': w0,
@@ -76,7 +76,7 @@ test_set = {
     'test_set': (X_test, y_test),
     'epsilon': 0,
     'auto_stop': False,
-    'batch': None
+    'batch': 64
 }
 runner = Runner(dic=test_set)
 nn_result: GradientDescentResult = runner.get_result()[0]
