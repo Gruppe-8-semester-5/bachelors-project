@@ -10,10 +10,13 @@ from models.utility import to_torch
 import models.logistic_L2 as cur_model
 import models.logistic_torch as old_model
 
-epsilon=1.0e-15
-iterations = 1000
+epsilon=1.0e-11
+iterations = 10000
 
-# X, y = mnist_train_X_y()
+folder = 'figures/'
+def save(fname):
+    plt.savefig(fname=folder + fname + '.png', format='png')
+    plt.close()
 
 X, y = wine_X_y()
 n = X.shape[0]
@@ -50,7 +53,6 @@ best_ = {
 runner = Runner(dic = test_set)
 results_normal = runner.get_result(GD_params={'step_size':step_sizes_normal})
 runner_ = Runner(dic = best_)
-# print(min([cur_model.loss(*to_torch(X,y,w)) for w in runner_.get_result()[0].get_weights_over_time()]).item())
 def get_min_and_w_star(*results):
     weights = [[w for w in res.get_weights_over_time()] for res in results]
     best = float('inf')
@@ -63,27 +65,11 @@ def get_min_and_w_star(*results):
                 best = loss
     return best, best_w
 smallest_loss, w_star = get_min_and_w_star(*results_normal, *runner_.get_result())
-# weights = [[w for w in res.get_weights_over_time()] for res in results_normal + results_large + runner_.get_result()]
-# losses = [[cur_model.loss(*to_torch(X, y, w)).item() for w in res] for res in weights]
-# loss_np = np.array(losses)
-# smallest_loss = np.min(loss_np)
-# print(np.unravel_index(np.argmin(loss_np), shape=loss_np.shape))
-# exit()
-# i, j = np.unravel_index(np.argmin(loss_np), shape=loss_np.shape)
-# w_star = weights[i][j]
-# smallest_loss = cur_model.loss(*to_torch(X, y, w_star))
 
-# w_star = runner_.get_result()[0].get_weights_over_time()[-1]
+print(runner_.get_result()[0].get_accuracy_over_time()[-1])
 
-# print(cur_model.loss(*to_torch(X, y, w_star)))
-# print(smallest_loss)
-# exit()
-# print(results_normal[0].get_best_accuracy())
-print(runner_.get_result()[0].get_best_accuracy())
-
-# We can get an accuracy of (using L2 with L2_const=50 and standard parameters without 1/L2_const multiplied):
-# 0.9124211174388179
-# 0.9255040788056026
+# We get an accuracy, at early stop (using L2 with L2_const=50 and standard parameters without 1/L2_const multiplied):
+# 0.8591657688163767
 
 x_values = [i for i in range(0, iterations)]
 
@@ -91,42 +77,35 @@ loss_diff_normal = []
 for res in results_normal:
     loss_diff_normal.append([cur_model.loss(*to_torch(X, y, x)) - smallest_loss for x in res.get_weights_over_time()])
 
-# diff = np.sum((w0 - w_star) ** 2)
-# y_vals = [L * diff / 2 * 1 / (k) for k in x_values]
-
-# print(cur_model.loss(*to_torch(X, y, w0)) - cur_model.loss(*to_torch(X, y, w_star)))
-
 # print(mu)
 # print(L)
-# print(smallest_loss)
-# exit()
-# import pyperclip
-# pyperclip.copy('\n'.join(map(lambda x: str(x.item()), loss_diff_normal[2])))
 # exit()
 for i, loss in enumerate(loss_diff_normal):
-    # from models.utility import accuracy
-    # print(loss)
-    # print(min([cur_model.loss(*to_torch(X, y, x)) - smallest_loss for x in results_normal[0].get_weights_over_time()]))
-    # print(accuracy(y, cur_model.predict(results_normal[0].get_best_weights_over_time()[-1], X)))
-    plt.plot(x_values, loss, label=f"{constants_normal[i]}/L")
-# plt.plot(x_values, y_vals, label=f"(Worst case)")
+    plt.plot(x_values[:400], loss[:400], label=f"{constants_normal[i]}/L")
 plt.legend(loc='center right')
-plt.show()
-exit()
+save('convergence_mu_convex_normal')
 
-plt.plot(x_values, loss_diff_normal[2], label=f"1/L")
-# Values found using LoggerPro
+for i, loss in enumerate(loss_diff_normal):
+    plt.plot(x_values[600:700], loss[600:700], label=f"{constants_normal[i]}/L")
+
+plt.legend(loc='center right')
+save('convergence_mu_convex_zoomed')
+lim = 400
+plt.plot(x_values[:lim], loss_diff_normal[2][:lim], label=f"1/L")
 ratio = 1-mu/L
 factor = cur_model.loss(*to_torch(X, y, w0)) - smallest_loss
 y_vals_max = [(factor) * (1-mu/L)**(k) for k in x_values]
-# y_vals_1_sqrt_x = [1.387 / (np.sqrt(k)) for k in x_values]
 
-# print(y_vals_max[0])
-# print(loss_diff_normal[2][0])
-# exit()
 # print(torch.argwhere(torch.tensor(y_vals_max) <= torch.tensor(loss_diff_normal[2])))
-plt.plot(x_values, y_vals_max, label=f"Theoretical limit")
-# plt.plot(x_values, y_vals_1_sqrt_x, label=f"1.387/sqrt(k)")
+plt.plot(x_values[:lim], y_vals_max[:lim], label=f"Theoretical limit")
 plt.legend(loc='center right')
-# plt.yscale('log')
-plt.show()
+save('convergence_mu_convex_theoretical')
+
+# print(results_normal[0].get_weights_over_time()[600] - results_normal[0].get_weights_over_time()[602])
+
+# print(results_normal[1].get_accuracy_over_time()[-1])
+# print(results_normal[2].get_accuracy_over_time()[-1])
+# print(results_normal[1].get_best_accuracy())
+# print(results_normal[2].get_best_accuracy())
+print(results_normal[1].get_weights_over_time()[-1])
+
