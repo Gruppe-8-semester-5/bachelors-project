@@ -52,3 +52,11 @@ def wine_X_y() -> Tuple[list, list]:
     feature_list = list(map(feature_normalizer, wines))
     X = np.array(feature_list)
     return X, y
+
+def wine_X_y_quality() -> Tuple[list, list]:
+    dataset = read_wine_data()
+    wines: list[Wine] = list(map(lambda d: Wine(d), dataset))
+    quality_label_list = list(map(lambda wine: wine.get_quality(), wines))
+    y = np.array(quality_label_list)
+    X, _ = wine_X_y()
+    return X, y

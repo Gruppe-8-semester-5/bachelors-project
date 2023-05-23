@@ -5,7 +5,7 @@ import numpy as np
 
 
 class Nesterov_acceleration_adaptive:
-    def __init__(self, w0: np.ndarray, start_alpha: float = 0.5, L = 10, overridden_beta = None) -> None:
+    def __init__(self, w0: np.ndarray, start_alpha: float = 0.5, L = 2, overridden_beta = None) -> None:
         """Adaptive nesterov acceleration, will adjust alpha adn"""
         print("Note: Using adaptive nesterov, make sure this is intended!")
         self.alpha = start_alpha

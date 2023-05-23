@@ -10,7 +10,6 @@ from models.logistic_regression import gradient_k, predict_with_softmax
 from algorithms import GradientDescentResult, gradient_descent_template
 from algorithms.standard_GD import Standard_GD
 from algorithms.momentum_GD import Momentum
-from algorithms.accelerated_GD import Nesterov_acceleration
 from models.utility import accuracy_k_encoded
 from models import multinomial_logistic_regression
 from test_runner.test_runner_file import Runner

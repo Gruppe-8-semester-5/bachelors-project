@@ -3,7 +3,6 @@ import numpy as np
 from algorithms import GradientDescentResult, gradient_descent_template, standard_GD
 from algorithms.standard_GD import Standard_GD
 from algorithms.momentum_GD import Momentum
-from algorithms.accelerated_GD import Nesterov_acceleration
 from algorithms.adam import Adam
 from datasets.mnist.files import mnist_train_X_y
 from datasets.winequality.files import wine_X_y
@@ -11,7 +10,7 @@ from analysis.lipschitz import lipschitz_binary_neg_log_likelihood
 from test_runner.test_runner_file import Runner
 from models.utility import to_torch
 # from models.logistic_torch import logistic_regression_torch
-import models.logistic_torch as cur_model
+import models.logistic_torch as logistic
 # import models.logistic_regression as normal_logistic
 # import models.one_hidden_softmax as cur_model
 # import models.two_hidden_relu_softmax as cur_model
@@ -38,7 +37,7 @@ output_shape = np.amax(y) + 1
 
 # w0 = cur_model.initial_params(X.shape[1], output_shape)
 # w0 = cur_model.initial_params(X.shape[1], 100, output_shape)
-w0 = cur_model.initial_params(X)
+w0 = logistic.initial_params(X)
 # w0 = [cur_model.initial_params(X) for _ in range(1)]
 # grad = lambda w: gradient(X, y, w)
 # List of things we want to test. Form (optimizer, params)
@@ -61,7 +60,7 @@ test_set = {
     'GD_params': {'step_size': [used * 3.8, used * 2, used, used / 2]},
     # 'GD_params': {'L': [0.01], 'w0': w0},
     'alg': [Standard_GD],
-    'model': cur_model,
+    'model': logistic,
     'max_iter': iterations,
     'data_set': (X, y),
     'epsilon':epsilon,
@@ -73,7 +72,7 @@ best_ = {
     'GD_params': {'step_size': 1 / L},
     # 'GD_params': {'L': [0.01], 'w0': w0},
     'alg': [Adam],
-    'model': cur_model,
+    'model': logistic,
     'max_iter': iterations,
     'data_set': (X, y),
     'epsilon':epsilon,
@@ -119,11 +118,11 @@ plt.rcParams["figure.autolayout"] = True
 
 losses = []
 for res in results:
-    losses.append([cur_model.negative_log_likelihood(*to_torch(X, y, x)) for x in res.get_weights_over_time()])
+    losses.append([logistic.negative_log_likelihood(*to_torch(X, y, x)) for x in res.get_weights_over_time()])
 
 
 w_star = runner_.get_result()[0].get_weights_over_time()[-1]
-smallest_loss = cur_model.negative_log_likelihood(*to_torch(X, y, w_star))
+smallest_loss = logistic.negative_log_likelihood(*to_torch(X, y, w_star))
 
 # for i, loss in enumerate(losses):
 #     for j, l in enumerate(loss):

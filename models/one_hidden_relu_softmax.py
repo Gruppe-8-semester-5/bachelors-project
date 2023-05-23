@@ -11,30 +11,26 @@ class WeightDict(TypedDict):
     b1: torch.Tensor
     W2: torch.Tensor
     b2: torch.Tensor
-    W3: torch.Tensor
-    b3: torch.Tensor
 
 
-def initial_params(input_dim, hidden_layer1, hidden_layer2, output_dim):
-    W1 = np.random.normal(size=(input_dim, hidden_layer1))
-    b1 = np.random.normal(size=(hidden_layer1))
-    W2 = np.random.normal(size=(hidden_layer1, hidden_layer2))
-    b2 = np.random.normal(size=(hidden_layer2))
-    W3 = np.random.normal(size=(hidden_layer2, output_dim))
-    b3 = np.random.normal(size=(output_dim))
-    return np.array([W1, b1, W2, b2, W3, b3], dtype=object)
+def initial_params(input_dim, hidden_layer, output_dim):
+    W1 = np.random.normal(size=(input_dim, hidden_layer))
+    b1 = np.random.normal(size=(hidden_layer))
+    W2 = np.random.normal(size=(hidden_layer, output_dim))
+    b2 = np.random.normal(size=(output_dim))
+    return np.array([W1, b1, W2, b2], dtype=object)
 
 def forward(X, w: WeightDict):
     return softmax(fw(X, w))
 
 def fw(X, w: WeightDict):
-    return relu(relu(X @ w['W1'] + w['b1']) @ w['W2'] + w['b2']) @ w['W3'] + w['b3']
+    return relu(X @ w['W1'] + w['b1']) @ w['W2'] + w['b2']
 
 def dict_to_torch(dic):
     return {k: torch.from_numpy(v) for k, v in dic.items()}
 
 def get_params(weights) -> WeightDict:
-    return dict_to_torch({'W1': weights[0], 'b1': weights[1], 'W2': weights[2], 'b2': weights[3], 'W3': weights[4], 'b3': weights[5]})
+    return dict_to_torch({'W1': weights[0], 'b1': weights[1], 'W2': weights[2], 'b2': weights[3]})
 
 def to_torch(*vals):
     return map(torch.from_numpy, vals)
@@ -60,12 +56,10 @@ def gradient(X, y, weights):
     w['b1'].requires_grad_()
     w['W2'].requires_grad_()
     w['b2'].requires_grad_()
-    w['W3'].requires_grad_()
-    w['b3'].requires_grad_()
     nll = negative_log_likelihood(X, y, w)
     nll.backward()
     # print(w['b2'].grad.numpy().any())
     # print(k)
-    arr = [w['W1'], w['b1'], w['W2'], w['b2'], w['W3'], w['b3']]
+    arr = [w['W1'], w['b1'], w['W2'], w['b2']]
     res_arr = [x.grad.numpy() for x in arr]
     return np.array(res_arr, dtype=object)

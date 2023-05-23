@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from algorithms.accelerated_GD import Nesterov_acceleration
 from datasets.winequality.files import read_wine_data
 from analysis.lipschitz import lipschitz_binary_neg_log_likelihood
 from datasets.winequality.wine import Wine
