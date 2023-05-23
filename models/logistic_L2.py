@@ -20,11 +20,14 @@ def loss(X, y, weights):
     return negative_log_likelihood(X, y, weights) + L2(weights)
 
 def gradient(X, y, weights):
+    return gradient_and_loss(X, y, weights)[0]
+
+def gradient_and_loss(X, y, weights):
     X, y, weights = to_torch(X, y, weights)
     weights.requires_grad_()
     neg = loss(X, y, weights)
     neg.backward()
-    return weights.grad.numpy()
+    return weights.grad.numpy(), neg
 
 def forward(X, weights):
     return sigmoid(X @ weights)

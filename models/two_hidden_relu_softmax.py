@@ -67,8 +67,6 @@ def gradient_and_loss(X, y, weights):
     w['b3'].requires_grad_()
     nll = negative_log_likelihood(X, y, w)
     nll.backward()
-    # print(w['b2'].grad.numpy().any())
-    # print(k)
     arr = [w['W1'], w['b1'], w['W2'], w['b2'], w['W3'], w['b3']]
     res_arr = [x.grad.numpy() for x in arr]
     return np.array(res_arr, dtype=object), nll.item()
