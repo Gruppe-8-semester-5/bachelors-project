@@ -2,18 +2,22 @@ import numpy as np
 from algorithms.accelerated_GD_adaptive import Nesterov_acceleration_adaptive
 from algorithms.adam import Adam
 from algorithms.gradient_descent_result import GradientDescentResult
+from algorithms.gradient_descent_template_batch import find_minima
 from analysis.gradient_descent_result_plotting import GradientDescentResultPlotter
 from algorithms.standard_GD import Standard_GD
-from datasets.mnist.files import mnist_X_y
+from datasets.mnist.files import mnist_X_y, mnist_X_y_simpel
 from models.utility import make_train_and_test_sets
 from test_runner.test_runner_file import Runner
-from models import convolution
+from models import one_hidden_relu_softmax, convolution
 
 np.random.seed(0)
-X, y = mnist_X_y()
+X, y = mnist_X_y_simpel()
+(X_train, y_train), (X_test, y_test) = make_train_and_test_sets(X, y, 0.8)
 
+find_minima(Standard_GD(), X_train, y_train, None, 0, 4000, False, one_hidden_relu_softmax, 100, X_test, y_test)
 # (X_train, y_train), (X_test, y_test) = make_train_and_test_sets(X, y, 0.8)
 
+exit()
 iterations = 100
 np.random.seed(0)
 
@@ -23,7 +27,7 @@ test_set = {
     "w0": startw,
     'GD_params': {'step_size': 0.1},
     # "GD_params": {"L": [0.1], "w0": startw},
-    "alg": [Adam],
+    "alg": [Standard_GD],
     "model": convolution,
     "max_iter": iterations,
     "data_set": (X, y),

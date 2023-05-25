@@ -78,6 +78,16 @@ def mnist_test_X_y(num_elements:int = None) -> Tuple[np.ndarray, np.ndarray]:
     X = np.array(feature_list).astype(float)
     return X, y
 
+def mnist_X_y_simpel():
+    dataset = read_train_data()
+    digits: list[Digit] = list(map(lambda d: Digit(d), dataset))
+    color_label_list = list(map(lambda digit: digit.get_label_int(), digits))
+    y = np.array(color_label_list)
+    normalizer = lambda digit: (digit.get_features() - np.mean(digit.get_features()))/np.std(digit.get_features()) # (x - mean(x))/std(x)
+    feature_list = list(map(normalizer, digits))
+    X = np.array(feature_list).astype(float)
+    return X, y
+
 
 def mnist_X_y():
     dataset = read_train_data()
