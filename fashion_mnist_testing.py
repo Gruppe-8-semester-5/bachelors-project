@@ -10,18 +10,18 @@ from models.utility import make_train_and_test_sets
 from test_runner.test_runner_file import Runner
 from models import convolution
 
-np.random.seed(0)
+np.random.seed(1)
 X, y = fashion_mnist_X_y_original()
 
 (X_train, y_train), (X_test, y_test) = make_train_and_test_sets(X, y, 0.8)
 
-iterations = 500
-np.random.seed(1)
+iterations = 200
+np.random.seed(5)
 
 startw = convolution.initial_params()
 test_set = {
     "w0": startw,
-    'GD_params': {'step_size': 0.01},
+    'GD_params': {'step_size': 0.05},
     # "GD_params": {"L": [0.1], "w0": startw},
     "alg": [Adam],
     "model": convolution,
@@ -30,7 +30,7 @@ test_set = {
     "test_set": (X_test, y_test),
     "epsilon": 0,
     "auto_stop": False,
-    "batch": 128,
+    "batch": 64,
 }
 runner = Runner(dic=test_set)
 logistic_regression_mnist: GradientDescentResult = runner.get_result()[0]

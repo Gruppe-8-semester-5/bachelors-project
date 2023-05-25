@@ -15,7 +15,8 @@ def find_minima(start_weights: np.ndarray,
                 max_iter = 1000,
                 auto_stop: bool = True,
                 accuracy: Callable[[np.ndarray], np.ndarray] = None,
-                complete_derivation = None):
+                complete_derivation = None,
+                serialize = True):
     weights = start_weights
     result = GradientDescentResult(derivation)
     
@@ -60,7 +61,8 @@ def find_minima(start_weights: np.ndarray,
             break
         
     # Save run for next time
-    result.serialize(file_name)
+    if serialize:
+        result.serialize(file_name)
     return result
 
 

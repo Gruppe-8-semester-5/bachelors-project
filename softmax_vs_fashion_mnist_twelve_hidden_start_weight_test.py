@@ -67,6 +67,7 @@ for rand_seed in range(10,40):
         "epsilon": 0,
         "auto_stop": False,
         "batch": 64,
+        "serialize": False
     }
     runner = Runner(dic=test_set)
     nn_result: GradientDescentResult = runner.get_result()[0]
