@@ -6,7 +6,7 @@ from algorithms.gradient_descent_result import GradientDescentResult
 from algorithms.standard_GD import Standard_GD
 from analysis.gradient_descent_result_plotting import GradientDescentResultPlotter
 from datasets.mnist.files import mnist_test_X_y, mnist_train_X_y
-from models import softmax_regression, two_hidden_relu_softmax, two_hidden_relu_softmax_L2
+from models import softmax_regression, two_hidden_relu_softmax_L2
 from models.utility import make_train_and_test_sets
 from test_runner.test_runner_file import Runner
 from torchvision import transforms
@@ -23,12 +23,13 @@ transform = transforms.Compose(
 )
 np.random.seed(2)
 
-X_train, y_train = mnist_train_X_y()
-X_test, y_test = mnist_test_X_y()
+(X_train, y_train) = mnist_train_X_y()
+
+(X_test, y_test) = mnist_test_X_y()
 
 
-iterations = 200
-np.random.seed(3)
+iterations = 160
+np.random.seed(9)
 
 startw = softmax_regression.initial_params(X_train, y_train)
 test_set = {
@@ -59,21 +60,21 @@ print(
 )
 
 K = 10
-w0 = two_hidden_relu_softmax.initial_params(X_train.shape[1], 256, 256, K)
+w0 = two_hidden_relu_softmax_L2.initial_params(X_train.shape[1], 256, 256, K)
 
 test_set = {
     "w0": w0,
     # 'GD_params': {'L': [0.1], 'w0': w0},
-    "GD_params": {"step_size": [0.1]},
+    "GD_params": {"step_size": [0.05]},
     # 'GD_params': {'L': [0.01], 'w0': w0},
     "alg": [Adam],
-    "model": two_hidden_relu_softmax,
+    "model": two_hidden_relu_softmax_L2,
     "max_iter": iterations,
     "data_set": (X_train, y_train),
-    "test_set": (X_train, y_train),
+    "test_set": (X_test, y_test),
     "epsilon": 0,
     "auto_stop": False,
-    "batch": 100,
+    "batch": 128,
 }
 runner = Runner(dic=test_set)
 nn_result: GradientDescentResult = runner.get_result()[0]
@@ -82,7 +83,7 @@ print("Logistic regression accuracy", logistic_regression_mnist.get_best_accurac
 GradientDescentResultPlotter([nn_result]).plot_accuracies_over_time().plot_function(
     lambda x: logistic_regression_mnist.get_accuracy_over_time()[x]
 ).legend_placed("center right").with_result_labelled(
-    ["Neural network"]
+    ["Neural network - L2"]
 ).with_functions_labelled(
     ["Logistic regression - NAG"]
 ).plot()

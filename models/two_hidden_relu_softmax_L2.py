@@ -28,8 +28,7 @@ def forward(X, w: WeightDict):
     return softmax(fw(X, w))
 
 def fw(X, w: WeightDict):
-    L2_lda = 0.0001
-    return relu(relu(X @ (w['W1'] + (L2_lda * w['W1']**2)) + w['b1']) @ (w['W2'] + (L2_lda * w['W2']**2)) + w['b2']) @ (w['W3'] + (L2_lda * w['W3']**2)) + w['b3']
+    return relu(relu(X @ (w['W1'] + w['b1'])) @ (w['W2'] + w['b2'])) @ w['W3'] + w['b3']
 
 def dict_to_torch(dic):
     return {k: torch.from_numpy(v) for k, v in dic.items()}
@@ -53,6 +52,8 @@ def negative_log_likelihood(X, y, w):
     pred = log_softmax(fw(X, w))
     loss = torch.nn.NLLLoss()
     return loss(pred, y.long())
+    #lda = 0.0001
+    #return loss(pred, y.long()) + lda * sum([w[i].pow(2).sum() for i in ["W1", "W2", "W3"]])
 
 def gradient(X, y, weights):
     return gradient_and_loss(X, y, weights)[0]
@@ -66,8 +67,8 @@ def gradient_and_loss(X, y, weights):
     w['b2'].requires_grad_()
     w['W3'].requires_grad_()
     w['b3'].requires_grad_()
-    nll = negative_log_likelihood(X, y, w)
-    nll.backward()
+    loss = negative_log_likelihood(X, y, w)
+    loss.backward()
     arr = [w['W1'], w['b1'], w['W2'], w['b2'], w['W3'], w['b3']]
     res_arr = [x.grad.numpy() for x in arr]
-    return np.array(res_arr, dtype=object), nll.item()
+    return np.array(res_arr, dtype=object), loss.item()
