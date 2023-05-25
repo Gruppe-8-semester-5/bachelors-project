@@ -9,13 +9,12 @@ log_softmax = torch.nn.LogSoftmax(dim = 1)
 relu = torch.nn.ReLU()
 channels1 = 16
 channels2 = 32
-final = channels2 * 2 * 2
+final = channels2 * 9
 out = 10
 # conv1 = torch.nn.Conv2d(in_channels=1, out_channels=channels1, kernel_size=5, stride=4, padding=2, dtype=torch.double)
 # conv2 = torch.nn.Conv2d(in_channels=channels1, out_channels=channels2, kernel_size=5, stride=2, padding=2, dtype=torch.double)
 pool1 = torch.nn.MaxPool2d(kernel_size=2,stride=2,padding=1)
 pool2 = torch.nn.MaxPool2d(kernel_size=2, stride=2,padding=1)
-full = torch.nn.Linear(in_features=channels2 * final, out_features=out, dtype=torch.double)
 
 
 # print(conv1.weight.shape)
@@ -50,7 +49,7 @@ def dict_to_torch(dic):
 
 def get_params(weights) -> WeightDict:
     C1, C2, F = to_torch(weights[0], weights[1], weights[2])
-    conv1 = torch.nn.Conv2d(in_channels=1, out_channels=channels1, kernel_size=5, stride=4, padding=2, dtype=torch.double)
+    conv1 = torch.nn.Conv2d(in_channels=1, out_channels=channels1, kernel_size=5, stride=2, padding=2, dtype=torch.double)
     conv2 = torch.nn.Conv2d(in_channels=channels1, out_channels=channels2, kernel_size=5, stride=2, padding=2, dtype=torch.double)
     full = torch.nn.Linear(in_features=channels2 * final, out_features=out, dtype=torch.double)
     conv1.weight = torch.nn.Parameter(C1)
