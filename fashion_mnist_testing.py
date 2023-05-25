@@ -15,8 +15,8 @@ X, y = fashion_mnist_X_y_original()
 
 (X_train, y_train), (X_test, y_test) = make_train_and_test_sets(X, y, 0.8)
 
-iterations = 10
-np.random.seed(0)
+iterations = 500
+np.random.seed(1)
 
 startw = convolution.initial_params()
 test_set = {
@@ -30,7 +30,7 @@ test_set = {
     "test_set": (X_test, y_test),
     "epsilon": 0,
     "auto_stop": False,
-    "batch": None,
+    "batch": 128,
 }
 runner = Runner(dic=test_set)
 logistic_regression_mnist: GradientDescentResult = runner.get_result()[0]

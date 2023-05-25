@@ -25,7 +25,7 @@ X, y = fashion_mnist_X_y()
 (X_train, y_train), (X_test, y_test) = make_train_and_test_sets(X, y, 0.8)
 
 
-iterations = 1500
+iterations = 600
 
 startw = softmax_regression.initial_params(X_train, y_train)
 test_set = {
@@ -58,7 +58,7 @@ logistic_regression_mnist: GradientDescentResult = runner.get_result()[0]
 K = 10
 w0 = twelve_hidden_relu_softmax.initial_params(
     X_train.shape[1],
-    [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200],
+    [700, 500, 300, 200, 100, 50, 50, 50, 50, 50, 50, 80],
     K)
 
 test_set = {

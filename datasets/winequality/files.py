@@ -53,10 +53,17 @@ def wine_X_y() -> Tuple[list, list]:
     X = np.array(feature_list)
     return X, y
 
-def wine_X_y_quality() -> Tuple[list, list]:
+def wine_X_y_quality_with_color_feature() -> Tuple[list, list]:
     dataset = read_wine_data()
     wines: list[Wine] = list(map(lambda d: Wine(d), dataset))
-    quality_label_list = list(map(lambda wine: wine.get_quality(), wines))
-    y = np.array(quality_label_list)
-    X, _ = wine_X_y()
+    color_label_list = list(map(lambda wine: color_to_label(wine.get_color()), wines))
+    y = np.array(color_label_list)
+    # Normalized features (centering around origo. [[1],[2]] -> [[-0.5],[0.5]])
+    feature_normalizer = lambda wine: (wine.get_feature_vector() -np.mean(wine.get_feature_vector())) /  np.std(wine.get_feature_vector())
+    feature_list = list(map(feature_normalizer, wines))
+    X = np.array(feature_list)
+    for i, wine in enumerate(wines):
+        np.append(X[i], 0 if wine.get_color() == "white" else 1)
+
     return X, y
+
