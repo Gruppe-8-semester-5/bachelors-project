@@ -16,7 +16,8 @@ def find_minima(start_weights: np.ndarray,
                 auto_stop: bool = True,
                 accuracy: Callable[[np.ndarray], np.ndarray] = None,
                 complete_derivation = None,
-                serialize = True):
+                serialize = True,
+                accuracy_compute_interval = 1): # Accuracy_compute_interval denotes how often accuracy should be recomputed (not applicable for the first 100 iterations)
     weights = start_weights
     result = GradientDescentResult(derivation)
     
@@ -31,14 +32,17 @@ def find_minima(start_weights: np.ndarray,
     iteration_count = 0
     best_weight = weights
     best_accuracy = 0
-    
-    # Todo: Could add check to see if w or gradient changes. If not, just stop
+    current_accuracy = 0
     while True:
         # Add logging
         if accuracy is not None:
             # Accuracy is usally quite costly, as it computes E_in for each iteration. 
             # Remove accuracy function from arguments for speed up.
-            current_accuracy = accuracy(weights)
+            if iteration_count > 100 and iteration_count % accuracy_compute_interval == 0:
+                current_accuracy = accuracy(weights)
+            else:
+                current_accuracy = accuracy(weights)
+
             if current_accuracy > best_accuracy:
                 best_accuracy = current_accuracy
                 best_weight = weights
