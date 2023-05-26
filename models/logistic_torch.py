@@ -24,7 +24,7 @@ def gradient_and_loss(X, y, weights):
     weights.requires_grad_()
     neg = negative_log_likelihood(X, y, weights)
     neg.backward()
-    return weights.grad.numpy(), neg
+    return weights.grad.numpy(), neg.item()
 
 def forward(X, weights):
     return sigmoid(X @ weights)

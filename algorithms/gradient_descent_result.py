@@ -197,6 +197,7 @@ class GradientDescentResult(Serializable):
             "accuracies": self.accuracies,
             "best_weights_list": self.most_accurate_weights_list,
             "best_weights": self.most_accurate_weights,
+            "losses": self.losses,
         }
     
     def from_serialized(self, serialized):
@@ -205,4 +206,5 @@ class GradientDescentResult(Serializable):
         result.accuracies = serialized["accuracies"]
         result.most_accurate_weights_list = serialized["best_weights_list"]
         result.most_accurate_weights = serialized["best_weights"]
+        result.losses = serialized["losses"]
         return result
