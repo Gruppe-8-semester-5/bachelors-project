@@ -206,5 +206,8 @@ class GradientDescentResult(Serializable):
         result.accuracies = serialized["accuracies"]
         result.most_accurate_weights_list = serialized["best_weights_list"]
         result.most_accurate_weights = serialized["best_weights"]
-        result.losses = serialized["losses"]
+        if "losses" in serialized:
+            result.losses = serialized["losses"]
+        else:
+            print('Warning: Loaded data without losses.')
         return result

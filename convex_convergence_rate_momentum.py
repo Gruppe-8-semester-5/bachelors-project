@@ -31,8 +31,8 @@ L = lipschitz_binary_neg_log_likelihood(X, y)
 used = 1 / L
 constants_normal = [0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2]
 betas = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-constants_normal = [0.2, 2]
-betas = [0.1, 0.9]
+# constants_normal = [0.2, 2]
+# betas = [0.1, 0.9]
 step_sizes_normal = [used * x for x in constants_normal]
 test_set = {
     "w0": w0_list,
@@ -66,12 +66,7 @@ smallest_loss = logistic.negative_log_likelihood(*to_torch(X, y, w_star))
 
 x_values = [i for i in range(1, iterations + 1)]
 
-# loss_diff_normal = []
-# for res in results_normal:
-#     loss_diff_normal.append(
-#         res.get_losses_over_time()
-#     )
-
+# https://matplotlib.org/stable/gallery/images_contours_and_fields/image_annotated_heatmap.html
 plot_this = np.zeros(shape=(len(constants_normal), len(betas)))
 for i in range(len(constants_normal)):
     for j in range(len(betas)):
@@ -89,7 +84,7 @@ im = ax.imshow(plot_this)
 
 # Show all ticks and label them with the respective list entries
 ax.set_xticks(np.arange(len(betas)), labels=betas)
-ax.set_yticks(np.arange(len(step_sizes_normal)), labels=step_sizes_normal)
+ax.set_yticks(np.arange(len(constants_normal)), labels=np.char.add(np.array(constants_normal).astype('str'), "/L"))
 
 # Rotate the tick labels and set their alignment.
 plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
