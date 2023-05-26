@@ -38,7 +38,7 @@ def to_torch(*vals):
     return map(torch.from_numpy, vals)
 
 def L2(w):
-    return L2_const * sum([w[i].pow(2).sum() for i in ["W1"]])
+    return L2_const * sum([w["W1"].pow(2).sum(), w["W2"].pow(2).sum()])
 
 def loss(X, y, weights):
     return negative_log_likelihood(X, y, weights) + L2(weights)
