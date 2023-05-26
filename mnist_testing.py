@@ -5,7 +5,7 @@ from algorithms.gradient_descent_result import GradientDescentResult
 from analysis.gradient_descent_result_plotting import GradientDescentResultPlotter
 from datasets.fashion_mnist.files import fashion_mnist_X_y_original
 from algorithms.standard_GD import Standard_GD
-from datasets.mnist.files import mnist_test_X_y, mnist_train_X_y
+from datasets.mnist.files import mnist_X_y_original, mnist_test_X_y, mnist_train_X_y
 from models.utility import make_train_and_test_sets
 # from models import one_hidden_relu_softmax, softmax_regression
 from test_runner.test_runner_file import Runner
@@ -13,9 +13,9 @@ from models import convolution
 
 np.random.seed(1)
 
-(X_train, y_train) = mnist_train_X_y()
+X, y = mnist_X_y_original()
 
-(X_test, y_test) = mnist_test_X_y()
+(X_train, y_train), (X_test, y_test) = make_train_and_test_sets(X, y, 0.8)
 
 iterations = 200
 np.random.seed(3)

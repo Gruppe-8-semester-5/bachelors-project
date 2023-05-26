@@ -15,7 +15,7 @@ X, y = fashion_mnist_X_y_original()
 
 (X_train, y_train), (X_test, y_test) = make_train_and_test_sets(X, y, 0.8)
 
-iterations = 200
+iterations = 5000
 np.random.seed(5)
 
 startw = convolution.initial_params()

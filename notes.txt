@@ -1,2 +1,1 @@
-# Regularization tvinger mu-konveksitet. 
-- Tilføj w^2 til negative log likelihood, for at kigge på mu-konveksitet
+Fix L2 på NN
