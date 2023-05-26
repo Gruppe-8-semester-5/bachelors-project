@@ -85,6 +85,8 @@ im = ax.imshow(plot_this)
 # Show all ticks and label them with the respective list entries
 ax.set_xticks(np.arange(len(betas)), labels=betas)
 ax.set_yticks(np.arange(len(constants_normal)), labels=np.char.add(np.array(constants_normal).astype('str'), "/L"))
+plt.xlabel("\u03B2")
+plt.ylabel("\u03B1")
 
 # Rotate the tick labels and set their alignment.
 plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
@@ -122,6 +124,8 @@ im = ax.imshow(plot_this)
 # Show all ticks and label them with the respective list entries
 ax.set_xticks(np.arange(len(betas)), labels=betas)
 ax.set_yticks(np.arange(len(constants_normal)), labels=np.char.add(np.array(constants_normal).astype('str'), "/L"))
+plt.xlabel("\u03B2")
+plt.ylabel("\u03B1")
 
 # Rotate the tick labels and set their alignment.
 plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
