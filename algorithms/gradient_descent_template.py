@@ -38,7 +38,7 @@ def find_minima(start_weights: np.ndarray,
         if accuracy is not None:
             # Accuracy is usally quite costly, as it computes E_in for each iteration. 
             # Remove accuracy function from arguments for speed up.
-            if iteration_count > 100 and iteration_count % accuracy_compute_interval == 0:
+            if (iteration_count > 100 and iteration_count % accuracy_compute_interval == 0) or iteration_count == max_iter:
                 current_accuracy = accuracy(weights)
             else:
                 current_accuracy = accuracy(weights)

@@ -16,7 +16,7 @@ X_train, y_train = mnist_train_X_y()
 X_test, y_test = mnist_test_X_y()
 
 
-iterations = 4000
+iterations = 500
 
 startw = softmax_regression.initial_params(X_train, y_train)
 test_set = {
@@ -48,7 +48,7 @@ test_set = {
     # 'GD_params': {'L': [0.1], 'w0': w0},
     "GD_params": {"step_size": [0.1]},
     # 'GD_params': {'L': [0.01], 'w0': w0},
-    "alg": [Standard_GD],
+    "alg": [Nesterov_acceleration_adaptive],
     "model": one_hidden_relu_softmax,
     "max_iter": iterations,
     "data_set": (X_train, y_train),
@@ -62,10 +62,10 @@ runner = Runner(dic=test_set)
 one_hidden_result: GradientDescentResult = runner.get_result()[0]
 print("One-hidden accuracy", one_hidden_result.get_best_accuracy())
 
-GradientDescentResultPlotter([one_hidden_result]).plot_with_y_axis_logarithmic().plot_accuracies_over_time().plot_function(
+GradientDescentResultPlotter([one_hidden_result]).plot_accuracies_over_time().plot_function(
     lambda x: logistic_mnist_result.get_accuracy_over_time()[x]
 ).legend_placed("lower right").with_result_labelled(
-    ["NN 1-hidden, no momentum"]
+    ["NN 1-hidden - NAG"]
 ).with_functions_labelled(
     ["Logistic regression - NAG"]
 ).plot()
@@ -75,7 +75,7 @@ test_set = {
     # 'GD_params': {'L': [0.1], 'w0': w0},
     "GD_params": {"step_size": [0.1]},
     # 'GD_params': {'L': [0.01], 'w0': w0},
-    "alg": [Standard_GD],
+    "alg": [Nesterov_acceleration_adaptive],
     "model": one_hidden_relu_softmax_L2,
     "max_iter": iterations,
     "data_set": (X_train, y_train),
@@ -89,10 +89,10 @@ runner = Runner(dic=test_set)
 one_hidden_L2_result: GradientDescentResult = runner.get_result()[0]
 print("One-hidden accuracy, L2", one_hidden_L2_result.get_best_accuracy())
 
-GradientDescentResultPlotter([one_hidden_result, one_hidden_L2_result]).plot_accuracies_over_time().plot_with_y_axis_logarithmic().plot_function(
+GradientDescentResultPlotter([one_hidden_result, one_hidden_L2_result]).plot_accuracies_over_time().plot_function(
     lambda x: logistic_mnist_result.get_accuracy_over_time()[x]
 ).legend_placed("lower right").with_result_labelled(
-    ["NN 1-hidden, no momentum", "NN 1-hidden L2, no momentum"]
+    ["NN 1-hidden - NAG", "NN 1-hidden L2 - NAG"]
 ).with_functions_labelled(
     ["Logistic regression - NAG"]
 ).plot()

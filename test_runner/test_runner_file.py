@@ -139,6 +139,11 @@ def actual_run(dic):
         serialize = dic["serialize"]
     else:
         serialize = True
+    
+    if "accuracy_compute_interval" in dic:
+        accuracy_compute_interval = dic["accuracy_compute_interval"]
+    else:
+        accuracy_compute_interval = 1
 
     return gradient_descent_template.find_minima(
         start_weights=dic["w0"],
@@ -151,6 +156,7 @@ def actual_run(dic):
         auto_stop=auto_stop,
         complete_derivation=complete_gradient,
         serialize=serialize,
+        accuracy_compute_interval = accuracy_compute_interval
     )
 
 
