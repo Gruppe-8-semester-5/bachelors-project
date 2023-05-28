@@ -5,16 +5,17 @@ from algorithms.gradient_descent_result import GradientDescentResult
 from algorithms.gradient_descent_template_batch import find_minima
 from analysis.gradient_descent_result_plotting import GradientDescentResultPlotter
 from algorithms.standard_GD import Standard_GD
-from datasets.mnist.files import mnist_X_y, mnist_X_y_simpel
+from datasets.mnist.files import mnist_X_y, mnist_X_y_simpel, mnist_test_X_y, mnist_train_X_y
 from models.utility import make_train_and_test_sets
 from test_runner.test_runner_file import Runner
 from models import one_hidden_relu_softmax, convolution
 
 np.random.seed(0)
-X, y = mnist_X_y_simpel()
-(X_train, y_train), (X_test, y_test) = make_train_and_test_sets(X, y, 0.8)
+(X_train, y_train) = mnist_train_X_y()
 
-find_minima(Standard_GD(), X_train, y_train, None, 0, 4000, False, one_hidden_relu_softmax, 100, X_test, y_test)
+(X_test, y_test) = mnist_test_X_y()
+
+find_minima(Adam(0.01), X_train, y_train, None, 0, 10000, False, one_hidden_relu_softmax, 100, X_test, y_test)
 # (X_train, y_train), (X_test, y_test) = make_train_and_test_sets(X, y, 0.8)
 
 exit()
