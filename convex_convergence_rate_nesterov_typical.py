@@ -45,7 +45,7 @@ best_ = {
     "GD_params": {"step_size": 1 / L},
     "alg": [Adam],
     "model": logistic,
-    "max_iter": 10000,
+    "max_iter": 100000,
     "data_set": (X, y),
     "epsilon": epsilon,
     "batch": None,
@@ -66,6 +66,6 @@ for c in constants_normal:
         plt.plot(x_values, result.get_losses_over_time() - smallest_loss.item(), label=f"\u03B1={c}/L t_0={alpha}")
 plt.legend(loc="center right")
 plt.yscale('log')
+plt.xscale('log')
 plt.ylim(0.06, 1)
-# plt.show()
 save("convergence_convex_nesterov_typical_runs")

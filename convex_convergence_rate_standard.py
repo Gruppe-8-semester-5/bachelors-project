@@ -48,7 +48,7 @@ best_ = {
     "GD_params": {"step_size": 1 / L},
     "alg": [Adam],
     "model": logistic,
-    "max_iter": 10000,
+    "max_iter": 100000,
     "data_set": (X, y),
     "epsilon": epsilon,
     "batch": None,

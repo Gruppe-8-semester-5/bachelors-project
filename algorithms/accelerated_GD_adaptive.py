@@ -12,9 +12,9 @@ class Nesterov_acceleration_adaptive:
         self._overridden_beta = overridden_beta # Overridden just means that if assigned, beta will not be adaptive
         self.beta = self.get_next_beta()
         self._prev_w = None         # Assigning the same values gives a momentum term of 0 in the first iteration.
-        self.w = w0   # Assigning the same values gives a momentum term of 0 in the first iteration.
+        self.w = w0   
         self.step_size = step_size
-        self.moment = w0
+        self.moment = 0
 
     def get_beta(self): # beta_i
         if self.is_beta_overridden():
@@ -62,9 +62,6 @@ class Nesterov_acceleration_adaptive:
         return beta * (w - prev_w)
  
     def step(self, w: np.ndarray, derivation: Callable[[np.ndarray], np.ndarray]):
-        # Do not require w0 as argument.
-        if self._prev_w is None:
-            self.moment = w
         self._prev_w = w
         # Compute next w
         self.w = self._prev_w + self.moment - self.step_size * derivation(self._prev_w + self.moment) 
