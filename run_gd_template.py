@@ -9,8 +9,10 @@ from datasets.winequality.files import wine_X_y
 from analysis.lipschitz import lipschitz_binary_neg_log_likelihood
 from test_runner.test_runner_file import Runner
 from models.utility import to_torch
+
 # from models.logistic_torch import logistic_regression_torch
 import models.logistic_torch as logistic
+
 # import models.logistic_regression as normal_logistic
 # import models.one_hidden_softmax as cur_model
 # import models.two_hidden_relu_softmax as cur_model
@@ -21,7 +23,7 @@ import models.logistic_torch as logistic
 # from models.logistic_regression import gradient
 # from models.logistic_regression import predict
 
-epsilon=1.0e-10
+epsilon = 1.0e-10
 iterations = 1000
 
 # X, y = mnist_train_X_y()
@@ -56,27 +58,27 @@ used = 1 / L
 #     # 'batch': [1, 5, 10, 20, None]
 # }
 test_set = {
-    'w0': w0,
-    'GD_params': {'step_size': [used * 3.8, used * 2, used, used / 2]},
+    "w0": w0,
+    "GD_params": {"step_size": [used * 3.8, used * 2, used, used / 2]},
     # 'GD_params': {'L': [0.01], 'w0': w0},
-    'alg': [Standard_GD],
-    'model': logistic,
-    'max_iter': iterations,
-    'data_set': (X, y),
-    'epsilon':epsilon,
-    'batch': None
+    "alg": [Standard_GD],
+    "model": logistic,
+    "max_iter": iterations,
+    "data_set": (X, y),
+    "epsilon": epsilon,
+    "batch": None,
 }
 
 best_ = {
-    'w0': w0,
-    'GD_params': {'step_size': 1 / L},
+    "w0": w0,
+    "GD_params": {"step_size": 1 / L},
     # 'GD_params': {'L': [0.01], 'w0': w0},
-    'alg': [Adam],
-    'model': logistic,
-    'max_iter': iterations,
-    'data_set': (X, y),
-    'epsilon':epsilon,
-    'batch': None
+    "alg": [Adam],
+    "model": logistic,
+    "max_iter": iterations,
+    "data_set": (X, y),
+    "epsilon": epsilon,
+    "batch": None,
 }
 # test_set = {
 #     'w0': w0,
@@ -101,24 +103,34 @@ best_ = {
 # print(torch.logsumexp(a, 0))
 # exit()
 
-runner = Runner(dic = test_set)
+runner = Runner(dic=test_set)
 # results = runner.get_res(alg=Standard_GD)
 results_and_des = runner.get_res_and_description()
 results = [x for _, x in results_and_des]
 print(results[0].get_best_accuracy())
 
 
-runner_ = Runner(dic = best_)
+runner_ = Runner(dic=best_)
 
-smallest_loss = float('inf')
+smallest_loss = float("inf")
 w_star = 0
-x_values = [i for i in range(0, len(results[0].get_best_weight_over_time_distances_to_best_weight()))]
+x_values = [
+    i
+    for i in range(
+        0, len(results[0].get_best_weight_over_time_distances_to_best_weight())
+    )
+]
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
 plt.rcParams["figure.autolayout"] = True
 
 losses = []
 for res in results:
-    losses.append([logistic.negative_log_likelihood(*to_torch(X, y, x)) for x in res.get_weights_over_time()])
+    losses.append(
+        [
+            logistic.negative_log_likelihood(*to_torch(X, y, x))
+            for x in res.get_weights_over_time()
+        ]
+    )
 
 
 w_star = runner_.get_result()[0].get_weights_over_time()[-1]
@@ -129,18 +141,19 @@ smallest_loss = logistic.negative_log_likelihood(*to_torch(X, y, w_star))
 #         if l < smallest_loss:
 #             smallest_loss = l
 #             w_star = results[i].get_weights_over_time()[j]
-    # if min(loss) < smallest_loss:
-    #     smallest_loss = min(loss)
+# if min(loss) < smallest_loss:
+#     smallest_loss = min(loss)
 
 diff = np.sum((w0 - w_star) ** 2)
-y_vals = [L * diff / 2 * 1 / (k+1) for k in x_values]
+y_vals = [L * diff / 2 * 1 / (k + 1) for k in x_values]
 
 print(L * diff / 2 * 1)
 exit()
 
 loss_diff = [[loss - smallest_loss for loss in x] for x in losses]
 import pyperclip
-pyperclip.copy('\n'.join(map(lambda x: str(x.item()), loss_diff[1])))
+
+pyperclip.copy("\n".join(map(lambda x: str(x.item()), loss_diff[1])))
 exit()
 for i, (des, res) in enumerate(results_and_des):
     # print(res)
@@ -155,7 +168,7 @@ for i, (des, res) in enumerate(results_and_des):
     # plt.plot(x_values, loss_diff[i], label=f"({des['batch']})")
     plt.plot(x_values, loss_diff[i], label=f"({des['GD_params']['step_size']})")
 # plt.plot(x_values, y_vals, label=f"(Worst case)")
-plt.legend(loc='center right')
+plt.legend(loc="center right")
 # plt.yscale('log')
 plt.show()
 
@@ -166,16 +179,16 @@ plt.show()
 exit()
 
 test_set = {
-    'w0': w0,
-    'GD_params': {'step_size': [0.01, 0.05, 0.1, 0.5, 1]},
-    'alg': [Standard_GD, Momentum],
-    'model': normal_logistic,
-    'max_iter': iterations,
-    'data_set': (X, y),
-    'epsilon':1.0e-2,
-    'batch': None
+    "w0": w0,
+    "GD_params": {"step_size": [0.01, 0.05, 0.1, 0.5, 1]},
+    "alg": [Standard_GD, Momentum],
+    "model": normal_logistic,
+    "max_iter": iterations,
+    "data_set": (X, y),
+    "epsilon": 1.0e-2,
+    "batch": None,
 }
 
-runner = Runner(dic = test_set)
+runner = Runner(dic=test_set)
 
 results = runner.get_result(alg=Standard_GD)

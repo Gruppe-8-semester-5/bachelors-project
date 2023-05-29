@@ -4,18 +4,37 @@ from models.utility import accuracy, make_mini_batch_gradient
 
 
 class Runner:
-    def __init__(self, w0=None, alg=None, model = None, epsilon=None, max_iter=None, GD_params=None, batch=None, dic=None) -> None:
+    def __init__(
+        self,
+        w0=None,
+        alg=None,
+        model=None,
+        epsilon=None,
+        max_iter=None,
+        GD_params=None,
+        batch=None,
+        dic=None,
+    ) -> None:
         if dic is None and w0 is None:
-            raise Exception('You must give some arguments...')
+            raise Exception("You must give some arguments...")
         if dic is None:
-            self.dict = {'w0': w0, 'alg': alg, 'model': model, 'epsilon': epsilon, 'max_iter': max_iter, 'GD_params': GD_params, batch: batch}
+            self.dict = {
+                "w0": w0,
+                "alg": alg,
+                "model": model,
+                "epsilon": epsilon,
+                "max_iter": max_iter,
+                "GD_params": GD_params,
+                batch: batch,
+            }
         else:
             self.dict = dic
-            if 'test_set' not in dic:
-                self.dict['test_set'] = None
-            if 'batch' not in dic:
-                self.dict['batch'] = batch
+            if "test_set" not in dic:
+                self.dict["test_set"] = None
+            if "batch" not in dic:
+                self.dict["batch"] = batch
         self.res = None
+
     def run(self):
         if self.res is None:
             res = {}
@@ -26,7 +45,17 @@ class Runner:
     def get_result(self, *args, **kwargs):
         return [x for _, x in self.get_res_and_description(*args, **kwargs)]
 
-    def get_res_and_description(self, dic = None, alg = None, model = None, epsilon=None,max_iter=None,w0=None, GD_params=None, batch=None):
+    def get_res_and_description(
+        self,
+        dic=None,
+        alg=None,
+        model=None,
+        epsilon=None,
+        max_iter=None,
+        w0=None,
+        GD_params=None,
+        batch=None,
+    ):
         if not self.res:
             self.run()
         res = []
@@ -34,29 +63,31 @@ class Runner:
             # Copy
             dic = self.dict | {}
         if alg is not None:
-            dic['alg'] = alg
+            dic["alg"] = alg
         if epsilon is not None:
-            dic['epsilon'] = epsilon
+            dic["epsilon"] = epsilon
         if max_iter is not None:
-            dic['max_iter'] = max_iter
+            dic["max_iter"] = max_iter
         if model is not None:
-            dic['model'] = model
+            dic["model"] = model
         if w0 is not None:
-            dic['w0'] = w0
+            dic["w0"] = w0
         if GD_params is not None:
-            dic['GD_params'] = GD_params
+            dic["GD_params"] = GD_params
         if batch is not None:
-            dic['batch'] = batch
+            dic["batch"] = batch
         for x in unpack_generator(dic):
             # print(self.res)
             # print(str(x))
             res.append(self.res[str(x)])
         return res
 
+
 def is_simple(val):
     return not (isinstance(val, list) | isinstance(val, dict))
 
-def unpack_generator(dic, acc = {}) -> dict:
+
+def unpack_generator(dic, acc={}) -> dict:
     if not dic:
         yield acc
     else:
@@ -80,16 +111,16 @@ def unpack_generator(dic, acc = {}) -> dict:
 
 
 def actual_run(dic):
-    algo = dic['alg'](**dic['GD_params'])
-    (X, y) = dic['data_set']
-    model = dic['model']
-    if dic['test_set'] is not None:
-        (X_test, y_test) = dic['test_set']
+    algo = dic["alg"](**dic["GD_params"])
+    (X, y) = dic["data_set"]
+    model = dic["model"]
+    if dic["test_set"] is not None:
+        (X_test, y_test) = dic["test_set"]
         acc = lambda w: accuracy(y_test, make_predictions(w, X_test, model.predict))
     else:
         acc = lambda w: accuracy(y, make_predictions(w, X, model.predict))
-        
-    batch = dic['batch']
+
+    batch = dic["batch"]
     gradient = model.gradient
     complete_gradient = None
     if batch is not None:
@@ -103,16 +134,17 @@ def actual_run(dic):
     if "auto_stop" in dic:
         auto_stop = dic["auto_stop"]
     return gradient_descent_template.find_minima(
-        start_weights=dic['w0'],
+        start_weights=dic["w0"],
         algorithm=algo,
         derivation=grad,
         gradient_and_loss=gradient_and_loss,
-        epsilon=dic['epsilon'],
-        max_iter=dic['max_iter'],
+        epsilon=dic["epsilon"],
+        max_iter=dic["max_iter"],
         accuracy=acc,
         auto_stop=auto_stop,
         complete_derivation=complete_gradient,
     )
+
 
 def make_predictions(weights, data, predictor):
     # predictions = []
