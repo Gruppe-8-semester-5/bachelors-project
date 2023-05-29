@@ -15,6 +15,7 @@ class GradientDescentResult(Serializable):
         self.most_accurate_weights_list: list[np.ndarray] = list()
         self.most_accurate_weights = None
         self.losses: list[float] = []
+        self.grad_norms: list[float] = []
         self._derivations_over_time = None
 
     def add_weight(self, w: np.ndarray):    
@@ -25,12 +26,18 @@ class GradientDescentResult(Serializable):
     def add_accuracy(self, w: np.ndarray):
         self.accuracies.append(w)
 
+    def add_grad_norm(self, grad_norm: float):
+        self.grad_norms.append(grad_norm)
+
     def add_loss(self, loss: float):
         self.losses.append(loss)
 
     def get_losses_over_time(self) -> np.ndarray:
         return np.array(self.losses)
-    
+
+    def get_grad_norms_over_time(self) -> np.ndarray:
+        return np.array(self.grad_norms)
+
     def get_most_accurate_weights(self) -> np.ndarray:
         if self.most_accurate_weights is None:
             raise Exception("No 'best' weight was ever specified. Make sure the algorithm implements this")
@@ -190,13 +197,14 @@ class GradientDescentResult(Serializable):
                 result.append(np.max([prev_delta, delta]))
         return np.array(result)
 
-
     def to_serialized(self) -> dict:
         return {
             "weights": self.weights,
             "accuracies": self.accuracies,
             "best_weights_list": self.most_accurate_weights_list,
             "best_weights": self.most_accurate_weights,
+            "losses": self.losses,
+            "grad_norms": self.grad_norms,
         }
     
     def from_serialized(self, serialized):
@@ -205,4 +213,10 @@ class GradientDescentResult(Serializable):
         result.accuracies = serialized["accuracies"]
         result.most_accurate_weights_list = serialized["best_weights_list"]
         result.most_accurate_weights = serialized["best_weights"]
+        if "losses" in serialized:
+            result.losses = serialized["losses"]
+        else:
+            print('Warning: Loaded data without losses.')
+        if "grad_norms" in serialized:
+            result.grad_norms = serialized["grad_norms"]
         return result

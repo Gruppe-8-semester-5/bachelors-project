@@ -1,3 +1,6 @@
+import math
+
+
 accuracies = [
     0.19864285714285715,
     0.129,
@@ -110,13 +113,6 @@ accuracies = [
     0.6435714285714286,
     0.7281428571428571,
 ]
-
-best = 0
-best_i = 0
-for i, x in enumerate(accuracies):
-    if x > best:
-        best = x
-        best_i = i
 
 layers = [
     " NN accuracy (10,10) - ",
@@ -231,5 +227,12 @@ layers = [
     "NN accuracy (300,300) ",
 ]
 
+best = 0
+best_i = 0
+for i, x in enumerate(accuracies):
+    if x > best:
+        best = x
+        best_i = i
 
+    print(round(x, 2) , layers[i])
 print(layers[best_i])

@@ -10,7 +10,7 @@ def to_torch(*vals):
     return map(torch.from_numpy, vals)
 
 def accuracy(actual: np.ndarray, predictions: np.ndarray):
-    return np.mean(actual == predictions)
+    return 1 - np.mean(actual != predictions)
 
 def accuracy_k_encoded(labels: np.ndarray, predictions: np.ndarray):
     """Compute the accuracy of a k-encoded label and prediction, remember these are probabilities"""

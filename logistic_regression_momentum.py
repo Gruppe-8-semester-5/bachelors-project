@@ -1,6 +1,6 @@
 import numpy as np
 from analysis.gradient_descent_result_plotting import GradientDescentResultPlotter
-from datasets.winequality.files import wine_X_y_quality
+from datasets.winequality.files import wine_X_y_quality_with_color_feature
 from algorithms import GradientDescentResult
 from algorithms.momentum_GD import Momentum
 from models import softmax_regression
@@ -9,7 +9,7 @@ from test_runner.test_runner_file import Runner
 
 # for ra in range(0, 100):
 
-X, y = wine_X_y_quality()
+X, y = wine_X_y_quality_with_color_feature()
 
 np.random.seed(1)
 start_weight = softmax_regression.initial_params(X, y)

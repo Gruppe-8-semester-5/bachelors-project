@@ -15,7 +15,9 @@ def find_minima(start_weights: np.ndarray,
                 max_iter = 1000,
                 auto_stop: bool = True,
                 accuracy: Callable[[np.ndarray], np.ndarray] = None,
-                complete_derivation = None):
+                complete_derivation = None,
+                serialize = True,
+                accuracy_compute_interval = 1): # Accuracy_compute_interval denotes how often accuracy should be recomputed (not applicable for the first 100 iterations)
     weights = start_weights
     result = GradientDescentResult(derivation)
     
@@ -30,14 +32,17 @@ def find_minima(start_weights: np.ndarray,
     iteration_count = 0
     best_weight = weights
     best_accuracy = 0
-    
-    # Todo: Could add check to see if w or gradient changes. If not, just stop
+    current_accuracy = 0
     while True:
         # Add logging
         if accuracy is not None:
             # Accuracy is usally quite costly, as it computes E_in for each iteration. 
             # Remove accuracy function from arguments for speed up.
-            current_accuracy = accuracy(weights)
+            if (iteration_count > 100 and iteration_count % accuracy_compute_interval == 0) or iteration_count == max_iter:
+                current_accuracy = accuracy(weights)
+            else:
+                current_accuracy = accuracy(weights)
+
             if current_accuracy > best_accuracy:
                 best_accuracy = current_accuracy
                 best_weight = weights
@@ -45,6 +50,7 @@ def find_minima(start_weights: np.ndarray,
             result.add_accuracy(current_accuracy) 
         result.add_weight(weights)
         result.add_loss(loss)
+        result.add_grad_norm(safe_norm(gradient))
 
         # Perform gradient descent
         weights = algorithm.step(weights, derivation=derivation)
@@ -60,9 +66,17 @@ def find_minima(start_weights: np.ndarray,
             break
         
     # Save run for next time
-    result.serialize(file_name)
+    if serialize:
+        result.serialize(file_name)
     return result
 
+def safe_norm(w): 
+    if w.dtype == 'object':
+        sum = 0
+        for i in range(w.shape[0]):
+            sum += np.sum(w[i] ** 2)
+        return np.sqrt(sum)
+    return np.sqrt(np.sum(w ** 2))
 
 def is_zero(w, eps): 
     res = True

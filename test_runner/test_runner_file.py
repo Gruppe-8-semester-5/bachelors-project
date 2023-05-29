@@ -130,9 +130,21 @@ def actual_run(dic):
         grad = lambda w: gradient(X, y, w)
     gradient_and_loss = lambda w: model.gradient_and_loss(X, y, w)
 
+
     auto_stop = True
     if "auto_stop" in dic:
         auto_stop = dic["auto_stop"]
+
+    if "serialize" in dic:
+        serialize = dic["serialize"]
+    else:
+        serialize = True
+    
+    if "accuracy_compute_interval" in dic:
+        accuracy_compute_interval = dic["accuracy_compute_interval"]
+    else:
+        accuracy_compute_interval = 1
+
     return gradient_descent_template.find_minima(
         start_weights=dic["w0"],
         algorithm=algo,
@@ -143,6 +155,8 @@ def actual_run(dic):
         accuracy=acc,
         auto_stop=auto_stop,
         complete_derivation=complete_gradient,
+        serialize=serialize,
+        accuracy_compute_interval = accuracy_compute_interval
     )
 
 

@@ -65,4 +65,4 @@ def gradient_and_loss(X, y, weights):
     # print(k)
     arr = [w['W1'], w['b1'], w['W2'], w['b2']]
     res_arr = [x.grad.numpy() for x in arr]
-    return np.array(res_arr, dtype=object), nll
+    return np.array(res_arr, dtype=object), nll.item()

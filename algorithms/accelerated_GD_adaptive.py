@@ -5,15 +5,16 @@ import numpy as np
 
 
 class Nesterov_acceleration_adaptive:
-    def __init__(self, w0: np.ndarray, start_alpha: float = 0.5, L = 2, overridden_beta = None) -> None:
+    def __init__(self, w0: np.ndarray = None, start_alpha: float = 0.5, step_size = 0.01, overridden_beta = None) -> None:
         """Adaptive nesterov acceleration, will adjust alpha adn"""
         print("Note: Using adaptive nesterov, make sure this is intended!")
         self.alpha = start_alpha
         self._overridden_beta = overridden_beta # Overridden just means that if assigned, beta will not be adaptive
         self.beta = self.get_next_beta()
-        self._prev_w = w0   # Assigning the same values gives a momentum term of 0 in the first iteration.
-        self.w = w0         # Assigning the same values gives a momentum term of 0 in the first iteration.
-        self.L = L
+        self._prev_w = None         # Assigning the same values gives a momentum term of 0 in the first iteration.
+        self.w = w0   
+        self.step_size = step_size
+        self.moment = 0
 
     def get_beta(self): # beta_i
         if self.is_beta_overridden():
@@ -61,13 +62,10 @@ class Nesterov_acceleration_adaptive:
         return beta * (w - prev_w)
  
     def step(self, w: np.ndarray, derivation: Callable[[np.ndarray], np.ndarray]):
-        # Compute next w
-        w = self.get_w()
-        moment = self.get_momentum_term()
-        next_w = w - 1 / self.L * (derivation(w + moment)) + moment
-        # Compute adaptive parameters
-        self.beta = self.get_next_beta()
-        self.alpha = self.get_next_alpha()
         self._prev_w = w
-        self.w = next_w
-        return next_w
+        # Compute next w
+        self.w = self._prev_w + self.moment - self.step_size * derivation(self._prev_w + self.moment) 
+        self.alpha = self.get_next_alpha()
+        self.beta = self.get_next_beta()
+        self.moment = self.get_momentum_term()
+        return self.w

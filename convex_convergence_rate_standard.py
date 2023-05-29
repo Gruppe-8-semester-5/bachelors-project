@@ -29,7 +29,7 @@ w0 = logistic.initial_params(X)
 L = lipschitz_binary_neg_log_likelihood(X, y)
 used = 1 / L
 constants_normal = [3.8, 2, 1, 0.5]
-constants_large = [2, 3, 4, 5]
+constants_large = [5, 4, 3, 2]
 step_sizes_normal = [used * x for x in constants_normal]
 step_sizes_large = [used * x for x in constants_large]
 test_set = {
@@ -48,7 +48,7 @@ best_ = {
     "GD_params": {"step_size": 1 / L},
     "alg": [Adam],
     "model": logistic,
-    "max_iter": 10000,
+    "max_iter": 100000,
     "data_set": (X, y),
     "epsilon": epsilon,
     "batch": None,
@@ -63,6 +63,14 @@ w_star = runner_.get_result()[0].get_weights_over_time()[-1]
 smallest_loss = logistic.negative_log_likelihood(*to_torch(X, y, w_star))
 
 x_values = [i for i in range(1, iterations + 1)]
+
+# first = logistic.negative_log_likelihood(*to_torch(X, y, w0)) - smallest_loss
+# best = logistic.negative_log_likelihood(*to_torch(X, y, results_normal[2].get_weights_over_time()[-1])) - smallest_loss
+# print(L * np.sum((w0-w_star) ** 2)  / 2)
+# # L * np.sum((w0-w_star) ** 2)  / 2 * 1 / K = 0.2203
+# # K = L * np.sum((w0-w_star) ** 2)  / 2 / 0.2203 =
+# print((L * np.sum((w0-w_star) ** 2)  / 2) / best)
+# exit()
 
 loss_diff_normal = []
 for res in results_normal:
@@ -81,16 +89,10 @@ for res in results_large:
             for x in res.get_weights_over_time()[:100]
         ]
     )
-# diff = np.sum((w0 - w_star) ** 2)
-# y_vals = [L * diff / 2 * 1 / (k) for k in x_values]
 
-# import pyperclip
-# pyperclip.copy('\n'.join(map(lambda x: str(x.item()), loss_diff_normal[2])))
 for i, loss in enumerate(loss_diff_normal):
     plt.plot(x_values, loss, label=f"{constants_normal[i]}/L")
-# plt.plot(x_values, y_vals, label=f"(Worst case)")
 plt.legend(loc="center right")
-# plt.savefig(fname='Test.png', format='png')
 save("convergence_convex_normal")
 # plt.show()
 
@@ -98,16 +100,3 @@ for i, loss in enumerate(loss_diff_large):
     plt.plot(x_values[:100], loss_diff_large[i], label=f"{constants_large[i]}/L")
 plt.legend(loc="center right")
 save("convergence_convex_large")
-# plt.show()
-
-plt.plot(x_values, loss_diff_normal[2], label="1/L")
-# Values found using LoggerPro
-y_vals_1_x = [1.694 / (k) for k in x_values]
-y_vals_1_sqrt_x = [1.623 / (np.sqrt(k)) for k in x_values]
-plt.plot(x_values, y_vals_1_x, label="1.694/k")
-plt.plot(x_values, y_vals_1_sqrt_x, label="1.623/sqrt(k)")
-plt.legend(loc="center right")
-plt.yscale("log")
-save("convergence_convex_best_fit")
-# plt.savefig(fname=folder + 'convergence_convex_best_fit.png', format='png')
-# plt.show()
