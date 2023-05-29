@@ -64,7 +64,7 @@ for c in constants_normal:
         step_size = c / L
         result = runner.get_result(GD_params={"step_size": step_size, 'start_alpha': alpha})[0]
         plt.plot(x_values, result.get_losses_over_time() - smallest_loss.item(), label=f"\u03B1={c}/L t_0={alpha}")
-plt.legend(loc="center right")
+plt.legend(loc="upper right")
 plt.yscale('log')
 plt.xscale('log')
 plt.ylim(0.06, 1)

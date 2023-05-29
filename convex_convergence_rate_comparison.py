@@ -62,8 +62,10 @@ for i, alg_name in enumerate(order):
     alg = algs[i]
     result = runner.get_result(alg=alg)[0]
     plt.plot(x_values, result.get_losses_over_time() - smallest_loss, label=f"{alg_name}")
-plt.legend(loc="center right")
-plt.yscale('log')
+plt.legend(loc="upper right")
+# plt.yscale('log')
 plt.xscale('log')
-plt.ylim(10e-3, 0.8)
+plt.ylim(0, 0.8)
+plt.show()
+exit()
 save("convergence_convex_comparison")

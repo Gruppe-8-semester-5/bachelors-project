@@ -63,7 +63,7 @@ for c in constants_normal:
         alpha = c / L
         result = runner.get_result(GD_params={"step_size": alpha, 'beta': beta})[0]
         plt.plot(x_values, result.get_losses_over_time() - smallest_loss.item(), label=f"\u03B1={c}/L \u03B2={beta}")
-plt.legend(loc="center right")
+plt.legend(loc="upper right")
 plt.yscale('log')
 plt.xscale('log')
 save("convergence_convex_momentum_typical_runs")
