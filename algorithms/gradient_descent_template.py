@@ -50,6 +50,7 @@ def find_minima(start_weights: np.ndarray,
             result.add_accuracy(current_accuracy) 
         result.add_weight(weights)
         result.add_loss(loss)
+        result.add_grad_norm(safe_norm(gradient))
 
         # Perform gradient descent
         weights = algorithm.step(weights, derivation=derivation)
@@ -69,6 +70,13 @@ def find_minima(start_weights: np.ndarray,
         result.serialize(file_name)
     return result
 
+def safe_norm(w): 
+    if w.dtype == 'object':
+        sum = 0
+        for i in range(w.shape[0]):
+            sum += np.sum(w[i] ** 2)
+        return np.sqrt(sum)
+    return np.sqrt(np.sum(w ** 2))
 
 def is_zero(w, eps): 
     res = True
