@@ -57,6 +57,17 @@ plt.xscale('log')
 # plt.show()
 save("convergence_non_convex_loss_comparison")
 
+# alg = algs[0]
+# result = runner.get_result(alg=alg)[0]
+# grads = result.get_grad_norms_over_time()
+# import pyperclip
+# pyperclip.copy('\n'.join([str(g) for g in grads]))
+best_loss = runner.get_result(alg=alg)[0].get_losses_over_time()[-1]
+start_loss = runner.get_result(alg=alg)[0].get_losses_over_time()[0]
+print('best: ', best_loss)
+print('start: ', start_loss)
+exit()
+
 for i, alg_name in enumerate(order):
     alg = algs[i]
     result = runner.get_result(alg=alg)[0]

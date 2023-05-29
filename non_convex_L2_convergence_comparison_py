@@ -6,7 +6,7 @@ from algorithms.standard_GD import Standard_GD
 from algorithms.accelerated_GD_adaptive import Nesterov_acceleration_adaptive
 from datasets.mnist.files import mnist_train_X_y, mnist_test_X_y
 from test_runner.test_runner_file import Runner
-from models.utility import to_torch
+from models.utility import accuracy, to_torch
 import models.one_hidden_relu_softmax_L2 as model
 
 epsilon = 0
@@ -67,3 +67,15 @@ plt.legend(loc="upper right")
 plt.yscale('log')
 plt.xscale('log')
 plt.show()
+
+
+alg = algs[3]
+alg_name = order[3]
+result = runner.get_result(alg=alg)[0]
+print('Train: ', result.get_best_accuracy())
+accs = [accuracy(y_test, model.predict(w, X_test)) for w in result.get_weights_over_time()]
+print('Test: ', np.max(accs))
+plt.plot(x_values, accs, label=f"Test accuracy")
+plt.plot(x_values, result.get_accuracy_over_time(), label=f"Train accuracy")
+plt.legend(loc="lower right")
+save('non_convex_accuracy_L2')
