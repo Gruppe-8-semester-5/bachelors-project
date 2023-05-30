@@ -100,3 +100,14 @@ for i, loss in enumerate(loss_diff_large):
     plt.plot(x_values[:100], loss_diff_large[i], label=f"{constants_large[i]}/L")
 plt.legend(loc="center right")
 save("convergence_convex_large")
+
+plt.plot(x_values, loss_diff_normal[2], label=f"1/L")
+# Values found using LoggerPro
+
+y_vals_1_x = [1.694 / (k) for k in x_values]
+y_vals_1_sqrt_x = [1.623 / (np.sqrt(k)) for k in x_values]
+plt.plot(x_values, y_vals_1_x, label=f"1.694/k")
+plt.plot(x_values, y_vals_1_sqrt_x, label=f"1.623/sqrt(k)")
+plt.legend(loc='center right')
+plt.yscale('log')
+save('convergence_convex_best_fit')

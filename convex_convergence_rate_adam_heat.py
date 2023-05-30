@@ -74,7 +74,7 @@ for j in range(len(beta_range_small)):
     for l in range(len(beta_range_small)):
         # step_size = step_sizes_normal[i]
         b1 = beta_range_small[j]
-        b2 = beta_range_small[l]
+        b2 = np.flip(beta_range_small)[l]
         results = runner_small.get_result(GD_params={'step_size': step_size, 'b1': b1, 'b2': b2})
         n = len(results)
         mean = 0
@@ -108,7 +108,7 @@ for j in range(len(beta_range_large)):
     for l in range(len(beta_range_large)):
         # step_size = step_sizes_normal[i]
         b1 = beta_range_large[j]
-        b2 = beta_range_large[l]
+        b2 = np.flip(beta_range_large)[l]
         results = runner_large.get_result(GD_params={'step_size': step_size, 'b1': b1, 'b2': b2})
         n = len(results)
         mean = 0
