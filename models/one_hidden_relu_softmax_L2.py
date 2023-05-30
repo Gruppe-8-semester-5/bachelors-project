@@ -6,7 +6,7 @@ softmax = torch.nn.Softmax(dim = 1)
 log_softmax = torch.nn.LogSoftmax(dim = 1)
 relu = torch.nn.ReLU()
 
-L2_const = 0.001
+L2_const = 0.01
 
 class WeightDict(TypedDict):
     W1: torch.Tensor

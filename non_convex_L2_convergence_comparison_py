@@ -10,7 +10,7 @@ from models.utility import accuracy, to_torch
 import models.one_hidden_relu_softmax_L2 as model
 
 epsilon = 0
-iterations = 500
+iterations = 1000
 
 folder = "figures/"
 
