@@ -25,7 +25,7 @@ w0 = logistic.initial_params(X)
 L = lipschitz_binary_neg_log_likelihood(X, y)
 used = 1 / L
 
-beta_pairs = [(0.1, 0.1), (0.999, 0.999), (0.7, 0.7), (0.94, 0.9879)]
+beta_pairs = [(0.1, 0.1), (0.999, 0.999), (0.9, 0.999), (0.7, 0.7), (0.94, 0.9879)]
 beta_1 = [b for b, _ in beta_pairs]
 # [0.999, 0.99, 0.95, 0.9, 0.85, 0.8, 0.7]
 beta_2 = [b for _, b in beta_pairs]

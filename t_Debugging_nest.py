@@ -46,7 +46,36 @@ results = runner.get_result()
 x_values = [i for i in range(0, iterations)]
 
 result = runner.get_result()[0]
-plt.plot(x_values[460:500], result.get_losses_over_time()[460:500], label=f"Nesterov")
-plt.yscale('log')
-plt.show()
+weights = result.get_weights_over_time()
+import models.logistic_L2 as dumb
+x = np.reshape(np.arange(9), (3,3)).astype(np.float64)
+y = np.array([0, 1, 0])
+d = lambda w: dumb.gradient(x, y, w)
+w = np.array([1,2,3]).astype(np.float64)
 
+nest = Nesterov_acceleration_adaptive(step_size = step_size)
+for i in range(0, 483):
+    nest.step(w, d)
+nest.w = weights[482]
+nest._prev_w = weights[481] 
+nest.moment = nest.get_momentum_term()
+d = lambda w: model_no_L2.gradient(X_train, y_train, w)
+next = nest.step(weights[482], d)
+print(len(np.argwhere(next[1-1] != weights[483][1-1])))
+print(len(np.argwhere(next[2-1] != weights[483][2-1])))
+print(len(np.argwhere(next[3-1] != weights[483][3-1])))
+print(len(np.argwhere(next[4-1] != weights[483][4-1])))
+# print(weights[484][0])
+# print(np.max(np.abs(weights[484][0])))
+# print(np.max(np.abs(weights[484][1])))
+# print(np.max(np.abs(weights[484][2])))
+# print(np.max(np.abs(weights[484][3])))
+# print(np.max(np.abs(next[0])))
+# print(np.max(np.abs(next[1])))
+# print(np.max(np.abs(next[2])))
+# print(np.max(np.abs(next[3])))
+result = runner.get_result(alg=algs)[0]
+plt.plot(x_values, result.get_losses_over_time(), label=f"Nesterov")
+plt.yscale('log')
+# plt.xscale('log')
+plt.show()
