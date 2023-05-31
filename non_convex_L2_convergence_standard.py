@@ -21,7 +21,7 @@ n = X_train.shape[0]
 
 np.random.seed(0)
 w0 = model.initial_params(X_train.shape[1], 300, np.max(y_train) + 1)
-step_sizes = [0.01, 0.001, 0.0001, 0.00005, 0.00001]
+step_sizes = [0.1, 0.05, 0.01, 0.001, 0.0001, 0.00005, 0.00001]
 
 test_set = {
     "w0": w0,
