@@ -59,3 +59,14 @@ plt.yscale('log')
 # plt.xscale('log')
 save("convergence_non_convex_L2_norm_standard")
 # plt.show()
+
+# Fantastic python-y code.
+import pyperclip
+grad_norms = []
+for step_size in step_sizes:
+    result = runner.get_result(GD_params={'step_size': step_size})[0]
+    grad_norms.append([str(g) for g in result.get_grad_norms_over_time()])
+
+zipped = list(zip(*grad_norms))
+text = '\n'.join(['\t'.join(grads) for grads in zipped])
+pyperclip.copy(text)
