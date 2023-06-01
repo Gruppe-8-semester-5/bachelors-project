@@ -92,13 +92,13 @@ for res in results_normal:
 # exit()
 for i, loss in enumerate(loss_diff_normal):
     plt.plot(x_values[:400], loss[:400], label=f"{constants_normal[i]}/L")
-plt.legend(loc="center right")
+plt.legend(loc="upper right")
 save("convergence_mu_convex_normal")
 
 for i, loss in enumerate(loss_diff_normal):
     plt.plot(x_values[600:700], loss[600:700], label=f"{constants_normal[i]}/L")
 
-plt.legend(loc="center right")
+plt.legend(loc="upper right")
 save("convergence_mu_convex_zoomed")
 lim = 400
 plt.plot(x_values[:lim], loss_diff_normal[2][:lim], label="1/L")
@@ -107,8 +107,8 @@ factor = cur_model.loss(*to_torch(X, y, w0)) - smallest_loss
 y_vals_max = [(factor) * (1 - mu / L) ** (k) for k in x_values]
 
 # print(torch.argwhere(torch.tensor(y_vals_max) <= torch.tensor(loss_diff_normal[2])))
-plt.plot(x_values[:lim], y_vals_max[:lim], label="Theoretical limit")
-plt.legend(loc="center right")
+plt.plot(x_values[:lim], y_vals_max[:lim], label="Theoretical upper bound")
+plt.legend(loc="upper right")
 save("convergence_mu_convex_theoretical")
 
 # print(results_normal[0].get_weights_over_time()[600] - results_normal[0].get_weights_over_time()[602])

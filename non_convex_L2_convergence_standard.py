@@ -7,7 +7,7 @@ from test_runner.test_runner_file import Runner
 import models.one_hidden_relu_softmax_L2 as model
 
 epsilon = 0
-iterations = 2
+iterations = 1000
 folder = "figures/"
 
 
