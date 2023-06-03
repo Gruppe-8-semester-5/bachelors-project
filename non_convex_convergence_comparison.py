@@ -51,7 +51,7 @@ for i, alg_name in enumerate(order):
     result = runner.get_result(alg=alg)[0]
     plt.plot(x_values, result.get_losses_over_time(), label=f"{alg_name}")
 
-plt.legend(loc="upper right")
+plt.legend(loc="lower left")
 plt.yscale('log')
 # plt.xscale('log')
 # plt.show()
@@ -62,7 +62,7 @@ for i, alg_name in enumerate(order):
     result = runner.get_result(alg=alg)[0]
     plt.plot(x_values, result.get_grad_norms_over_time(), label=f"{alg_name}")
 
-plt.legend(loc="upper right")
+plt.legend(loc="lower left")
 plt.yscale('log')
 # plt.xscale('log')
 # plt.show()

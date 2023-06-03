@@ -42,7 +42,7 @@ test_set = {
 
 best_ = {
     "w0": w0,
-    "GD_params": {"L": L, "w0": w0},
+    "GD_params": {"step_size": 1/L, "w0": w0},
     "alg": [Nesterov_acceleration_adaptive],
     "model": cur_model,
     "max_iter": 10000,
