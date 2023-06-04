@@ -38,10 +38,7 @@ def to_torch(*vals):
 def predict(w:np.ndarray, features: np.ndarray):
     """The logistic regression prediction for a single point"""
     w = get_params(w)
-    # print(softmax(forward(*to_torch(features, w, b))))
     return torch.argmax(softmax(forward(*to_torch(features), w)), dim=1).numpy()
-    # exit()
-    # return sigmoid(w['transpose() @ features)
 
 
 def negative_log_likelihood(X, y, w):
@@ -61,8 +58,6 @@ def gradient_and_loss(X, y, weights):
     w['b2'].requires_grad_()
     nll = negative_log_likelihood(X, y, w)
     nll.backward()
-    # print(w['b2'].grad.numpy().any())
-    # print(k)
     arr = [w['W1'], w['b1'], w['W2'], w['b2']]
     res_arr = [x.grad.numpy() for x in arr]
     return np.array(res_arr, dtype=object), nll.item()

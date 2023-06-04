@@ -38,7 +38,6 @@ test_set = {
     "max_iter": iterations,
     "data_set": (X_train, y_train),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 runner = Runner(dic=test_set)
@@ -53,8 +52,6 @@ for i, alg_name in enumerate(order):
 
 plt.legend(loc="lower left")
 plt.yscale('log')
-# plt.xscale('log')
-# plt.show()
 save("convergence_non_convex_loss_comparison")
 
 for i, alg_name in enumerate(order):
@@ -64,8 +61,6 @@ for i, alg_name in enumerate(order):
 
 plt.legend(loc="lower left")
 plt.yscale('log')
-# plt.xscale('log')
-# plt.show()
 save('convergence_non_convex_grad_norm')
 
 
@@ -79,15 +74,13 @@ plt.plot(x_values, accs, label=f"Test accuracy")
 plt.plot(x_values, result.get_accuracy_over_time(), label=f"Train accuracy")
 plt.legend(loc="lower right")
 
-# plt.legend(loc="upper right")
-# plt.show()
 save('non_convex_accuracy_no_L2')
 
 alg = algs[0]
 result = runner.get_result(alg=alg)[0]
 grads = result.get_grad_norms_over_time()
-import pyperclip
-pyperclip.copy('\n'.join([str(g) for g in grads]))
+# import pyperclip
+# pyperclip.copy('\n'.join([str(g) for g in grads]))
 best_loss = runner.get_result(alg=alg)[0].get_losses_over_time()[-1]
 start_loss = runner.get_result(alg=alg)[0].get_losses_over_time()[0]
 print('best: ', best_loss)

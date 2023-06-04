@@ -19,7 +19,6 @@ def save(fname):
 epsilon = 1.0e-10
 iterations = 150
 
-# X, y = mnist_train_X_y()
 
 X, y = wine_X_y()
 n = X.shape[0]
@@ -40,7 +39,6 @@ test_set = {
     "max_iter": iterations,
     "data_set": (X, y),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 best_ = {
@@ -51,7 +49,6 @@ best_ = {
     "max_iter": 100000,
     "data_set": (X, y),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 runner = Runner(dic=test_set)
@@ -94,7 +91,6 @@ for i, loss in enumerate(loss_diff_normal):
     plt.plot(x_values, loss, label=f"{constants_normal[i]}/L")
 plt.legend(loc="center right")
 save("convergence_convex_normal")
-# plt.show()
 
 for i, loss in enumerate(loss_diff_large):
     plt.plot(x_values[:100], loss_diff_large[i], label=f"{constants_large[i]}/L")

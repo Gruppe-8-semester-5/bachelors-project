@@ -37,7 +37,6 @@ test_set = {
     "max_iter": iterations,
     "data_set": (X, y),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 best_ = {
@@ -48,7 +47,6 @@ best_ = {
     "max_iter": 100000,
     "data_set": (X, y),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 runner = Runner(dic=test_set)

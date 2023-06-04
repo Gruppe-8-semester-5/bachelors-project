@@ -37,7 +37,6 @@ test_set = {
     "max_iter": iterations,
     "data_set": (X, y),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 best_ = {
@@ -48,7 +47,6 @@ best_ = {
     "max_iter": 10000,
     "data_set": (X, y),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 runner = Runner(dic=test_set)
@@ -115,16 +113,8 @@ plt.ylabel("\u03B1")
 plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
          rotation_mode="anchor")
 
-# Loop over data dimensions and create text annotations.
-# for i in range(len(step_sizes_normal)):
-#     for j in range(len(betas)):
-#         text = ax.text(j, i, plot_this[i, j],
-#                        ha="center", va="center", color="w")
-
 ax.set_title("Mean over first 10 losses")
 fig.tight_layout()
 cbar = ax.figure.colorbar(im, ax=ax)
-# cbar.ax.set_ylabel('some text', rotation=-90, va="bottom")
 save('momentum_heat_first_10')
-# plt.show()
 

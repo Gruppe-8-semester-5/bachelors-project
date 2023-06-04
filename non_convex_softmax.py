@@ -1,9 +1,6 @@
 from matplotlib import pyplot as plt
 import numpy as np
 from algorithms.adam import Adam
-from algorithms.heavy_ball import Heavy_ball
-from algorithms.standard_GD import Standard_GD
-from algorithms.accelerated_GD_adaptive import Nesterov_acceleration_adaptive
 from datasets.mnist.files import mnist_train_X_y, mnist_test_X_y
 from test_runner.test_runner_file import Runner
 from models.utility import accuracy, to_torch
@@ -38,7 +35,6 @@ test_set = {
     "max_iter": iterations,
     "data_set": (X_train, y_train),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 runner = Runner(dic=test_set)
@@ -56,6 +52,4 @@ plt.plot(x_values, accs, label=f"Test accuracy")
 plt.plot(x_values, result.get_accuracy_over_time(), label=f"Train accuracy")
 plt.legend(loc="lower right")
 
-# plt.legend(loc="upper right")
-# plt.show()
 save('non_convex_accuracy_softmax')

@@ -27,7 +27,6 @@ used = 1 / L
 
 beta_pairs = [(0.1, 0.1), (0.999, 0.999), (0.9, 0.999), (0.7, 0.7), (0.94, 0.9879)]
 beta_1 = [b for b, _ in beta_pairs]
-# [0.999, 0.99, 0.95, 0.9, 0.85, 0.8, 0.7]
 beta_2 = [b for _, b in beta_pairs]
 step_size = used
 test_set = {
@@ -38,7 +37,6 @@ test_set = {
     "max_iter": iterations,
     "data_set": (X, y),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 best_ = {
@@ -49,7 +47,6 @@ best_ = {
     "max_iter": 10000,
     "data_set": (X, y),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 runner = Runner(dic=test_set)

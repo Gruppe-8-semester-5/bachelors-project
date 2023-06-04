@@ -33,7 +33,7 @@ class GradientDescentResult(Serializable):
         self.losses.append(loss)
 
     def get_losses_over_time(self) -> np.ndarray:
-        return np.array([loss.item() for loss in self.losses])
+        return np.array(self.losses)
 
     def get_grad_norms_over_time(self) -> np.ndarray:
         return np.array(self.grad_norms)

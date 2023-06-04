@@ -1,6 +1,6 @@
 # Either set dict, or everything else.
 from algorithms import gradient_descent_template
-from models.utility import accuracy, make_mini_batch_gradient
+from models.utility import accuracy
 
 
 class Runner:
@@ -12,7 +12,6 @@ class Runner:
         epsilon=None,
         max_iter=None,
         GD_params=None,
-        batch=None,
         dic=None,
     ) -> None:
         if dic is None and w0 is None:
@@ -25,14 +24,11 @@ class Runner:
                 "epsilon": epsilon,
                 "max_iter": max_iter,
                 "GD_params": GD_params,
-                batch: batch,
             }
         else:
             self.dict = dic
             if "test_set" not in dic:
                 self.dict["test_set"] = None
-            if "batch" not in dic:
-                self.dict["batch"] = batch
         self.res = None
 
     def run(self):
@@ -54,7 +50,6 @@ class Runner:
         max_iter=None,
         w0=None,
         GD_params=None,
-        batch=None,
     ):
         if not self.res:
             self.run()
@@ -74,8 +69,6 @@ class Runner:
             dic["w0"] = w0
         if GD_params is not None:
             dic["GD_params"] = GD_params
-        if batch is not None:
-            dic["batch"] = batch
         for x in unpack_generator(dic):
             # print(self.res)
             # print(str(x))
@@ -120,14 +113,8 @@ def actual_run(dic):
     else:
         acc = lambda w: accuracy(y, make_predictions(w, X, model.predict))
 
-    batch = dic["batch"]
     gradient = model.gradient
-    complete_gradient = None
-    if batch is not None:
-        grad = make_mini_batch_gradient(X, y, batch, gradient)
-        complete_gradient = lambda w: gradient(X, y, w)
-    else:
-        grad = lambda w: gradient(X, y, w)
+    grad = lambda w: gradient(X, y, w)
     gradient_and_loss = lambda w: model.gradient_and_loss(X, y, w)
 
 
@@ -154,13 +141,10 @@ def actual_run(dic):
         max_iter=dic["max_iter"],
         accuracy=acc,
         auto_stop=auto_stop,
-        complete_derivation=complete_gradient,
         serialize=serialize,
         accuracy_compute_interval = accuracy_compute_interval
     )
 
 
 def make_predictions(weights, data, predictor):
-    # predictions = []
     return predictor(weights, data)
-    # return predictions

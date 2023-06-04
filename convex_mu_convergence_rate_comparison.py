@@ -32,9 +32,6 @@ step_size = 1 / L
 order = ['Standard', 'Heavy ball', 'Adam']
 algs = [Standard_GD, Heavy_ball, Adam]
 
-# order = ['Standard', 'Heavy ball', 'NAG', 'Adam']
-# algs = [Standard_GD, Heavy_ball, Nesterov_acceleration_adaptive, Adam]
-
 test_set = {
     "w0": w0,
     "GD_params": {"step_size": step_size},
@@ -43,7 +40,6 @@ test_set = {
     "max_iter": iterations,
     "data_set": (X, y),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 NAG_recommended = {
@@ -54,7 +50,6 @@ NAG_recommended = {
     "max_iter": iterations,
     "data_set": (X, y),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 
@@ -66,7 +61,6 @@ best_ = {
     "max_iter": 100000,
     "data_set": (X, y),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 runner = Runner(dic=test_set)
@@ -92,8 +86,6 @@ def get_min_and_w_star(*results):
 
 smallest_loss, w_star = get_min_and_w_star(*runner_.get_result(), *results, *results_nag)
 
-# exit()
-
 x_values = [i for i in range(0, iterations)]
 
 for i, alg_name in enumerate(order):
@@ -109,15 +101,9 @@ for des, res in runner_nag.get_res_and_description():
         text = "NAG constant \u03B2"
     plt.plot(x_values, res.get_losses_over_time() - smallest_loss, label=text)
 
-# factor = cur_model.loss(*to_torch(X, y, w0)) - smallest_loss
-# y_vals_max = [(factor) * (1 - np.sqrt(mu / L)) ** (k) for k in x_values]
-# plt.plot(x_values[:300], y_vals_max[300], label="Theoretical limit")
-
 plt.legend(loc="upper right")
 plt.yscale('log')
 plt.xscale('log')
-# plt.ylim(-0.0000000000001, 0.0000000000001)
-# plt.show()
 save("convergence_mu_convex_comparison")
 
 
@@ -137,27 +123,4 @@ plt.plot(x_values[:lim], y_vals_max[:lim], label=r'$(f(w_0)-f(w^*))\left(1-\sqrt
 plt.legend(loc="lower left")
 plt.yscale('log')
 plt.xscale('log')
-# plt.show()
 save("convergence_mu_convex_theoretical_Nag")
-
-# print(mu)
-# print(L)
-# exit()
-# for i, loss in enumerate(loss_diff_normal):
-#     plt.plot(x_values[:400], loss[:400], label=f"{constants_normal[i]}/L")
-# plt.legend(loc="center right")
-# save("convergence_mu_convex_normal")
-
-# for i, loss in enumerate(loss_diff_normal):
-#     plt.plot(x_values[600:700], loss[600:700], label=f"{constants_normal[i]}/L")
-
-# plt.legend(loc="center right")
-# save("convergence_mu_convex_zoomed")
-# lim = 400
-# plt.plot(x_values[:lim], loss_diff_normal[2][:lim], label="1/L")
-# ratio = 1 - mu / L
-
-# # print(torch.argwhere(torch.tensor(y_vals_max) <= torch.tensor(loss_diff_normal[2])))
-# plt.legend(loc="center right")
-# save("convergence_mu_convex_comparison")
-

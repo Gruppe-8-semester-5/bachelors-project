@@ -38,7 +38,6 @@ test_set = {
     "max_iter": iterations,
     "data_set": (X, y),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 best_ = {
@@ -49,7 +48,6 @@ best_ = {
     "max_iter": 100000,
     "data_set": (X, y),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 runner = Runner(dic=test_set)
@@ -63,9 +61,8 @@ for i, alg_name in enumerate(order):
     result = runner.get_result(alg=alg)[0]
     plt.plot(x_values, result.get_losses_over_time() - smallest_loss, label=f"{alg_name}")
 plt.legend(loc="upper right")
-# plt.yscale('log')
 plt.xscale('log')
 plt.ylim(0, 0.8)
 plt.show()
-exit()
+
 save("convergence_convex_comparison")

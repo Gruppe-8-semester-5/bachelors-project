@@ -10,27 +10,12 @@ from analysis.lipschitz import lipschitz_binary_neg_log_likelihood
 from test_runner.test_runner_file import Runner
 from models.utility import to_torch
 
-# from models.logistic_torch import logistic_regression_torch
 import models.logistic_torch as logistic
-
-# import models.logistic_regression as normal_logistic
-# import models.one_hidden_softmax as cur_model
-# import models.two_hidden_relu_softmax as cur_model
-# Adam, two_hidden, 1000 iterations: 0.8255333333333333
-# Adam, one_hidden, 1000 iterations: 0.7707833333333334
-# import models.logistic_torch as cur_model
-# from models.logistic_regression import logistic_regression
-# from models.logistic_regression import gradient
-# from models.logistic_regression import predict
 
 epsilon = 1.0e-10
 iterations = 1000
 
-# X, y = mnist_train_X_y()
-
 X, y = wine_X_y()
-# import torch
-# X = torch.nn.functional.normalize(torch.from_numpy(X), dim=1).numpy()
 n = X.shape[0]
 
 np.random.seed(0)
@@ -60,7 +45,6 @@ used = 1 / L
 test_set = {
     "w0": w0,
     "GD_params": {"step_size": [used * 3.8, used * 2, used, used / 2]},
-    # 'GD_params': {'L': [0.01], 'w0': w0},
     "alg": [Standard_GD],
     "model": logistic,
     "max_iter": iterations,
@@ -72,7 +56,6 @@ test_set = {
 best_ = {
     "w0": w0,
     "GD_params": {"step_size": 1 / L},
-    # 'GD_params': {'L': [0.01], 'w0': w0},
     "alg": [Adam],
     "model": logistic,
     "max_iter": iterations,
@@ -80,31 +63,9 @@ best_ = {
     "epsilon": epsilon,
     "batch": None,
 }
-# test_set = {
-#     'w0': w0,
-#     'GD_params': {'step_size': [0.01, 0.05, 0.1, 0.5, 1]},
-#     'alg': [Standard_GD, Momentum],
-#     'derivation': gradient,
-#     'predictor': make_predictions,
-#     'max_iter': iterations,
-#     'data_set': (X, y),
-#     'epsilon':1.0e-2,
-#     'batch': None
-# }
 
-# print(gradient(np.array([2.]), np.array([0]), np.array([1.])))
-
-# runner = Runner(dic = test_set)
-# print(gradient(X, y, w0))
-# print(g(X, y, w0))
-# import torch
-# print(torch.sum(torch.logaddexp(torch.tensor([-1.0]), torch.tensor([-1.0, -2, -3]))))
-# a = torch.randn(3, 3)
-# print(torch.logsumexp(a, 0))
-# exit()
 
 runner = Runner(dic=test_set)
-# results = runner.get_res(alg=Standard_GD)
 results_and_des = runner.get_res_and_description()
 results = [x for _, x in results_and_des]
 print(results[0].get_best_accuracy())

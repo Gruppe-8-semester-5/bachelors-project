@@ -52,6 +52,4 @@ for i in range(points.shape[0]):
 plt.plot(loss, accuracy, label="Some text", marker="o", markersize=0.2, linestyle="")
 plt.xlabel("loss")
 plt.ylabel("accuracy")
-# plt.yscale('log')
-# plt.xscale('log')
 save("loss_vs_accuracy_softmax")

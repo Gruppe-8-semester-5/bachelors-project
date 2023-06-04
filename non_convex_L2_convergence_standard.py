@@ -32,7 +32,6 @@ test_set = {
     "max_iter": iterations,
     "data_set": (X_train, y_train),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 adam_set = {
@@ -43,7 +42,6 @@ adam_set = {
     "max_iter": 1000,
     "data_set": (X_train, y_train),
     "epsilon": epsilon,
-    "batch": None,
 }
 
 runner_adam = Runner(dic=adam_set)
@@ -62,7 +60,6 @@ for step_size in step_sizes:
 plt.legend(loc="lower left")
 plt.yscale('log')
 plt.xscale('log')
-# plt.show()
 save("convergence_non_convex_L2_loss_standard")
 
 f_0 = losses[0]
@@ -81,11 +78,8 @@ for step_size in step_sizes:
 
 plt.legend(loc="lower left")
 plt.yscale('log')
-# plt.xscale('log')
 save("convergence_non_convex_L2_norm_standard")
-# plt.show()
 
-# Fantastic python-y code.
 # import pyperclip
 # grad_norms = []
 # for step_size in step_sizes:
