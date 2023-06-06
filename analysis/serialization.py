@@ -1,3 +1,4 @@
+import hashlib
 import os
 import pickle
 from typing import Protocol
@@ -5,10 +6,23 @@ from typing import Protocol
 import numpy as np
 
 
-class Serializable(Protocol):
-    def serialize(self, hash_input):
-        file_name = str(hash(hash_input)) + ".json"
+def hash_args(*args)->str:
+    arg_hash = hashlib.new("sha256")
+    for arg in args:
+        if type(arg) is type:
+            arg_hash.update(str(arg).encode())
+        if type(arg) is np.ndarray:
+            arg_hash.update(str(np.sum(arg)).encode())
+        else:
+            arg_hash.update(str(arg).encode())
 
+    return arg_hash.hexdigest()
+
+class Serializable(Protocol):
+
+    logging_minified = True
+
+    def serialize(self, file_name):
         if not os.path.exists(".out/"):
             os.mkdir(".out/")
 
@@ -30,9 +44,7 @@ class Serializable(Protocol):
     def from_serialized(self, serialized):
         pass
 
-    def deserialize(self, hash_input):
-        file_name = str(hash(hash_input)) + ".json"
-
+    def deserialize(self, file_name):
         if not os.path.exists(".out/"):
             os.mkdir(".out/")
 
@@ -49,23 +61,9 @@ class Serializable(Protocol):
         fp.close()
         return self.from_serialized(serialized_value)
 
-    def check_for_serialization(self, *args):
+    def check_for_serialized_version(self, *args):
         """Returns whether the result has been serialized, along with it's serial hash"""
-        print("--------------")
-        print("Checking for serialization", args)
-        print("--------------")
-        file_name_hash_input = 0
-        for arg in args:
-            if type(arg) is np.ndarray:
-                file_name_hash_input += hash(np.sum(arg))
-            else:
-                file_name_hash_input += hash(arg)
-            print("-------TO -------")
-            print(file_name_hash_input)
-            
-
-        file_name = str(hash(file_name_hash_input)) + ".json"
-        print(file_name)
+        file_name = hash_args(args) + ".gdrun"
 
         if not os.path.exists(".out/"):
             os.mkdir(".out/")
@@ -74,7 +72,18 @@ class Serializable(Protocol):
             os.mkdir(".out/persistent_experiments/")
 
         file_path = '.out/persistent_experiments/' + file_name
-
         if not os.path.exists(file_path):
-            return False, file_name_hash_input
-        return True, file_name_hash_input
+            return False, file_name
+        
+        if self.logging_minified:
+            print("(minified log) Experiment was serialized at " , file_path)
+        else:
+            print("------Experiment serializer-------")
+            print("A gradient descent run was found to have been performed before!")
+            print("inputs were")
+            print("")
+            print(args)
+            print("")
+            print("If you believe this to be false, delete the file ", file_path)
+            print("----------------------------------")
+        return True, file_name

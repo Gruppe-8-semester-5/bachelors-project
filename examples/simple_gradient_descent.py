@@ -35,7 +35,7 @@ def main():
     minima = descent_result.get_final_weight()
     min_x = minima[0]
     min_y = minima[1]
-    no_of_iterations = descent_result.number_of_points()
+    no_of_iterations = descent_result.number_of_weights()
     print(f"Found the point ({min_x}, {min_y}) after {no_of_iterations} iterations")
     print(f"f({min_x}, {min_y}) = {f(np.array([min_x, min_y]))}")
     print(f"f'({min_x}, {min_y}) = {fdiff(np.array([min_x, min_y]))}")

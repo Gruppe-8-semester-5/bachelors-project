@@ -22,13 +22,16 @@ class Digit:
         assert size == 28 * 28
 
         # Image pictures are 28x28 pixels
-        return np.reshape(self.features, (28, 28))
+        return np.reshape(self.features, (1, 28, 28))
     
     def get_features(self) -> np.ndarray:
         return self.features
     
     def get_label(self) -> str:
         return self.label
+    
+    def get_label_int(self) -> int:
+        return int(self.label)
 
     def get_image(self) -> Image:
         """Creates an image of the digit"""

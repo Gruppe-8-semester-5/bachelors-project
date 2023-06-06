@@ -1,0 +1,14 @@
+{
+	"[python]": {
+		"editor.defaultFormatter": "ms-python.black-formatter"
+	},
+	"python.formatting.provider": "black",
+	"python.linting.flake8Enabled": false,
+	"python.linting.lintOnSave": true,
+	"flake8.args": ["flake8 --max-line-length 99"],
+	"python.linting.pylintEnabled": true,
+	"python.linting.enabled": true,
+	"python.formatting.blackArgs": [
+		"--line-length 160"
+	]
+}

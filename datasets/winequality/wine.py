@@ -33,7 +33,7 @@ class Wine:
         ])
     
     def get_quality(self) -> int:
-        return self.quality
+        return self.quality - 3
     
     def get_color(self)->str:
         return self.color
