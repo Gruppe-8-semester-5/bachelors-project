@@ -19,7 +19,7 @@ We have used the following two data sets primarily
  - Wine quality (https://www.kaggle.com/datasets/yasserh/wine-quality-dataset)
  - MNIST (https://www.kaggle.com/datasets/oddrationale/mnist-in-csv)
 
-**Note**: In order to run the python experiment scripts, you will **NOT** have to download these datasets, they will be downloaded automatically when script using requiring it is executed. Note that this means, that. This is just for reference.
+**Note**: In order to run the python experiment scripts, you will **NOT** have to download these datasets, they will be downloaded automatically when script using requiring it is executed. This is just for reference.
 
 ### Authors:
 - Casper Dalgaard Nielsen, 202004453
